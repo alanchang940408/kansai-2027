@@ -839,10 +839,108 @@
       padding: 1px 6px; border-radius: 999px; border: 1px solid #f7c7c2;
     }
 
-    #lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    #lightbox {
+      z-index: 3000;
+      background: rgba(10, 14, 20, 0.92);
+      padding: 12px;
+    }
+    .lightbox-box {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .lightbox-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .lightbox-stage {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox-img {
+      width: min(94vw, 920px);
+      max-height: 76vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 12px 44px rgba(0,0,0,0.55);
+      background: #0f172a;
+      cursor: zoom-out;
+    }
+    .lightbox-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lb-btn {
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .lb-btn:hover { background: rgba(255,255,255,0.24); }
+    .lb-btn:disabled { opacity: 0.35; cursor: default; }
+    .lb-close-main {
+      border: none;
+      background: var(--torii);
+      color: #fff;
+      padding: 9px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 14px rgba(201,58,43,0.45);
+    }
+    .photo-zoom-tag {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      background: rgba(15,23,42,0.72);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .photo-fallback-card {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-muted);
+    }
 
     /* ==================== MOBILE & TABLET RESPONSIVE ==================== */
-    .mobile-view-bar {
+    .mobile-view-bar,
+    .mobile-jump-list-btn,
+    .mobile-back-map-fab {
       display: none;
     }
 
@@ -850,11 +948,11 @@
       .mobile-view-bar {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 11px;
-        padding: 5px 8px;
+        padding: 5px 7px;
         margin: 8px 0 2px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       }
@@ -869,9 +967,9 @@
         border: 1px solid var(--border);
         background: var(--bg);
         color: var(--ink);
-        padding: 5px 6px;
+        padding: 5px 4px;
         border-radius: 8px;
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 800;
         cursor: pointer;
         font-family: inherit;
@@ -885,57 +983,85 @@
         border-color: var(--indigo);
         box-shadow: 0 2px 6px rgba(27,77,99,0.22);
       }
-
-      /* Default Mobile Mode: Split (上圖下表同框) */
-      body:not([data-mview="map"]):not([data-mview="list"]) .map-box {
-        height: 34vh;
-        min-height: 225px;
-        max-height: 320px;
+      .mview-btn.drag-one {
+        background: #fff4e5;
+        color: #9a3412;
+        border-color: #fdba74;
       }
-      body:not([data-mview="map"]):not([data-mview="list"]) .detail-panel,
-      body:not([data-mview="map"]):not([data-mview="list"]) .food-layout .detail-panel {
-        position: static;
-        max-height: 48vh;
-        min-height: 260px;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+
+      /* Natural single-page mobile scrolling (no trapped nested detail scrollbox) */
+      .detail-panel,
+      .food-layout .detail-panel {
+        position: static !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        overflow: visible !important;
         padding: 12px;
       }
+      .panel-sticky-bar {
+        position: static;
+        margin: -12px -12px 10px -12px;
+        padding: 8px 10px;
+      }
 
+      /* Default Mobile Mode: Split */
+      body:not([data-mview="map"]):not([data-mview="list"]) .map-box {
+        height: 260px;
+      }
       /* Enlarge Map Mode */
       body[data-mview="map"] .map-box {
-        height: 58vh;
-        min-height: 360px;
-        max-height: 540px;
+        height: 56vh;
+        min-height: 340px;
       }
-      body[data-mview="map"] .detail-panel,
-      body[data-mview="map"] .food-layout .detail-panel {
-        position: static;
-        max-height: 38vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding: 12px;
-      }
-
       /* Enlarge List Mode */
       body[data-mview="list"] .map-card {
         display: none !important;
       }
-      body[data-mview="list"] .detail-panel,
-      body[data-mview="list"] .food-layout .detail-panel {
-        position: static;
-        max-height: 75vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding: 12px;
+
+      /* Allow 1-finger vertical scroll over the map by default on mobile */
+      body:not([data-mdrag="one"]) .map-box.leaflet-container {
+        touch-action: pan-y !important;
       }
 
-      .panel-sticky-bar {
-        top: -12px;
-        margin: -12px -12px 8px -12px;
+      .mobile-jump-list-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 7px;
         padding: 8px 10px;
+        border-radius: 9px;
+        border: 1px solid #cbd5e1;
+        background: #eef4f7;
+        color: var(--indigo);
+        font-size: 12.5px;
+        font-weight: 800;
+        cursor: pointer;
+        font-family: inherit;
       }
-      .tab-panel { padding: 6px 0 18px; }
+      .mobile-back-map-fab {
+        position: fixed;
+        right: 14px;
+        bottom: 18px;
+        z-index: 1500;
+        border: none;
+        border-radius: 999px;
+        background: var(--indigo);
+        color: #fff;
+        padding: 9px 14px;
+        font-size: 12.5px;
+        font-weight: 800;
+        font-family: inherit;
+        box-shadow: 0 6px 20px rgba(15,23,42,0.32);
+        cursor: pointer;
+      }
+      .mobile-back-map-fab.show {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .tab-panel { padding: 6px 0 24px; }
     }
 
     @media (max-width: 820px) {
@@ -1077,8 +1203,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      .photo-frame { height: 110px; }
-      .photo-gallery.single .photo-frame { height: 155px; }
       .hero-stat-grid { gap: 7px; margin: 8px 0; }
       .hero-stat-card { padding: 8px 10px; }
       .hero-stat-val { font-size: 16px; }
@@ -1092,6 +1216,11 @@
         font-size: 12px;
         padding: 8px 12px;
       }
+    }
+
+    @media (max-width: 640px) {
+      .photo-frame { height: 135px; }
+      .photo-gallery.single .photo-frame { height: 190px; }
     }
 
     @media (max-width: 520px) {
@@ -1154,6 +1283,7 @@
       <button type="button" class="mview-btn active" data-mview="split">🔀 上圖下表</button>
       <button type="button" class="mview-btn" data-mview="map">🗺️ 大地圖</button>
       <button type="button" class="mview-btn" data-mview="list">📋 大列表</button>
+      <button type="button" class="mview-btn" id="mobile-drag-toggle-btn" title="切換單指滑網頁或單指移地圖">🖐️ 雙指移圖</button>
     </div>
 
     <!-- ==================== TAB 1: ATTRACTIONS REAL MAP ==================== -->
@@ -1192,6 +1322,7 @@
             </div>
           </div>
           <div class="map-box" id="attr-map"></div>
+          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">⬇️ 滑到下方看詳細介紹與實景照片</button>
         </div>
 
         <aside class="detail-panel" id="attr-detail-panel"></aside>
@@ -1219,6 +1350,7 @@
             <button class="mini-chip active" id="transit-label-toggle">🏷️ 自動縮放標籤（拉遠自動精簡）</button>
           </div>
           <div class="map-box" id="transit-map"></div>
+          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">⬇️ 滑到下方看詳細介紹與實景照片</button>
         </div>
 
         <aside class="detail-panel" id="transit-detail-panel"></aside>
@@ -1274,6 +1406,7 @@
             <button class="mini-chip" id="food-label-toggle">🏷️ 自動顯示店名</button>
           </div>
           <div class="map-box" id="food-map"></div>
+          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">⬇️ 滑到下方看詳細介紹與實景照片</button>
         </div>
 
         <aside class="detail-panel">
@@ -1444,9 +1577,25 @@
     </div>
   </div>
 
+  <!-- MOBILE FLOATING BACK TO MAP BUTTON -->
+  <button type="button" class="mobile-back-map-fab" id="mobile-back-map-fab" onclick="scrollToActiveMap()">🗺️ 回到上方地圖</button>
+
   <!-- PHOTO LIGHTBOX -->
-  <div class="modal-backdrop" id="lightbox" onclick="this.classList.remove('open')">
-    <img id="lightbox-img" referrerpolicy="no-referrer" src="" alt="放大圖片" />
+  <div class="modal-backdrop" id="lightbox">
+    <div class="lightbox-box" id="lightbox-box">
+      <div class="lightbox-top">
+        <span id="lightbox-counter">📸 1 / 1</span>
+        <button type="button" class="lb-btn" id="lightbox-close-top">✕ 關閉返回</button>
+      </div>
+      <div class="lightbox-stage">
+        <img id="lightbox-img" src="" alt="放大實景圖片" />
+      </div>
+      <div class="lightbox-bar">
+        <button type="button" class="lb-btn" id="lightbox-prev-btn">‹ 上一張</button>
+        <button type="button" class="lb-close-main" id="lightbox-close-bottom">↩️ 返回介紹（關閉圖片）</button>
+        <button type="button" class="lb-btn" id="lightbox-next-btn">下一張 ›</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -3026,8 +3175,26 @@
       return String(str || "").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
     }
 
+    function toWikiThumbSize(url, px) {
+      if (!url || typeof url !== "string") return "";
+      return url.replace(/(\/wikipedia\/[^/]+\/thumb\/.+\/)(\d+)(px-[^/?#]+)$/i, `$1${px}$3`);
+    }
+
+    function toWikiOriginalUrl(url) {
+      if (!url || typeof url !== "string") return "";
+      const m = url.match(/^(https?:\/\/upload\.wikimedia\.org\/wikipedia\/[^/]+)\/thumb\/([^/]+\/[^/]+\/([^/?#]+))\/\d+px-[^/?#]+$/i);
+      if (m && /\.(jpe?g|png|webp|gif)$/i.test(m[3])) {
+        return `${m[1]}/${m[2]}`;
+      }
+      return "";
+    }
+
+    function getPhotoCacheKey(item) {
+      return (item?.wikiJa || "") + "|" + (item?.wikiZh || "") + "|" + (item?.name || item?.short || "");
+    }
+
     async function fetchPhotosForItem(item) {
-      const cacheKey = (item.wikiJa || "") + "|" + (item.wikiZh || "");
+      const cacheKey = getPhotoCacheKey(item);
       if (photoCache[cacheKey]) return photoCache[cacheKey];
 
       const imgs = [];
@@ -3042,12 +3209,14 @@
           low.includes("symbol") || low.includes("flag") || low.includes("map") ||
           low.includes("locator") || low.includes("diagram") || low.includes("100px") ||
           low.includes("50px") || low.includes("stub") || low.includes("button") ||
-          low.includes("commons-") || low.includes("question_book") || low.includes("padlock")
+          low.includes("commons-") || low.includes("question_book") || low.includes("padlock") ||
+          low.includes("disambig") || low.includes("Crystal_") || low.includes("nuvola")
         ) return;
-        const fileKey = decodeURIComponent(src.split("?")[0].split("/").pop().replace(/^\d+px-/, "")).toLowerCase();
+        const normalized = toWikiThumbSize(src, 500);
+        const fileKey = decodeURIComponent(normalized.split("?")[0].split("/").pop().replace(/^\d+px-/, "")).toLowerCase();
         if (seenFiles.has(fileKey)) return;
         seenFiles.add(fileKey);
-        imgs.push(src);
+        imgs.push(normalized);
       };
 
       const fetchWikiSummary = async (lang, title) => {
@@ -3064,12 +3233,26 @@
       const fetchWikiActionApi = async (lang, title) => {
         if (!title) return;
         try {
-          const r = await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages|images&piprop=thumbnail&pithumbsize=500&imlimit=10&format=json&origin=*`);
-          if (!r.ok) return;
-          const d = await r.json();
-          const pages = d?.query?.pages || {};
-          for (const p of Object.values(pages)) {
-            if (p.thumbnail && p.thumbnail.source) addImg(p.thumbnail.source);
+          const r1 = await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&redirects=1&titles=${encodeURIComponent(title)}&prop=pageimages&piprop=thumbnail|original&pithumbsize=500&format=json&origin=*`);
+          if (r1.ok) {
+            const d1 = await r1.json();
+            for (const p of Object.values(d1?.query?.pages || {})) {
+              if (p.thumbnail && p.thumbnail.source) addImg(p.thumbnail.source);
+              else if (p.original && p.original.source) addImg(p.original.source);
+            }
+          }
+          if (imgs.length < 4) {
+            const r2 = await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&redirects=1&generator=images&titles=${encodeURIComponent(title)}&gimlimit=8&prop=imageinfo&iiprop=url&iiurlwidth=500&format=json&origin=*`);
+            if (r2.ok) {
+              const d2 = await r2.json();
+              for (const p of Object.values(d2?.query?.pages || {})) {
+                const ii = p.imageinfo && p.imageinfo[0];
+                if (ii) {
+                  addImg(ii.thumburl || ii.url);
+                  if (imgs.length >= 4) break;
+                }
+              }
+            }
           }
         } catch {}
       };
@@ -3083,11 +3266,26 @@
           if (d.items) {
             for (const m of d.items) {
               if (m.type === "image" && m.srcset && m.srcset.length) {
-                // Pick the exact cached srcset URL without mutating px dimensions
-                const pick = m.srcset[0].src;
+                const pick = m.srcset[m.srcset.length - 1].src || m.srcset[0].src;
                 addImg(pick);
                 if (imgs.length >= 4) break;
               }
+            }
+          }
+        } catch {}
+      };
+
+      const fetchCommonsSearch = async (query) => {
+        if (!query) return;
+        try {
+          const r = await fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent("filetype:bitmap " + query)}&gsrnamespace=6&gsrlimit=6&prop=imageinfo&iiprop=url&iiurlwidth=500&format=json&origin=*`);
+          if (!r.ok) return;
+          const d = await r.json();
+          for (const p of Object.values(d?.query?.pages || {})) {
+            const ii = p.imageinfo && p.imageinfo[0];
+            if (ii) {
+              addImg(ii.thumburl || ii.url);
+              if (imgs.length >= 4) break;
             }
           }
         } catch {}
@@ -3109,27 +3307,150 @@
       if (imgs.length < 3 && item.wikiZh) {
         await fetchWikiMediaList("zh", item.wikiZh);
       }
+      if (imgs.length < 2) {
+        const fallbackQ = [item.wikiJa || item.name || item.short || "", item.city || item.area || ""].filter(Boolean).join(" ");
+        await fetchCommonsSearch(fallbackQ);
+      }
 
       const finalImgs = imgs.slice(0, 4);
-      photoCache[cacheKey] = finalImgs;
+      if (finalImgs.length > 0) photoCache[cacheKey] = finalImgs;
       return finalImgs;
     }
 
-    function renderGalleryHtml(imgs, loading) {
+    const galleryPool = {};
+    window.handleGalleryImgError = function(imgEl) {
+      if (!imgEl) return;
+      const orig = imgEl.dataset.orig || "";
+      if (imgEl.dataset.step === "0" && orig && orig !== imgEl.src) {
+        imgEl.dataset.step = "1";
+        imgEl.src = orig;
+        return;
+      }
+      const frame = imgEl.closest(".photo-frame");
+      const gal = imgEl.closest(".photo-gallery");
+      if (frame) frame.style.display = "none";
+      if (gal) {
+        const visibleFrames = [...gal.querySelectorAll(".photo-frame")].filter(f => f.style.display !== "none");
+        if (visibleFrames.length === 0) {
+          const qText = gal.dataset.q || "關西 旅遊";
+          gal.outerHTML = `<div class="photo-fallback-card"><span>📷 圖片載入失敗或暫無相片</span><a class="unlock-btn" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(qText)}" target="_blank" rel="noopener">🔍 看 Google 實景照片 ↗</a></div>`;
+        }
+      }
+    };
+
+    function renderGalleryHtml(imgs, loading, item) {
       if (loading) return `<div class="photo-loading">📸 正在載入實景照片...</div>`;
-      if (!imgs || !imgs.length) return "";
+      const qRaw = item?.q || item?.name || item?.title || "關西 旅遊";
+      if (!imgs || !imgs.length) {
+        return `<div class="photo-fallback-card"><span>📷 此點暫無百科實景圖</span><a class="unlock-btn" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(qRaw)}" target="_blank" rel="noopener">🔍 看 Google 實景照片 ↗</a></div>`;
+      }
+      const poolKey = String(item?.id || "_default").replace(/[^a-zA-Z0-9_-]/g, "_");
+      galleryPool[poolKey] = imgs;
       const cls = imgs.length === 1 ? "photo-gallery single" : "photo-gallery";
-      return `<div class="${cls}">${imgs.map(src => `
-        <div class="photo-frame" onclick="openLightbox('${src}')">
-          <img src="${src}" referrerpolicy="no-referrer" loading="lazy" alt="景點實景照片" onerror="this.parentElement.style.display='none'" />
+      return `<div class="${cls}" data-q="${qRaw.replace(/"/g, "&quot;")}">${imgs.map((src, idx) => `
+        <div class="photo-frame" onclick="openLightbox('${poolKey}', ${idx})">
+          <img src="${src}" data-orig="${toWikiOriginalUrl(src)}" data-step="0" alt="景點實景照片" onerror="handleGalleryImgError(this)" />
+          <span class="photo-zoom-tag">🔍 放大</span>
         </div>
       `).join("")}</div>`;
     }
 
-    window.openLightbox = function(src) {
-      document.getElementById("lightbox-img").src = src;
+    let currentLightboxImgs = [];
+    let currentLightboxIdx = 0;
+    let lightboxHistoryPushed = false;
+
+    function renderLightboxFrame() {
+      const lbImg = document.getElementById("lightbox-img");
+      const counter = document.getElementById("lightbox-counter");
+      const prevBtn = document.getElementById("lightbox-prev-btn");
+      const nextBtn = document.getElementById("lightbox-next-btn");
+      const src = currentLightboxImgs[currentLightboxIdx] || "";
+      const hi = toWikiThumbSize(src, 960) || src;
+      const orig = toWikiOriginalUrl(src);
+      lbImg.dataset.step = "0";
+      lbImg.dataset.thumb = src;
+      lbImg.dataset.orig = orig;
+      lbImg.src = hi;
+      if (counter) counter.textContent = `📸 第 ${currentLightboxIdx + 1} / ${currentLightboxImgs.length} 張（點圖片或下方按鈕返回）`;
+      const single = currentLightboxImgs.length <= 1;
+      if (prevBtn) prevBtn.disabled = single;
+      if (nextBtn) nextBtn.disabled = single;
+    }
+
+    window.openLightbox = function(poolKeyOrSrc, idx) {
+      if (typeof idx === "number" && Array.isArray(galleryPool[poolKeyOrSrc])) {
+        currentLightboxImgs = galleryPool[poolKeyOrSrc];
+        currentLightboxIdx = Math.max(0, Math.min(idx, currentLightboxImgs.length - 1));
+      } else {
+        currentLightboxImgs = [String(poolKeyOrSrc || "")];
+        currentLightboxIdx = 0;
+      }
+      renderLightboxFrame();
       document.getElementById("lightbox").classList.add("open");
+      if (!lightboxHistoryPushed) {
+        try {
+          history.pushState({ lbOpen: true }, "", window.location.href);
+          lightboxHistoryPushed = true;
+        } catch {}
+      }
     };
+
+    window.closeLightbox = function(fromPopState) {
+      const lb = document.getElementById("lightbox");
+      if (!lb) return;
+      lb.classList.remove("open");
+      if (!fromPopState && lightboxHistoryPushed) {
+        lightboxHistoryPushed = false;
+        try { history.back(); } catch {}
+      }
+    };
+
+    window.stepLightbox = function(delta) {
+      if (!currentLightboxImgs.length) return;
+      currentLightboxIdx = (currentLightboxIdx + delta + currentLightboxImgs.length) % currentLightboxImgs.length;
+      renderLightboxFrame();
+    };
+
+    (function initLightboxEvents() {
+      const lb = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lightbox-img");
+      if (lbImg) {
+        lbImg.addEventListener("error", () => {
+          if (lbImg.dataset.step === "0" && lbImg.dataset.thumb && lbImg.dataset.thumb !== lbImg.src) {
+            lbImg.dataset.step = "1";
+            lbImg.src = lbImg.dataset.thumb;
+          } else if (lbImg.dataset.step !== "2" && lbImg.dataset.orig && lbImg.dataset.orig !== lbImg.src) {
+            lbImg.dataset.step = "2";
+            lbImg.src = lbImg.dataset.orig;
+          }
+        });
+        lbImg.addEventListener("click", (e) => {
+          e.stopPropagation();
+          closeLightbox(false);
+        });
+      }
+      document.getElementById("lightbox-close-top")?.addEventListener("click", () => closeLightbox(false));
+      document.getElementById("lightbox-close-bottom")?.addEventListener("click", () => closeLightbox(false));
+      document.getElementById("lightbox-prev-btn")?.addEventListener("click", (e) => { e.stopPropagation(); stepLightbox(-1); });
+      document.getElementById("lightbox-next-btn")?.addEventListener("click", (e) => { e.stopPropagation(); stepLightbox(1); });
+      if (lb) {
+        lb.addEventListener("click", (e) => {
+          if (e.target === lb || e.target.classList.contains("lightbox-stage")) closeLightbox(false);
+        });
+      }
+      window.addEventListener("popstate", () => {
+        if (lb && lb.classList.contains("open")) {
+          lightboxHistoryPushed = false;
+          closeLightbox(true);
+        }
+      });
+      document.addEventListener("keydown", (e) => {
+        if (!lb || !lb.classList.contains("open")) return;
+        if (e.key === "Escape") closeLightbox(false);
+        else if (e.key === "ArrowLeft") stepLightbox(-1);
+        else if (e.key === "ArrowRight") stepLightbox(1);
+      });
+    })();
 
     // ==================== LEAFLET MAP INITIALIZATION ====================
     const tileConfigs = {
@@ -3141,7 +3462,27 @@
 
     function createMap(elId, center, zoom) {
       const m = L.map(elId, { zoomControl:true }).setView(center, zoom);
-      document.getElementById(elId).classList.add("clean-basemap");
+      const el = document.getElementById(elId);
+      if (el) {
+        el.classList.add("clean-basemap");
+        el.addEventListener("touchstart", (e) => {
+          if (!m.dragging) return;
+          if (window.innerWidth > 1024 || document.body.dataset.mdrag === "one") {
+            m.dragging.enable();
+            return;
+          }
+          if (e.touches && e.touches.length === 1) m.dragging.disable();
+          else if (e.touches && e.touches.length >= 2) m.dragging.enable();
+        }, { passive: true });
+        el.addEventListener("touchmove", (e) => {
+          if (m.dragging && window.innerWidth <= 1024 && document.body.dataset.mdrag !== "one" && e.touches && e.touches.length >= 2) {
+            m.dragging.enable();
+          }
+        }, { passive: true });
+        el.addEventListener("mousedown", () => {
+          if (m.dragging) m.dragging.enable();
+        }, { passive: true });
+      }
       const layer = L.tileLayer(tileConfigs.clean.url, {
         attribution:tileConfigs.clean.attr,
         maxNativeZoom:tileConfigs.clean.maxNativeZoom,
@@ -3292,13 +3633,18 @@
 
     function scrollItemIntoPanel(itemEl) {
       if (!itemEl) return;
+      if (window.innerWidth <= 1024) {
+        const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 80;
+        const y = (window.scrollY || window.pageYOffset || 0) + itemEl.getBoundingClientRect().top - navH - 10;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+        return;
+      }
       const scroller = itemEl.closest(".detail-panel");
       if (!scroller) return;
       const sRect = scroller.getBoundingClientRect();
       const iRect = itemEl.getBoundingClientRect();
       const offsetTop = iRect.top - sRect.top + scroller.scrollTop;
-      const stickOffset = window.innerWidth <= 1024 ? 88 : 106;
-      scroller.scrollTo({ top: Math.max(0, offsetTop - stickOffset), behavior: "smooth" });
+      scroller.scrollTo({ top: Math.max(0, offsetTop - 106), behavior: "smooth" });
     }
 
     function refreshAttrPinStyles() {
@@ -3382,7 +3728,7 @@
         const isSavedByMe = voters.includes(currentUser);
         const votersHtml = voters.length ? `<div style="margin-bottom:8px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;"><span style="font-size:11.5px;font-weight:800;color:#b9331e;">❤️ 想去成員：</span>${voters.map(v => `<span class="voter-chip">${v}</span>`).join("")}</div>` : "";
         body.innerHTML = `
-          ${renderGalleryHtml(imgs, loading)}
+          ${renderGalleryHtml(imgs, loading, item)}
           <div class="badges-row">
             ${srcBadge}
             <span class="vbadge vb-cat">📍 ${item.city}・${item.area}</span>
@@ -3416,7 +3762,7 @@
         `;
       };
 
-      const cached = photoCache[(item.wikiJa||"")+"|"+(item.wikiZh||"")];
+      const cached = photoCache[getPhotoCacheKey(item)];
       if (cached) {
         renderInner(cached, false);
       } else {
@@ -3721,7 +4067,7 @@
       const renderInner = (imgs, loading) => {
         if (lockedTransitId !== item.id) return;
         body.innerHTML = `
-          ${renderGalleryHtml(imgs, loading)}
+          ${renderGalleryHtml(imgs, loading, item)}
           <div class="badges-row"><span class="vbadge vb-web">${item.badge}</span></div>
           ${item.addr ? `<div class="spot-note">📍 地址：${item.addr}</div>` : ""}
           <div class="hero-stat-grid">
@@ -3749,7 +4095,7 @@
           </div>
         `;
       };
-      const cached = photoCache[(item.wikiJa||"")+"|"+(item.wikiZh||"")];
+      const cached = photoCache[getPhotoCacheKey(item)];
       if (cached) renderInner(cached, false);
       else {
         renderInner([], true);
@@ -4026,7 +4372,7 @@
         const isSavedByMe = voters.includes(currentUser);
         const votersHtml = voters.length ? `<div style="margin-bottom:8px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;"><span style="font-size:11.5px;font-weight:800;color:#b9331e;">❤️ 想吃成員：</span>${voters.map(v => `<span class="voter-chip">${v}</span>`).join("")}</div>` : "";
         body.innerHTML = `
-          ${renderGalleryHtml(imgs, loading)}
+          ${renderGalleryHtml(imgs, loading, item)}
           <div class="badges-row">
             ${item.isCustom ? `<span class="vbadge vb-custom">🆕 ${item.addedBy || "旅伴"}新增</span>` : `<span class="vbadge vb-mine">⭐ 清單：${item.listName || item.cat}</span>`}
             <span class="vbadge vb-cat">📍 ${item.area}・${allCats}</span>
@@ -4060,7 +4406,7 @@
         `;
       };
 
-      const cached = photoCache[(item.wikiJa||"")+"|"+(item.wikiZh||"")];
+      const cached = photoCache[getPhotoCacheKey(item)];
       if (cached) {
         renderInner(cached, false);
       } else {
@@ -4205,7 +4551,7 @@
     // ==================== CONTROLS & TABS ====================
     function setMobileViewMode(mode) {
       document.body.dataset.mview = mode || "split";
-      document.querySelectorAll("#mobile-view-bar .mview-btn").forEach(b => {
+      document.querySelectorAll("#mobile-view-bar .mview-btn[data-mview]").forEach(b => {
         b.classList.toggle("active", b.dataset.mview === document.body.dataset.mview);
       });
       [attrMapObj, transitMapObj, foodMapObj].forEach(o => {
@@ -4217,9 +4563,55 @@
         });
       }, 80);
     }
-    document.querySelectorAll("#mobile-view-bar .mview-btn").forEach(btn => {
+    document.querySelectorAll("#mobile-view-bar .mview-btn[data-mview]").forEach(btn => {
       btn.addEventListener("click", () => setMobileViewMode(btn.dataset.mview));
     });
+
+    const dragToggleBtn = document.getElementById("mobile-drag-toggle-btn");
+    if (dragToggleBtn) {
+      dragToggleBtn.addEventListener("click", () => {
+        const isOne = document.body.dataset.mdrag === "one";
+        document.body.dataset.mdrag = isOne ? "" : "one";
+        const nowOne = document.body.dataset.mdrag === "one";
+        dragToggleBtn.classList.toggle("drag-one", nowOne);
+        dragToggleBtn.textContent = nowOne ? "👆 單指移圖" : "🖐️ 雙指移圖";
+        [attrMapObj, transitMapObj, foodMapObj].forEach(o => {
+          if (!o.map?.dragging) return;
+          if (nowOne || window.innerWidth > 1024) o.map.dragging.enable();
+          else o.map.dragging.disable();
+        });
+      });
+    }
+
+    window.scrollToActiveDetailPanel = function() {
+      const activeSec = document.querySelector(".tab-panel.active");
+      const target = activeSec?.querySelector(".detail-panel");
+      if (!target) return;
+      const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 80;
+      const y = (window.scrollY || window.pageYOffset || 0) + target.getBoundingClientRect().top - navH - 8;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+    };
+
+    window.scrollToActiveMap = function() {
+      if (document.body.dataset.mview === "list") setMobileViewMode("split");
+      const activeSec = document.querySelector(".tab-panel.active");
+      const target = activeSec?.querySelector(".map-card") || activeSec;
+      if (!target) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+      const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 80;
+      const y = (window.scrollY || window.pageYOffset || 0) + target.getBoundingClientRect().top - navH - 8;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+    };
+
+    window.addEventListener("scroll", () => {
+      const fab = document.getElementById("mobile-back-map-fab");
+      if (!fab) return;
+      const sy = window.scrollY || window.pageYOffset || 0;
+      if (window.innerWidth <= 1024 && document.body.dataset.mview !== "list" && sy > 340) {
+        fab.classList.add("show");
+      } else {
+        fab.classList.remove("show");
+      }
+    }, { passive: true });
 
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
