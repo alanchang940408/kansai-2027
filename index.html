@@ -840,6 +840,266 @@
     }
 
     #lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+
+    /* ==================== MOBILE & TABLET RESPONSIVE ==================== */
+    .mobile-view-bar {
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      .mobile-view-bar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 11px;
+        padding: 5px 8px;
+        margin: 8px 0 2px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      }
+      .mview-label {
+        font-size: 11.5px;
+        font-weight: 800;
+        color: var(--ink-muted);
+        white-space: nowrap;
+      }
+      .mview-btn {
+        flex: 1;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--ink);
+        padding: 5px 6px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        font-family: inherit;
+        white-space: nowrap;
+        text-align: center;
+        transition: 0.14s;
+      }
+      .mview-btn.active {
+        background: var(--indigo);
+        color: #fff;
+        border-color: var(--indigo);
+        box-shadow: 0 2px 6px rgba(27,77,99,0.22);
+      }
+
+      /* Default Mobile Mode: Split (上圖下表同框) */
+      body:not([data-mview="map"]):not([data-mview="list"]) .map-box {
+        height: 34vh;
+        min-height: 225px;
+        max-height: 320px;
+      }
+      body:not([data-mview="map"]):not([data-mview="list"]) .detail-panel,
+      body:not([data-mview="map"]):not([data-mview="list"]) .food-layout .detail-panel {
+        position: static;
+        max-height: 48vh;
+        min-height: 260px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 12px;
+      }
+
+      /* Enlarge Map Mode */
+      body[data-mview="map"] .map-box {
+        height: 58vh;
+        min-height: 360px;
+        max-height: 540px;
+      }
+      body[data-mview="map"] .detail-panel,
+      body[data-mview="map"] .food-layout .detail-panel {
+        position: static;
+        max-height: 38vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 12px;
+      }
+
+      /* Enlarge List Mode */
+      body[data-mview="list"] .map-card {
+        display: none !important;
+      }
+      body[data-mview="list"] .detail-panel,
+      body[data-mview="list"] .food-layout .detail-panel {
+        position: static;
+        max-height: 75vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 12px;
+      }
+
+      .panel-sticky-bar {
+        top: -12px;
+        margin: -12px -12px 8px -12px;
+        padding: 8px 10px;
+      }
+      .tab-panel { padding: 6px 0 18px; }
+    }
+
+    @media (max-width: 820px) {
+      .food-cat-sidebar {
+        padding: 8px 10px;
+        max-height: none;
+        gap: 6px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .food-sidebar-head {
+        padding-bottom: 0;
+        border-bottom: none;
+        margin-right: auto;
+      }
+      .food-sidebar-head h3 { font-size: 12.5px; }
+      .food-mode-row > span { display: none; }
+      .food-mode-row { font-size: 11.5px; }
+      .food-all-btn {
+        width: auto;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 999px;
+        gap: 5px;
+      }
+      .food-cat-list {
+        width: 100%;
+        flex: none;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-height: none;
+        gap: 6px;
+        padding: 2px 0;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .food-cat-list::-webkit-scrollbar { display: none; }
+      .food-cat-btn {
+        width: auto;
+        flex-shrink: 0;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 10px; }
+      .hero { padding: 8px 0; }
+      .hero h1 { font-size: 16.5px; }
+      .hero-sub { display: none; }
+      .trip-pills {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        width: 100%;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .trip-pills::-webkit-scrollbar { display: none; }
+      .trip-pill { flex-shrink: 0; font-size: 11px; padding: 2px 8px; }
+
+      .nav-bar { padding: 6px 0; gap: 5px; }
+      .tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        width: 100%;
+      }
+      .tab-btn {
+        justify-content: center;
+        padding: 6px 4px;
+        font-size: 12.2px;
+        gap: 4px;
+        white-space: nowrap;
+      }
+      .tab-badge { font-size: 10px; padding: 1px 5px; }
+      .tab-btn[data-tab="transit"] .tab-badge { display: none; }
+      .acc-dist-fly { flex-shrink: 0; white-space: nowrap; }
+      .nav-right {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        width: 100%;
+        gap: 5px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+      }
+      .nav-right::-webkit-scrollbar { display: none; }
+      .nav-right > * {
+        flex-shrink: 0;
+        font-size: 11.5px !important;
+        padding: 4px 9px !important;
+      }
+
+      .toolbar-row { margin-bottom: 6px; gap: 4px; }
+      .toolbar-row > span { display: none; }
+      .jump-group {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        width: 100%;
+        gap: 5px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+      }
+      .jump-group::-webkit-scrollbar { display: none; }
+      .jump-group > span { display: none; }
+      .jump-btn {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+
+      .map-card { padding: 7px; }
+      .map-top-bar { gap: 5px; margin-bottom: 6px; }
+      .filter-strip {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-width: 100%;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .filter-strip::-webkit-scrollbar { display: none; }
+      .mini-chip {
+        flex-shrink: 0;
+        white-space: nowrap;
+        font-size: 11.2px;
+        padding: 3px 8px;
+      }
+
+      .panel-hover-hint {
+        font-size: 11.2px;
+        padding: 4px 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .photo-frame { height: 110px; }
+      .photo-gallery.single .photo-frame { height: 155px; }
+      .hero-stat-grid { gap: 7px; margin: 8px 0; }
+      .hero-stat-card { padding: 8px 10px; }
+      .hero-stat-val { font-size: 16px; }
+      .spot-actions { flex-wrap: wrap; gap: 6px; }
+      .btn-action { font-size: 12.5px; padding: 8px 10px; }
+      .form-field input, .form-field select, .form-field textarea { font-size: 16px; }
+
+      .map-pick-banner {
+        top: 96px;
+        max-width: calc(100vw - 20px);
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .mview-label { display: none; }
+      .tab-btn[data-tab="transit"] .tab-badge { display: none; }
+      .tab-btn { font-size: 11.5px; padding: 6px 2px; gap: 3px; }
+      .acc-dist-fly { flex-shrink: 0; white-space: nowrap; }
+    }
   </style>
 </head>
 <body>
@@ -889,6 +1149,12 @@
   </div>
 
   <main class="container">
+    <div class="mobile-view-bar" id="mobile-view-bar">
+      <span class="mview-label">📱 手機檢視：</span>
+      <button type="button" class="mview-btn active" data-mview="split">🔀 上圖下表</button>
+      <button type="button" class="mview-btn" data-mview="map">🗺️ 大地圖</button>
+      <button type="button" class="mview-btn" data-mview="list">📋 大列表</button>
+    </div>
 
     <!-- ==================== TAB 1: ATTRACTIONS REAL MAP ==================== -->
     <section class="tab-panel active" id="tab-attractions">
@@ -3031,7 +3297,8 @@
       const sRect = scroller.getBoundingClientRect();
       const iRect = itemEl.getBoundingClientRect();
       const offsetTop = iRect.top - sRect.top + scroller.scrollTop;
-      scroller.scrollTo({ top: Math.max(0, offsetTop - 106), behavior: "smooth" });
+      const stickOffset = window.innerWidth <= 1024 ? 88 : 106;
+      scroller.scrollTo({ top: Math.max(0, offsetTop - stickOffset), behavior: "smooth" });
     }
 
     function refreshAttrPinStyles() {
@@ -3194,6 +3461,9 @@
       if (hint) hint.innerHTML = `📌 已開啟細項：<strong>${item.icon} ${item.name}</strong>（點地圖空白處或再點標題列可收合）`;
 
       if (flyMap) {
+        if (document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
+          setMobileViewMode("split");
+        }
         attrMapObj.map.flyTo([item.lat, item.lng], Math.max(attrMapObj.map.getZoom(), 15), { duration: 0.65 });
       }
     }
@@ -3519,6 +3789,9 @@
       if (hint) hint.innerHTML = `📌 已展開：<strong>${item.icon} ${item.title}</strong>`;
 
       if (flyMap) {
+        if (document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
+          setMobileViewMode("split");
+        }
         const targetPin = transitPins.find(t => t.id === mapHighlightId) || item;
         transitMapObj.map.flyTo([targetPin.lat, targetPin.lng], item.kind === "hotel" ? 14 : 11, { duration: 0.65 });
       }
@@ -3832,6 +4105,9 @@
       if (hint) hint.innerHTML = `📌 已開啟：<strong>${catMeta.icon} ${item.name}</strong>（${item.price}｜點地圖空白處或再點標題可收合）`;
 
       if (flyMap) {
+        if (document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
+          setMobileViewMode("split");
+        }
         foodMapObj.map.flyTo([item.lat, item.lng], Math.max(foodMapObj.map.getZoom(), 16), { duration: 0.65 });
       }
     }
@@ -3927,6 +4203,24 @@
     };
 
     // ==================== CONTROLS & TABS ====================
+    function setMobileViewMode(mode) {
+      document.body.dataset.mview = mode || "split";
+      document.querySelectorAll("#mobile-view-bar .mview-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.mview === document.body.dataset.mview);
+      });
+      [attrMapObj, transitMapObj, foodMapObj].forEach(o => {
+        o.map.invalidateSize(true);
+      });
+      setTimeout(() => {
+        [attrMapObj, transitMapObj, foodMapObj].forEach(o => {
+          o.map.invalidateSize(true);
+        });
+      }, 80);
+    }
+    document.querySelectorAll("#mobile-view-bar .mview-btn").forEach(btn => {
+      btn.addEventListener("click", () => setMobileViewMode(btn.dataset.mview));
+    });
+
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -4357,6 +4651,7 @@
       addModal.classList.remove("open");
       pickingOnMapMode = true;
       document.getElementById("map-pick-banner").classList.add("open");
+      if (document.body.dataset.mview === "list") setMobileViewMode("map");
       const targetTab = isFood ? "food" : "attractions";
       document.querySelector(`.tab-btn[data-tab="${targetTab}"]`)?.click();
     });
