@@ -797,6 +797,48 @@
     .btn-primary { background: var(--torii); color: #fff; border: none; padding: 8px 14px; border-radius: 9px; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-secondary { background: #fff; color: var(--ink); border: 1px solid var(--border); padding: 8px 12px; border-radius: 9px; font-weight: 700; cursor: pointer; font-family: inherit; }
 
+    .sync-pill {
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #eaf5ef;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      white-space: nowrap;
+    }
+    .sync-pill.syncing { background: #fef9c3; color: #854d0e; border-color: #fde047; }
+    .sync-pill.offline { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .dot-custom { background: #10b981; }
+    .vb-custom { background: #d1fae5; color: #065f46; }
+    .form-grid { display: flex; flex-direction: column; gap: 11px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 520px) { .form-row-2 { grid-template-columns: 1fr; } }
+    .form-field label { display: block; font-size: 12px; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+    .form-field input, .form-field select, .form-field textarea {
+      width: 100%; box-sizing: border-box; padding: 8px 10px; border-radius: 8px;
+      border: 1.5px solid var(--border); font-family: inherit; font-size: 13.5px; background: #fff; color: var(--ink);
+    }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+      outline: none; border-color: var(--indigo);
+    }
+    .coord-box {
+      background: #f4f7f9; border: 1px solid #d5e2eb; border-radius: 10px; padding: 10px;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .map-pick-banner {
+      position: fixed; top: 68px; left: 50%; transform: translateX(-50%);
+      z-index: 2500; background: #111827; color: #fff; padding: 10px 16px;
+      border-radius: 999px; font-size: 13.5px; font-weight: 800;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.38); display: none; align-items: center; gap: 10px;
+    }
+    .map-pick-banner.open { display: flex; }
+    .voter-chips { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+    .voter-chip {
+      font-size: 10.5px; font-weight: 800; background: #fdeeee; color: #b9331e;
+      padding: 1px 6px; border-radius: 999px; border: 1px solid #f7c7c2;
+    }
+
     #lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
   </style>
 </head>
@@ -834,9 +876,12 @@
           </button>
         </div>
         <div class="nav-right">
+          <span class="sync-pill" id="cloud-sync-pill" title="4 人開啟同一網址皆自動同步最新景點與愛心">☁️ 4人雲端同步中</span>
+          <button class="jump-btn" id="switch-user-btn" title="設定你的暱稱，點愛心或新增地點時會顯示是誰加的">👤 我是：<span id="cur-user-name">Alan</span></button>
+          <button class="btn-primary" id="open-add-spot-btn" style="padding:6px 12px;font-size:12.5px;border-radius:9px;">➕ 新增景點 / 美食</button>
           <button class="jump-btn" id="toggle-basemap-btn">🗺️ 地圖底圖：簡潔觀光圖</button>
           <button class="wish-open-btn" id="open-wishlist-btn">
-            ❤️ 我想去/想吃 <span class="wish-count" id="wishlist-count">0</span>
+            ❤️ 大家想去/想吃 <span class="wish-count" id="wishlist-count">0</span>
           </button>
         </div>
       </div>
@@ -986,16 +1031,145 @@
 
   </main>
 
+  <!-- FLOATING MAP PICK BANNER -->
+  <div class="map-pick-banner" id="map-pick-banner">
+    <span>🎯 請直接在地圖上點一下你想新增的位置！</span>
+    <button type="button" class="btn-secondary" id="cancel-map-pick-btn" style="padding:4px 10px;font-size:12px;">返回表單</button>
+  </div>
+
+  <!-- ADD CUSTOM SPOT MODAL -->
+  <div class="modal-backdrop" id="add-spot-modal">
+    <div class="modal" style="max-width:580px;">
+      <div class="modal-head">
+        <h3>➕ 旅伴共同新增景點／美食（即時雲端同步給所有人）</h3>
+        <button class="close-btn" id="close-add-modal-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-row-2">
+            <div class="form-field">
+              <label>類型</label>
+              <select id="add-kind">
+                <option value="food">🍜 美食餐廳 / 甜點 / 咖啡</option>
+                <option value="attr">📍 旅遊景點 / 神社 / 逛街</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>新增者名字</label>
+              <input type="text" id="add-author" maxlength="16" placeholder="例如：Alan、小明" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>名稱 *（必填）</label>
+            <input type="text" id="add-name" placeholder="例如：敘敘苑 LUCUA 大阪店、平等院鳳凰堂" />
+          </div>
+
+          <div class="form-row-2" id="add-food-fields">
+            <div class="form-field">
+              <label>美食分類（將同步加入你的左側分類）</label>
+              <select id="add-food-cat"></select>
+            </div>
+            <div class="form-field">
+              <label>城市地區</label>
+              <select id="add-food-area">
+                <option value="大阪">大阪</option>
+                <option value="京都">京都</option>
+                <option value="奈良">奈良</option>
+                <option value="神戶・其他">神戶 / 宇治 / 其他</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2" id="add-attr-fields" style="display:none;">
+            <div class="form-field">
+              <label>城市</label>
+              <select id="add-attr-city">
+                <option value="大阪">🏙️ 大阪</option>
+                <option value="京都">⛩️ 京都</option>
+                <option value="奈良">🦌 奈良</option>
+                <option value="宇治">🍵 宇治</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>所屬分區</label>
+              <select id="add-attr-group"></select>
+            </div>
+          </div>
+
+          <div class="coord-box">
+            <div style="font-size:12px;font-weight:800;color:var(--indigo);">📍 地圖座標定位（3 選 1 超簡單）</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <input type="text" id="add-gmap-input" style="flex:1;min-width:180px;padding:7px 9px;border-radius:8px;border:1px solid #cbd5e1;font-size:12.5px;" placeholder="貼 Google地圖網址，或直接按「搜店名」找位置" />
+              <button type="button" class="btn-secondary" id="add-search-coord-btn" style="padding:6px 10px;font-size:12px;">🔍 搜店名/網址定位</button>
+              <button type="button" class="btn-primary" id="add-pick-map-btn" style="padding:6px 10px;font-size:12px;background:var(--indigo);">🎯 在地圖上點選</button>
+            </div>
+            <div id="add-coord-status" style="font-size:11.5px;font-weight:700;color:var(--ink-muted);">尚未指定座標（未填也沒關係，送出會先幫你放在選定區域中心點！）</div>
+            <input type="hidden" id="add-lat" />
+            <input type="hidden" id="add-lng" />
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-field">
+              <label id="add-meta-label">💰 預算 / 價位</label>
+              <input type="text" id="add-meta-val" placeholder="例如：¥2,000-4,000（選填）" />
+            </div>
+            <div class="form-field">
+              <label>🚆 最近車站 / 交通</label>
+              <input type="text" id="add-transport" placeholder="例如：JR大阪站步行 3 分（選填）" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>📝 推薦原因 / 筆記 / 必點菜色</label>
+            <textarea id="add-note" rows="2" placeholder="為什麼想加這間？必吃什麼或需要注意訂位時間？（選填）"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-secondary" id="cancel-add-modal-btn">取消</button>
+        <button class="btn-primary" id="submit-add-spot-btn">☁️ 立即新增並同步給所有人</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRAVELER IDENTITY MODAL -->
+  <div class="modal-backdrop" id="user-modal">
+    <div class="modal" style="max-width:400px;">
+      <div class="modal-head">
+        <h3>👤 設定你的旅伴暱稱</h3>
+        <button class="close-btn" id="close-user-modal-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin:0 0 10px;font-size:13px;color:var(--ink-muted);">設定你的名字後，按「❤️ 我想去/想吃」或「➕ 新增」時大家就會看到是誰選的！</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;" id="user-preset-chips">
+          <button type="button" class="mini-chip" data-name="Alan">Alan</button>
+          <button type="button" class="mini-chip" data-name="旅伴B">旅伴B</button>
+          <button type="button" class="mini-chip" data-name="旅伴C">旅伴C</button>
+          <button type="button" class="mini-chip" data-name="旅伴D">旅伴D</button>
+        </div>
+        <div class="form-field">
+          <label>或自訂名字（最多 16 字）：</label>
+          <input type="text" id="user-name-input" maxlength="16" placeholder="輸入你的名字或暱稱" />
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-secondary" id="cancel-user-modal-btn">關閉</button>
+        <button class="btn-primary" id="save-user-name-btn">✅ 確認儲存名字</button>
+      </div>
+    </div>
+  </div>
+
   <!-- WISHLIST MODAL -->
   <div class="modal-backdrop" id="wishlist-modal">
     <div class="modal">
       <div class="modal-head">
-        <h3>❤️ 我們的想去 / 想吃清單</h3>
+        <h3>❤️ 大家的想去 / 想吃清單（雲端同步）</h3>
         <button class="close-btn" id="close-modal-btn">×</button>
       </div>
       <div class="modal-body" id="wishlist-body"></div>
       <div class="modal-foot">
-        <button class="btn-secondary" id="clear-wishlist-btn">清空</button>
+        <button class="btn-secondary" id="clear-wishlist-btn">清除我的 ❤️ 紀錄</button>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="btn-secondary" id="share-url-wishlist-btn">🔗 複製分享連結</button>
           <button class="btn-primary" id="copy-wishlist-btn">📋 複製傳到 Line</button>
@@ -1011,7 +1185,7 @@
 
   <script>
     // ==================== ATTRACTIONS (ALL INDIVIDUAL PLACES, NO USJ) ====================
-    const attractions = [
+    const baseAttractions = [
       // --- 大阪（難波・心齋橋・西區・本町） ---
       {
         id:"a1", lat:34.6687, lng:135.5013, city:"大阪", area:"難波・心齋橋", icon:"🏃", name:"道頓堀", source:"both", rating:"4.4★ (87,902)",
@@ -2487,7 +2661,7 @@
       ["f225", 34.9975, 135.7811, "京都", "GOKAGO ごかご（三年坂 現刷濃宇治抹茶×球狀抹茶冰淇淋）", "飲料", ["飲料","甜點"], "飲料", "¥1,000 內", "4.6★ (500+)", "宇治抹茶", "抹茶", "這一年橫掃三年坂的現刷宇治抹茶茶拿鐵新星！！使用傳統京都茶筅「現地高頻手打現刷」出極致鮮綠濃密、不加多餘糖分的 100% 特選一茶番宇治抹茶倒入冰鮮奶中，最頂端還可以加點一顆極濃極滑順的 **圓球「濃厚特級抹茶冰淇淋」** 浮在杯面喝！（好拍又超級消膩好喝）", ["現手刷茶香極致馥郁！必加點一顆圓滾滾「濃抹茶 Gelato」浮在抹茶拿鐵上！","就在清水寺三年坂旁，邊拍照邊喝爽口不甜死"], "清水寺「三年坂（產寧坂）」石階中段", ""]
     ];
 
-    const foods = [
+    const baseStaticFoods = [
       ...baseFoods.map(f => {
         const o = BASE_FOOD_CAT_OVERRIDE[f.id] || { cat: f.cat, cats: [f.cat], list: "大阪玩" };
         return { ...f, cat: o.cat, cats: o.cats, listName: o.list, note: f.note || "" };
@@ -2497,27 +2671,59 @@
       }))
     ];
 
-    // ==================== STATE & WIKIPEDIA PHOTO LOADER ====================
-    const photoCache = {};
-    let wishlist = JSON.parse(localStorage.getItem("kansai_2027_wishlist") || "[]");
-    (function importWishFromUrl() {
+    // ==================== CLOUD SYNC & SHARED MULTI-USER STATE ====================
+    const CLOUD_ROOM_URL = "https://api.restful-api.dev/objects/ff808181a09d98f701a1f32f2fcd52f0";
+    let currentUser = localStorage.getItem("kansai_2027_username") || "Alan";
+    let cloudState = (() => {
       try {
+        const raw = JSON.parse(localStorage.getItem("kansai_2027_cloud_cache") || "null");
+        if (raw && typeof raw === "object") return { customSpots: raw.customSpots || [], deletedIds: raw.deletedIds || [], votes: raw.votes || {}, updatedAt: raw.updatedAt || 0 };
+      } catch {}
+      return { customSpots: [], deletedIds: [], votes: {}, updatedAt: 0 };
+    })();
+
+    // Migrate any old localStorage wishlist or ?wish=... into currentUser votes
+    (function migrateLegacyWishlist() {
+      try {
+        const oldWish = JSON.parse(localStorage.getItem("kansai_2027_wishlist") || "[]");
+        oldWish.forEach(w => {
+          if (!cloudState.votes[w.id]) cloudState.votes[w.id] = [];
+          if (!cloudState.votes[w.id].includes(currentUser)) cloudState.votes[w.id].push(currentUser);
+        });
         const params = new URLSearchParams(window.location.search);
         const wishParam = params.get("wish");
-        if (!wishParam) return;
-        const incomingIds = wishParam.split(",").map(s => s.trim()).filter(Boolean);
-        let added = 0;
-        incomingIds.forEach(id => {
-          if (wishlist.some(w => w.id === id)) return;
-          const a = attractions.find(x => x.id === id);
-          if (a) { wishlist.push({ id: a.id, name: a.name, city: a.city, kind: "景點" }); added++; return; }
-          const f = foods.find(x => x.id === id);
-          if (f) { wishlist.push({ id: f.id, name: f.name, city: f.area, kind: "美食" }); added++; }
-        });
-        if (added > 0) localStorage.setItem("kansai_2027_wishlist", JSON.stringify(wishlist));
+        if (wishParam) {
+          wishParam.split(",").map(s => s.trim()).filter(Boolean).forEach(id => {
+            if (!cloudState.votes[id]) cloudState.votes[id] = [];
+            if (!cloudState.votes[id].includes(currentUser)) cloudState.votes[id].push(currentUser);
+          });
+        }
+        localStorage.setItem("kansai_2027_cloud_cache", JSON.stringify(cloudState));
       } catch {}
     })();
+
+    let attractions = [];
+    let foods = [];
+    function getVoters(id) { return Array.isArray(cloudState.votes?.[id]) ? cloudState.votes[id] : []; }
+    function isVotedByMe(id) { return getVoters(id).includes(currentUser); }
+
+    function rebuildMergedData() {
+      const del = new Set(cloudState.deletedIds || []);
+      const customAttrs = (cloudState.customSpots || []).filter(s => s.kind === "attr" && !del.has(s.id));
+      const customFoods = (cloudState.customSpots || []).filter(s => s.kind === "food" && !del.has(s.id));
+      attractions = [...baseAttractions, ...customAttrs];
+      foods = [...baseStaticFoods, ...customFoods];
+      const ba = document.getElementById("badge-attr-total");
+      const bf = document.getElementById("badge-food-total");
+      if (ba) ba.textContent = attractions.length;
+      if (bf) bf.textContent = foods.length;
+      saveWishlist();
+    }
+    rebuildMergedData();
+
+    const photoCache = {};
     let useOsmBasemap = false;
+    let pickingOnMapMode = false;
 
     let attrLabelsAlways = false;
     let curAttrFilter = "all";
@@ -2532,9 +2738,18 @@
     let foodMultiMode = false;
     let hoveredFoodId = null, lockedFoodId = null;
 
+    function setSyncStatus(mode, text) {
+      const pill = document.getElementById("cloud-sync-pill");
+      if (!pill) return;
+      pill.className = "sync-pill" + (mode ? " " + mode : "");
+      pill.textContent = text;
+    }
+
     function saveWishlist() {
-      localStorage.setItem("kansai_2027_wishlist", JSON.stringify(wishlist));
-      document.getElementById("wishlist-count").textContent = wishlist.length;
+      localStorage.setItem("kansai_2027_cloud_cache", JSON.stringify(cloudState));
+      const totalVoted = Object.values(cloudState.votes || {}).filter(arr => Array.isArray(arr) && arr.length > 0).length;
+      const wc = document.getElementById("wishlist-count");
+      if (wc) wc.textContent = totalVoted;
     }
 
     function mapSearchUrl(q) {
@@ -2841,15 +3056,17 @@
 
       attractions.forEach(item => {
         if (curAttrFilter !== "all" && item.source !== curAttrFilter) return;
-        const isSaved = wishlist.some(w => w.id === item.id);
+        const voters = getVoters(item.id);
+        const isSaved = voters.length > 0;
         const isLocked = lockedAttrId === item.id;
         const isHov = hoveredAttrId === item.id;
+        const dotCls = item.isCustom ? "dot-custom" : ("dot-" + item.source);
 
         const html = `
           <div class="l-pin ${showText ? "" : "compact"} ${isHov ? "hovered" : ""} ${isLocked ? "pinned" : ""}">
-            <span class="p-dot dot-${item.source}"></span>
+            <span class="p-dot ${dotCls}"></span>
             <span>${item.icon}</span>
-            <span class="pin-name">${item.name}${isSaved ? " ❤️" : ""}</span>
+            <span class="pin-name">${item.isCustom ? "🆕 " : ""}${item.name}${isSaved ? ` ❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
           </div>`;
         const icon = L.divIcon({ html, className:"", iconSize:[0,0], iconAnchor:[0,0] });
         const marker = L.marker([item.lat, item.lng], { icon, zIndexOffset: isLocked ? 950 : (isHov ? 850 : 100) }).addTo(attrMapObj.map);
@@ -2866,6 +3083,7 @@
         });
         marker.on("click", (e) => {
           L.DomEvent.stopPropagation(e);
+          if (pickingOnMapMode) { handlePickedMapLatLng(e.latlng); return; }
           openAttrAccordionItem(item.id, true, false);
         });
         attrMarkers[item.id] = marker;
@@ -2873,7 +3091,8 @@
     }
 
     attrMapObj.map.on("zoomend", buildAttrMarkers);
-    attrMapObj.map.on("click", () => {
+    attrMapObj.map.on("click", (e) => {
+      if (pickingOnMapMode) { handlePickedMapLatLng(e.latlng); return; }
       if (lockedAttrId) {
         lockedAttrId = null;
         refreshAttrPinStyles();
@@ -2884,45 +3103,48 @@
     async function populateAttrDetailBody(item) {
       const body = document.getElementById("attr-acc-body-" + item.id);
       if (!body) return;
-      const srcBadge = item.source === "both"
-        ? '<span class="vbadge vb-both">🔥 我的地圖＋網路必去</span>'
-        : (item.source === "mine" ? '<span class="vbadge vb-mine">⭐ 我的地圖私房</span>' : '<span class="vbadge vb-web">🌐 網路必去補充</span>');
+      const srcBadge = item.isCustom
+        ? `<span class="vbadge vb-custom">🆕 ${item.addedBy || "旅伴"}新增</span>`
+        : (item.source === "both"
+          ? '<span class="vbadge vb-both">🔥 我的地圖＋網路必去</span>'
+          : (item.source === "mine" ? '<span class="vbadge vb-mine">⭐ 我的地圖私房</span>' : '<span class="vbadge vb-web">🌐 網路必去補充</span>'));
 
       const renderInner = (imgs, loading) => {
         if (lockedAttrId !== item.id) return;
-        const isSaved = wishlist.some(w => w.id === item.id);
+        const voters = getVoters(item.id);
+        const isSavedByMe = voters.includes(currentUser);
+        const votersHtml = voters.length ? `<div style="margin-bottom:8px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;"><span style="font-size:11.5px;font-weight:800;color:#b9331e;">❤️ 想去成員：</span>${voters.map(v => `<span class="voter-chip">${v}</span>`).join("")}</div>` : "";
         body.innerHTML = `
           ${renderGalleryHtml(imgs, loading)}
           <div class="badges-row">
             ${srcBadge}
             <span class="vbadge vb-cat">📍 ${item.city}・${item.area}</span>
-            <span class="detail-rating" style="margin:0;">★ ${item.rating}</span>
+            <span class="detail-rating" style="margin:0;">★ ${item.rating || "旅伴推薦"}</span>
           </div>
+          ${votersHtml}
           <div class="hero-stat-grid">
             <div class="hero-stat-card time">
               <div class="hero-stat-label">⏱ 建議停留時間</div>
-              <div class="hero-stat-val" style="font-size:17px;">${item.stay.replace("建議 ","")}</div>
-              <div class="hero-stat-sub">🕒 ${item.hours}</div>
+              <div class="hero-stat-val" style="font-size:17px;">${(item.stay || "約 1 小時").replace("建議 ","")}</div>
+              <div class="hero-stat-sub">🕒 ${item.hours || "請確認營業時間"}</div>
             </div>
             <div class="hero-stat-card price">
               <div class="hero-stat-label">🚆 交通抵達方式</div>
-              <div class="hero-stat-val" style="font-size:13.5px;line-height:1.35;">${item.transport}</div>
+              <div class="hero-stat-val" style="font-size:13.5px;line-height:1.35;">${item.transport || "查 Google 地圖路線"}</div>
             </div>
           </div>
-          ${item.note ? `<div class="spot-note">📝 你的 Google 地圖個人筆記：${fmt(item.note)}</div>` : ""}
+          ${item.note ? `<div class="spot-note">📝 筆記／推薦原因：${fmt(item.note)}</div>` : ""}
           <div class="detail-section">
             <h4>📖 景點故事與詳細介紹</h4>
             <p class="detail-text">${fmt(item.detail)}</p>
           </div>
-          <div class="detail-section">
-            <h4>✨ 必看亮點 & 體驗重點</h4>
-            <ul class="highlight-list">${item.highlights.map(h => `<li>${fmt(h)}</li>`).join("")}</ul>
-          </div>
+          ${item.highlights?.length ? `<div class="detail-section"><h4>✨ 必看亮點 & 體驗重點</h4><ul class="highlight-list">${item.highlights.map(h => `<li>${fmt(h)}</li>`).join("")}</ul></div>` : ""}
           <div class="spot-actions">
-            <a class="btn-action" href="${mapSearchUrl(item.q)}" target="_blank" rel="noopener">📍 開啟 Google地圖 ↗</a>
-            <button class="btn-action fav ${isSaved?'saved':''}" id="attr-wish-btn-${item.id}" onclick="toggleWish('${item.id}','attr')">
-              ${isSaved ? "❤️ 已加入想去" : "🤍 加入想去"}
+            <a class="btn-action" href="${mapSearchUrl(item.q)}" target="_blank" rel="noopener">📍 Google地圖 ↗</a>
+            <button class="btn-action fav ${isSavedByMe?'saved':''}" id="attr-wish-btn-${item.id}" onclick="toggleWish('${item.id}','attr')">
+              ${isSavedByMe ? `❤️ ${currentUser}已想去` : `🤍 ${currentUser}想去`}
             </button>
+            ${item.isCustom ? `<button class="btn-action" style="max-width:78px;color:#b91c1c;border-color:#fca5a5;background:#fff5f5;" onclick="deleteCustomSpot('${item.id}','attr')">🗑️ 刪</button>` : ""}
           </div>
         `;
       };
@@ -3066,19 +3288,19 @@
           </summary>
           <div class="acc-items-wrap">
             ${items.map(item => {
-              const isSaved = wishlist.some(w => w.id === item.id);
+              const voters = getVoters(item.id);
               const isOpen = lockedAttrId === item.id;
               return `
                 <div class="acc-item ${isOpen ? "open" : ""}" id="attr-acc-${item.id}">
                   <button class="acc-row" type="button" data-id="${item.id}">
                     <span class="acc-row-left">
-                      <span class="p-dot dot-${item.source}"></span>
+                      <span class="p-dot ${item.isCustom ? "dot-custom" : ("dot-" + item.source)}"></span>
                       <span>${item.icon}</span>
-                      <span class="acc-row-name">${item.name}</span>
+                      <span class="acc-row-name">${item.isCustom ? "🆕 " : ""}${item.name}</span>
                     </span>
                     <span class="acc-row-meta">
-                      <span id="attr-heart-${item.id}">${isSaved ? "❤️" : ""}</span>
-                      <span>${item.rating.split(" ")[0]}</span>
+                      <span id="attr-heart-${item.id}">${voters.length ? `❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
+                      <span>${(item.rating || "🆕").split(" ")[0]}</span>
                       <span class="acc-chev">▾</span>
                     </span>
                   </button>
@@ -3467,16 +3689,17 @@
 
       const latLngs = [];
       shown.forEach(item => {
-        const isSaved = wishlist.some(w => w.id === item.id);
+        const voters = getVoters(item.id);
+        const isSaved = voters.length > 0;
         const isLocked = lockedFoodId === item.id;
         const isHov = hoveredFoodId === item.id;
         const catMeta = FOOD_CAT_MAP[item.cat] || { icon:"🍽️", color:"#d63031" };
 
         const html = `
           <div class="l-pin ${showText ? "" : "compact"} ${isHov ? "hovered" : ""} ${isLocked ? "pinned" : ""}">
-            <span class="p-dot" style="background:${catMeta.color};"></span>
+            <span class="p-dot" style="background:${item.isCustom ? "#10b981" : catMeta.color};"></span>
             <span>${catMeta.icon}</span>
-            <span class="pin-name">${item.name}${isSaved ? " ❤️" : ""}</span>
+            <span class="pin-name">${item.isCustom ? "🆕 " : ""}${item.name}${isSaved ? ` ❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
           </div>`;
         const icon = L.divIcon({ html, className:"", iconSize:[0,0], iconAnchor:[0,0] });
         const marker = L.marker([item.lat, item.lng], { icon, zIndexOffset: isLocked ? 950 : (isHov ? 850 : 100) }).addTo(foodMapObj.map);
@@ -3486,7 +3709,7 @@
           hoveredFoodId = item.id;
           refreshFoodPinStyles();
           const hint = document.getElementById("food-hover-hint");
-          if (hint) hint.innerHTML = `👀 指向地圖：<strong>${catMeta.icon} ${item.name}</strong>（${item.area}｜${item.price}｜${item.rating}）— 點圖標即打開介紹！`;
+          if (hint) hint.innerHTML = `👀 指向地圖：<strong>${catMeta.icon} ${item.name}</strong>（${item.area}｜${item.price}｜${item.rating || "🆕旅伴推薦"}）— 點圖標即打開介紹！`;
         });
         marker.on("mouseout", () => {
           if (hoveredFoodId === item.id) hoveredFoodId = null;
@@ -3494,6 +3717,7 @@
         });
         marker.on("click", (e) => {
           L.DomEvent.stopPropagation(e);
+          if (pickingOnMapMode) { handlePickedMapLatLng(e.latlng); return; }
           openFoodAccordionItem(item.id, true, false);
         });
         foodMarkers[item.id] = marker;
@@ -3509,7 +3733,8 @@
     }
 
     foodMapObj.map.on("zoomend", () => buildFoodMarkers(false));
-    foodMapObj.map.on("click", () => {
+    foodMapObj.map.on("click", (e) => {
+      if (pickingOnMapMode) { handlePickedMapLatLng(e.latlng); return; }
       if (lockedFoodId) {
         lockedFoodId = null;
         refreshFoodPinStyles();
@@ -3524,39 +3749,40 @@
 
       const renderInner = (imgs, loading) => {
         if (lockedFoodId !== item.id) return;
-        const isSaved = wishlist.some(w => w.id === item.id);
+        const voters = getVoters(item.id);
+        const isSavedByMe = voters.includes(currentUser);
+        const votersHtml = voters.length ? `<div style="margin-bottom:8px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;"><span style="font-size:11.5px;font-weight:800;color:#b9331e;">❤️ 想吃成員：</span>${voters.map(v => `<span class="voter-chip">${v}</span>`).join("")}</div>` : "";
         body.innerHTML = `
           ${renderGalleryHtml(imgs, loading)}
           <div class="badges-row">
-            <span class="vbadge vb-mine">⭐ 清單：${item.listName || item.cat}</span>
+            ${item.isCustom ? `<span class="vbadge vb-custom">🆕 ${item.addedBy || "旅伴"}新增</span>` : `<span class="vbadge vb-mine">⭐ 清單：${item.listName || item.cat}</span>`}
             <span class="vbadge vb-cat">📍 ${item.area}・${allCats}</span>
-            <span class="detail-rating" style="margin:0;">★ ${item.rating}</span>
+            <span class="detail-rating" style="margin:0;">★ ${item.rating || "旅伴推薦"}</span>
           </div>
-          ${item.note ? `<div class="spot-note">📝 你的 Google 地圖個人筆記：${fmt(item.note)}</div>` : ""}
+          ${votersHtml}
+          ${item.note ? `<div class="spot-note">📝 筆記／推薦原因：${fmt(item.note)}</div>` : ""}
           <div class="hero-stat-grid">
             <div class="hero-stat-card price">
               <div class="hero-stat-label">💰 參考價位區間</div>
-              <div class="hero-stat-val">${item.price}</div>
+              <div class="hero-stat-val">${item.price || "尚未填寫"}</div>
               <div class="hero-stat-sub">每人預算估算</div>
             </div>
             <div class="hero-stat-card time">
               <div class="hero-stat-label">🚆 位置與交通</div>
-              <div class="hero-stat-val" style="font-size:13.5px;line-height:1.35;">${item.transport}</div>
+              <div class="hero-stat-val" style="font-size:13.5px;line-height:1.35;">${item.transport || "查 Google 地圖路線"}</div>
             </div>
           </div>
           <div class="detail-section">
             <h4>📖 店家特色與介紹</h4>
             <p class="detail-text">${fmt(item.detail)}</p>
           </div>
-          <div class="detail-section">
-            <h4>✨ 必點推薦與小貼士</h4>
-            <ul class="highlight-list">${item.highlights.map(h => `<li>${fmt(h)}</li>`).join("")}</ul>
-          </div>
+          ${item.highlights?.length ? `<div class="detail-section"><h4>✨ 必點推薦與小貼士</h4><ul class="highlight-list">${item.highlights.map(h => `<li>${fmt(h)}</li>`).join("")}</ul></div>` : ""}
           <div class="spot-actions">
-            <a class="btn-action" href="${mapSearchUrl(item.q)}" target="_blank" rel="noopener">📍 開啟 Google地圖 ↗</a>
-            <button class="btn-action fav ${isSaved?'saved':''}" id="food-wish-btn-${item.id}" onclick="toggleWish('${item.id}','food')">
-              ${isSaved ? "❤️ 已加入想吃" : "🤍 加入想吃"}
+            <a class="btn-action" href="${mapSearchUrl(item.q)}" target="_blank" rel="noopener">📍 Google地圖 ↗</a>
+            <button class="btn-action fav ${isSavedByMe?'saved':''}" id="food-wish-btn-${item.id}" onclick="toggleWish('${item.id}','food')">
+              ${isSavedByMe ? `❤️ ${currentUser}已想吃` : `🤍 ${currentUser}想吃`}
             </button>
+            ${item.isCustom ? `<button class="btn-action" style="max-width:78px;color:#b91c1c;border-color:#fca5a5;background:#fff5f5;" onclick="deleteCustomSpot('${item.id}','food')">🗑️ 刪</button>` : ""}
           </div>
         `;
       };
@@ -3630,18 +3856,18 @@
             <div class="acc-items-wrap">
               ${catItems.map((item, i) => {
                 const domKey = `${meta.key.replace(/[^a-zA-Z0-9]/g, "")}_${idx}_${item.id}_${i}`;
-                const isSaved = wishlist.some(w => w.id === item.id);
+                const voters = getVoters(item.id);
                 const isOpen = lockedFoodId === item.id;
                 return `
                   <div class="acc-item ${isOpen ? "open" : ""}" id="food-acc-${domKey}" data-id="${item.id}" data-domkey="${domKey}">
                     <button class="acc-row" type="button" data-id="${item.id}" data-domkey="${domKey}">
                       <span class="acc-row-left">
-                        <span class="p-dot" style="background:${meta.color};"></span>
+                        <span class="p-dot" style="background:${item.isCustom ? "#10b981" : meta.color};"></span>
                         <span>${meta.icon}</span>
-                        <span class="acc-row-name">${item.name}${item.note ? " 📝" : ""}</span>
+                        <span class="acc-row-name">${item.isCustom ? "🆕 " : ""}${item.name}${item.note ? " 📝" : ""}</span>
                       </span>
                       <span class="acc-row-meta">
-                        <span data-food-heart="${item.id}">${isSaved ? "❤️" : ""}</span>
+                        <span data-food-heart="${item.id}">${voters.length ? `❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
                         <span>${item.area}</span>
                         <span class="acc-price-pill">${item.price}</span>
                         <span class="acc-chev">▾</span>
@@ -3835,84 +4061,446 @@
       buildFoodMarkers(false);
     });
 
-    // Wishlist
-    window.toggleWish = function(id, kind) {
-      const idx = wishlist.findIndex(w => w.id === id);
-      const nowSaved = idx < 0;
-      if (!nowSaved) wishlist.splice(idx, 1);
-      else {
-        const src = (kind === "attr" ? attractions : foods).find(x => x.id === id);
-        if (src) wishlist.push({ id: src.id, name: src.name, city: src.city || src.area, kind: kind === "attr" ? "景點" : "美食" });
+    // ==================== CLOUD ENGINE + MULTI-USER VOTES + CUSTOM SPOTS ====================
+    let cloudQueue = Promise.resolve();
+    function applyCloudPayload(remoteData) {
+      if (!remoteData || typeof remoteData !== "object") return;
+      const incomingSpots = Array.isArray(remoteData.customSpots) ? remoteData.customSpots : [];
+      const incomingDeleted = Array.isArray(remoteData.deletedIds) ? remoteData.deletedIds : [];
+      const incomingVotes = (remoteData.votes && typeof remoteData.votes === "object") ? remoteData.votes : {};
+
+      cloudState = {
+        customSpots: incomingSpots,
+        deletedIds: incomingDeleted,
+        votes: incomingVotes,
+        updatedAt: remoteData.updatedAt || Date.now()
+      };
+      rebuildMergedData();
+      refreshAllUiAfterCloud(true);
+    }
+
+    function refreshAllUiAfterCloud(preserveScroll) {
+      const aPanel = document.getElementById("attr-detail-panel");
+      const fScrol = document.getElementById("food-detail-panel")?.closest(".detail-panel");
+      const aTop = aPanel ? aPanel.scrollTop : 0;
+      const fTop = fScrol ? fScrol.scrollTop : 0;
+
+      buildAttrMarkers();
+      renderAttrDetail();
+      renderFoodSidebar();
+      buildFoodMarkers(false);
+      renderFoodDetail();
+      if (document.getElementById("wishlist-modal").classList.contains("open")) renderModal();
+
+      if (preserveScroll) {
+        if (aPanel) aPanel.scrollTop = aTop;
+        if (fScrol) fScrol.scrollTop = fTop;
       }
-      saveWishlist();
+    }
+
+    async function syncFromCloud(silent) {
+      try {
+        if (!silent) setSyncStatus("syncing", "🔄 同步雲端中...");
+        const res = await fetch(CLOUD_ROOM_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const json = await res.json();
+        const remote = json.data || {};
+        if ((remote.updatedAt || 0) !== cloudState.updatedAt ||
+            JSON.stringify(remote.customSpots || []) !== JSON.stringify(cloudState.customSpots) ||
+            JSON.stringify(remote.votes || {}) !== JSON.stringify(cloudState.votes)) {
+          applyCloudPayload(remote);
+        }
+        setSyncStatus("", `☁️ 4人雲端已同步（新增 ${(cloudState.customSpots||[]).length} 筆）`);
+      } catch (e) {
+        setSyncStatus("offline", "⚠️ 離線暫存模式");
+      }
+    }
+
+    function mutateCloud(mutator) {
+      // Optimistic local apply
+      mutator(cloudState);
+      cloudState.updatedAt = Date.now();
+      rebuildMergedData();
+
+      cloudQueue = cloudQueue.then(async () => {
+        try {
+          setSyncStatus("syncing", "🔄 正在寫入雲端...");
+          const g = await fetch(CLOUD_ROOM_URL, { cache: "no-store" });
+          let latest = { customSpots: [], deletedIds: [], votes: {}, updatedAt: 0 };
+          if (g.ok) {
+            const j = await g.json();
+            if (j && j.data) latest = {
+              customSpots: Array.isArray(j.data.customSpots) ? j.data.customSpots : [],
+              deletedIds: Array.isArray(j.data.deletedIds) ? j.data.deletedIds : [],
+              votes: (j.data.votes && typeof j.data.votes === "object") ? j.data.votes : {},
+              updatedAt: j.data.updatedAt || 0
+            };
+          }
+          mutator(latest);
+          latest.updatedAt = Date.now();
+          const p = await fetch(CLOUD_ROOM_URL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: "kansai-2027-shared", data: latest })
+          });
+          if (!p.ok) throw new Error("PUT " + p.status);
+          applyCloudPayload(latest);
+          setSyncStatus("", `☁️ 4人雲端已同步（新增 ${(latest.customSpots||[]).length} 筆）`);
+        } catch (e) {
+          setSyncStatus("offline", "⚠️ 雲端暫時連線失敗（已先存本機）");
+        }
+      });
+      return cloudQueue;
+    }
+
+    // Multi-user wishlist voting
+    window.toggleWish = function(id, kind) {
+      const votersBefore = getVoters(id);
+      const willSave = !votersBefore.includes(currentUser);
+      mutateCloud(st => {
+        if (!st.votes) st.votes = {};
+        const arr = Array.isArray(st.votes[id]) ? [...st.votes[id]] : [];
+        const i = arr.indexOf(currentUser);
+        if (i >= 0) arr.splice(i, 1);
+        else arr.push(currentUser);
+        if (arr.length) st.votes[id] = arr;
+        else delete st.votes[id];
+      });
+
+      const newVoters = getVoters(id);
       if (kind === "attr") {
         buildAttrMarkers();
         const heartEl = document.getElementById("attr-heart-" + id);
-        if (heartEl) heartEl.textContent = nowSaved ? "❤️" : "";
+        if (heartEl) heartEl.textContent = newVoters.length ? `❤️${newVoters.length > 1 ? newVoters.length : ""}` : "";
         const btnEl = document.getElementById("attr-wish-btn-" + id);
         if (btnEl) {
-          btnEl.classList.toggle("saved", nowSaved);
-          btnEl.textContent = nowSaved ? "❤️ 已加入想去" : "🤍 加入想去";
+          btnEl.classList.toggle("saved", willSave);
+          btnEl.textContent = willSave ? `❤️ ${currentUser}已想去` : `🤍 ${currentUser}想去`;
         }
       } else {
         buildFoodMarkers(false);
-        document.querySelectorAll(`[data-food-heart="${id}"]`).forEach(el => { el.textContent = nowSaved ? "❤️" : ""; });
+        document.querySelectorAll(`[data-food-heart="${id}"]`).forEach(el => {
+          el.textContent = newVoters.length ? `❤️${newVoters.length > 1 ? newVoters.length : ""}` : "";
+        });
         const btnEl = document.getElementById("food-wish-btn-" + id);
         if (btnEl) {
-          btnEl.classList.toggle("saved", nowSaved);
-          btnEl.textContent = nowSaved ? "❤️ 已加入想吃" : "🤍 加入想吃";
+          btnEl.classList.toggle("saved", willSave);
+          btnEl.textContent = willSave ? `❤️ ${currentUser}已想吃` : `🤍 ${currentUser}想吃`;
         }
       }
     };
 
+    window.deleteCustomSpot = function(id, kind) {
+      const target = (kind === "attr" ? attractions : foods).find(x => x.id === id);
+      if (!target || !confirm(`確定要刪除「${target.name}」嗎？（將同步從大家的地圖移除）`)) return;
+      if (lockedAttrId === id) lockedAttrId = null;
+      if (lockedFoodId === id) lockedFoodId = null;
+      mutateCloud(st => {
+        st.customSpots = (st.customSpots || []).filter(s => s.id !== id);
+        st.deletedIds = Array.from(new Set([...(st.deletedIds || []), id]));
+        if (st.votes) delete st.votes[id];
+      });
+      refreshAllUiAfterCloud(false);
+    };
+
+    function getVotedItemsSummary() {
+      const list = [];
+      Object.entries(cloudState.votes || {}).forEach(([id, voters]) => {
+        if (!Array.isArray(voters) || !voters.length) return;
+        const a = attractions.find(x => x.id === id);
+        if (a) { list.push({ id, name: a.name, city: a.city, kind: "景點", voters }); return; }
+        const f = foods.find(x => x.id === id);
+        if (f) list.push({ id, name: f.name, city: f.area, kind: "美食", voters });
+      });
+      return list;
+    }
+
     const modal = document.getElementById("wishlist-modal");
     function renderModal() {
       const body = document.getElementById("wishlist-body");
-      if (!wishlist.length) {
-        body.innerHTML = '<p style="text-align:center;color:var(--ink-muted);padding:24px 0;">目前還沒選任何項目！點地圖上的圖標並按「🤍 加入想去 / 想吃」就能收進來。</p>';
+      const items = getVotedItemsSummary();
+      if (!items.length) {
+        body.innerHTML = '<p style="text-align:center;color:var(--ink-muted);padding:24px 0;">目前還沒選任何項目！點地圖上的景點/美食並按「🤍 想去 / 想吃」就會即時同步到這張表。</p>';
         return;
       }
-      body.innerHTML = wishlist.map(w => `
+      body.innerHTML = items.map(w => `
         <div class="wish-row">
-          <div><span class="vbadge vb-cat" style="margin-right:6px;">${w.kind}・${w.city}</span><strong>${w.name}</strong></div>
-          <button class="unlock-btn" onclick="removeWish('${w.id}')">移除</button>
+          <div>
+            <span class="vbadge vb-cat" style="margin-right:6px;">${w.kind}・${w.city}</span>
+            <strong>${w.name}</strong>
+            <div class="voter-chips" style="margin-top:4px;">${w.voters.map(v => `<span class="voter-chip">❤️ ${v}</span>`).join("")}</div>
+          </div>
+          <button class="unlock-btn" onclick="removeWish('${w.id}','${w.kind}')">${w.voters.includes(currentUser) ? "取消我的" : "移除"}</button>
         </div>
       `).join("");
     }
-    window.removeWish = function(id) {
-      wishlist = wishlist.filter(w => w.id !== id);
-      saveWishlist(); renderModal(); buildAttrMarkers(); buildFoodMarkers(false);
-      const ah = document.getElementById("attr-heart-" + id); if (ah) ah.textContent = "";
-      document.querySelectorAll(`[data-food-heart="${id}"]`).forEach(el => { el.textContent = ""; });
+    window.removeWish = function(id, kind) {
+      mutateCloud(st => {
+        if (!st.votes || !Array.isArray(st.votes[id])) return;
+        if (st.votes[id].includes(currentUser)) {
+          st.votes[id] = st.votes[id].filter(v => v !== currentUser);
+          if (!st.votes[id].length) delete st.votes[id];
+        } else {
+          delete st.votes[id];
+        }
+      });
+      renderModal();
+      refreshAllUiAfterCloud(true);
     };
     document.getElementById("open-wishlist-btn").addEventListener("click", () => { renderModal(); modal.classList.add("open"); });
     document.getElementById("close-modal-btn").addEventListener("click", () => modal.classList.remove("open"));
     modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("open"); });
-    document.getElementById("clear-wishlist-btn").addEventListener("click", () => { wishlist = []; saveWishlist(); renderModal(); buildAttrMarkers(); buildFoodMarkers(false); renderAttrDetail(); renderFoodDetail(); });
+    document.getElementById("clear-wishlist-btn").addEventListener("click", () => {
+      if (!confirm(`確定清除「${currentUser}」自己按過的愛心紀錄嗎？（不會清掉其他旅伴的）`)) return;
+      mutateCloud(st => {
+        Object.keys(st.votes || {}).forEach(id => {
+          st.votes[id] = st.votes[id].filter(v => v !== currentUser);
+          if (!st.votes[id].length) delete st.votes[id];
+        });
+      });
+      renderModal();
+      refreshAllUiAfterCloud(true);
+    });
     document.getElementById("share-url-wishlist-btn").addEventListener("click", async () => {
+      const items = getVotedItemsSummary();
       const baseUrl = window.location.origin !== "null" ? (window.location.origin + window.location.pathname) : window.location.href.split("?")[0];
-      const shareUrl = wishlist.length ? `${baseUrl}?wish=${wishlist.map(w => encodeURIComponent(w.id)).join(",")}` : baseUrl;
+      const shareUrl = items.length ? `${baseUrl}?wish=${items.map(w => encodeURIComponent(w.id)).join(",")}` : baseUrl;
       try {
         await navigator.clipboard.writeText(shareUrl);
-        alert(wishlist.length ? `已複製專屬分享連結！（包含 ${wishlist.length} 個想吃/想去項目，旅伴點開就能直接看到❤️）` : "已複製網站連結，傳給旅伴就能打開地圖！");
+        alert(items.length ? `已複製連結！（大家直接點原網址 ${baseUrl} 也會雲端同步看到喔！）` : "已複製網站連結！");
       } catch {
         prompt("請複製以下分享網址：", shareUrl);
       }
     });
     document.getElementById("copy-wishlist-btn").addEventListener("click", async () => {
-      if (!wishlist.length) return alert("清單是空的喔！");
-      const a = wishlist.filter(w => w.kind === "景點"), f = wishlist.filter(w => w.kind === "美食");
-      let txt = "🇯🇵 2027/1/7–1/12 關西 6天5夜｜我想去 & 想吃：\n";
-      if (a.length) txt += "\n📍【景點】\n" + a.map((x,i) => `${i+1}. [${x.city}] ${x.name}`).join("\n");
-      if (f.length) txt += "\n\n🍜【美食】\n" + f.map((x,i) => `${i+1}. [${x.city}] ${x.name}`).join("\n");
+      const items = getVotedItemsSummary();
+      if (!items.length) return alert("清單是空的喔！");
+      const a = items.filter(w => w.kind === "景點"), f = items.filter(w => w.kind === "美食");
+      let txt = "🇯🇵 2027/1/7–1/12 關西 6天5夜｜大家想去 & 想吃：\n";
+      if (a.length) txt += "\n📍【景點】\n" + a.map((x,i) => `${i+1}. [${x.city}] ${x.name} (${x.voters.join("、")})`).join("\n");
+      if (f.length) txt += "\n\n🍜【美食】\n" + f.map((x,i) => `${i+1}. [${x.city}] ${x.name} (${x.voters.join("、")})`).join("\n");
       try { await navigator.clipboard.writeText(txt); alert("已複製！可直接貼到 Line 群組～"); }
       catch { prompt("請複製以下文字：", txt); }
     });
 
+    // Traveler Identity Modal
+    const userModal = document.getElementById("user-modal");
+    function updateUserBadge() {
+      const el = document.getElementById("cur-user-name");
+      if (el) el.textContent = currentUser;
+      const authorEl = document.getElementById("add-author");
+      if (authorEl && !authorEl.value) authorEl.value = currentUser;
+    }
+    document.getElementById("switch-user-btn").addEventListener("click", () => {
+      document.getElementById("user-name-input").value = currentUser;
+      userModal.classList.add("open");
+    });
+    document.getElementById("user-preset-chips").querySelectorAll(".mini-chip").forEach(c => {
+      c.addEventListener("click", () => { document.getElementById("user-name-input").value = c.dataset.name; });
+    });
+    document.getElementById("save-user-name-btn").addEventListener("click", () => {
+      const val = document.getElementById("user-name-input").value.trim();
+      if (!val) return alert("請輸入名字喔！");
+      currentUser = val;
+      localStorage.setItem("kansai_2027_username", currentUser);
+      updateUserBadge();
+      userModal.classList.remove("open");
+      if (lockedAttrId) openAttrAccordionItem(lockedAttrId, false, false);
+      if (lockedFoodId) openFoodAccordionItem(lockedFoodId, false, false);
+    });
+    ["close-user-modal-btn","cancel-user-modal-btn"].forEach(id => document.getElementById(id).addEventListener("click", () => userModal.classList.remove("open")));
+    userModal.addEventListener("click", e => { if (e.target === userModal) userModal.classList.remove("open"); });
+
+    // Add Custom Spot Modal
+    const addModal = document.getElementById("add-spot-modal");
+    function populateAddFormSelects() {
+      const catSel = document.getElementById("add-food-cat");
+      catSel.innerHTML = FOOD_CAT_META.map(m => `<option value="${m.key}">${m.icon} ${m.key}</option>`).join("");
+      updateAddAttrGroups();
+    }
+    function updateAddAttrGroups() {
+      const city = document.getElementById("add-attr-city").value;
+      const cMeta = ATTR_CITY_META.find(c => c.city === city) || ATTR_CITY_META[0];
+      const grpSel = document.getElementById("add-attr-group");
+      grpSel.innerHTML = cMeta.groups.map((g, idx) => `<option value="${idx}">${g.name}</option>`).join("");
+    }
+    document.getElementById("add-attr-city").addEventListener("change", updateAddAttrGroups);
+    document.getElementById("add-kind").addEventListener("change", function() {
+      const isFood = this.value === "food";
+      document.getElementById("add-food-fields").style.display = isFood ? "grid" : "none";
+      document.getElementById("add-attr-fields").style.display = isFood ? "none" : "grid";
+      document.getElementById("add-meta-label").textContent = isFood ? "💰 預算 / 價位" : "⏱ 建議停留 / 營業時間";
+      document.getElementById("add-meta-val").placeholder = isFood ? "例如：¥2,000-4,000（選填）" : "例如：建議 1 小時（選填）";
+    });
+
+    document.getElementById("open-add-spot-btn").addEventListener("click", () => {
+      document.getElementById("add-author").value = currentUser;
+      document.getElementById("add-kind").dispatchEvent(new Event("change"));
+      addModal.classList.add("open");
+    });
+    ["close-add-modal-btn","cancel-add-modal-btn"].forEach(id => {
+      document.getElementById(id).addEventListener("click", () => addModal.classList.remove("open"));
+    });
+    addModal.addEventListener("click", e => { if (e.target === addModal) addModal.classList.remove("open"); });
+
+    function handlePickedMapLatLng(latlng) {
+      pickingOnMapMode = false;
+      document.getElementById("map-pick-banner").classList.remove("open");
+      document.getElementById("add-lat").value = latlng.lat.toFixed(5);
+      document.getElementById("add-lng").value = latlng.lng.toFixed(5);
+      document.getElementById("add-coord-status").innerHTML = `<span style="color:#047857;">✅ 已從地圖點選座標：${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}</span>`;
+      addModal.classList.add("open");
+    }
+
+    document.getElementById("add-pick-map-btn").addEventListener("click", () => {
+      const isFood = document.getElementById("add-kind").value === "food";
+      addModal.classList.remove("open");
+      pickingOnMapMode = true;
+      document.getElementById("map-pick-banner").classList.add("open");
+      const targetTab = isFood ? "food" : "attractions";
+      document.querySelector(`.tab-btn[data-tab="${targetTab}"]`)?.click();
+    });
+    document.getElementById("cancel-map-pick-btn").addEventListener("click", () => {
+      pickingOnMapMode = false;
+      document.getElementById("map-pick-banner").classList.remove("open");
+      addModal.classList.add("open");
+    });
+
+    function parseGoogleMapsCoords(txt) {
+      if (!txt) return null;
+      const m1 = txt.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (m1) return { lat: parseFloat(m1[1]), lng: parseFloat(m1[2]) };
+      const m2 = txt.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+      if (m2) return { lat: parseFloat(m2[1]), lng: parseFloat(m2[2]) };
+      const m3 = txt.match(/[?&](?:q|ll)=(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (m3) return { lat: parseFloat(m3[1]), lng: parseFloat(m3[2]) };
+      return null;
+    }
+
+    document.getElementById("add-search-coord-btn").addEventListener("click", async () => {
+      const statusEl = document.getElementById("add-coord-status");
+      const rawUrl = document.getElementById("add-gmap-input").value.trim();
+      const parsed = parseGoogleMapsCoords(rawUrl);
+      if (parsed) {
+        document.getElementById("add-lat").value = parsed.lat.toFixed(5);
+        document.getElementById("add-lng").value = parsed.lng.toFixed(5);
+        statusEl.innerHTML = `<span style="color:#047857;">✅ 已從網址擷取座標：${parsed.lat.toFixed(5)}, ${parsed.lng.toFixed(5)}</span>`;
+        return;
+      }
+      if (rawUrl.includes("goo.gl") || rawUrl.includes("maps.app")) {
+        statusEl.innerHTML = `<span style="color:#b45309;">⚠️ 手機短網址不含經緯度，請改用「🎯 在地圖上點選」或直接輸入店名搜尋！</span>`;
+        return;
+      }
+      const isFood = document.getElementById("add-kind").value === "food";
+      const city = isFood ? document.getElementById("add-food-area").value.replace("・其他","") : document.getElementById("add-attr-city").value;
+      const query = (rawUrl || document.getElementById("add-name").value.trim());
+      if (!query) { statusEl.textContent = "⚠️ 請先輸入名稱或 Google地圖網址再搜尋！"; return; }
+      statusEl.textContent = "🔍 搜尋關西座標中...";
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=3&countrycodes=jp&viewbox=134.8,35.4,136.2,34.2&q=${encodeURIComponent(query + " " + city)}`);
+        const arr = await res.json();
+        if (Array.isArray(arr) && arr.length > 0) {
+          const best = arr[0];
+          const lat = parseFloat(best.lat), lng = parseFloat(best.lon);
+          document.getElementById("add-lat").value = lat.toFixed(5);
+          document.getElementById("add-lng").value = lng.toFixed(5);
+          statusEl.innerHTML = `<span style="color:#047857;">✅ 找到座標：${lat.toFixed(4)}, ${lng.toFixed(4)}（${best.display_name.split(",").slice(0,2).join(", ")}）</span>`;
+        } else {
+          statusEl.innerHTML = `<span style="color:#b45309;">找不到精確街址，建議按右方「🎯 在地圖上點選」或直接送出（會放該區中心）！</span>`;
+        }
+      } catch {
+        statusEl.innerHTML = `<span style="color:#b45309;">搜尋服務暫時無法連線，可直接按「🎯 在地圖上點選」！</span>`;
+      }
+    });
+
+    document.getElementById("submit-add-spot-btn").addEventListener("click", async () => {
+      const kind = document.getElementById("add-kind").value;
+      const name = document.getElementById("add-name").value.trim();
+      if (!name) return alert("請輸入名稱喔！");
+      const author = document.getElementById("add-author").value.trim() || currentUser;
+      currentUser = author;
+      localStorage.setItem("kansai_2027_username", currentUser);
+      updateUserBadge();
+
+      let lat = parseFloat(document.getElementById("add-lat").value);
+      let lng = parseFloat(document.getElementById("add-lng").value);
+      const jitter = () => (Math.random() - 0.5) * 0.0025;
+      const note = document.getElementById("add-note").value.trim();
+      const metaVal = document.getElementById("add-meta-val").value.trim();
+      const transport = document.getElementById("add-transport").value.trim();
+      const newId = "u_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 5);
+
+      let spot;
+      if (kind === "food") {
+        const cat = document.getElementById("add-food-cat").value;
+        const area = document.getElementById("add-food-area").value;
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+          const fallback = { "大阪":[34.668,135.502], "京都":[35.006,135.768], "奈良":[34.683,135.830], "神戶・其他":[34.692,135.193] }[area] || [34.668,135.502];
+          lat = fallback[0] + jitter(); lng = fallback[1] + jitter();
+        }
+        spot = {
+          id: newId, kind: "food", isCustom: true, addedBy: author,
+          lat, lng, area, name, cat, cats: [cat], listName: `${author}新增`,
+          price: metaVal || "待補價位", rating: "🆕 旅伴新增",
+          wikiJa: name, wikiZh: cat,
+          detail: note || `由 **${author}** 在雲端共享清單新加入的關西美食！`,
+          highlights: [note ? `旅伴推薦筆記：${note}` : `分類：${cat}（${area}）`, `新增者：${author}`],
+          transport: transport || `${area}周邊（點下方開啟 Google 地圖導航）`,
+          note, q: `${name} ${area}`
+        };
+      } else {
+        const city = document.getElementById("add-attr-city").value;
+        const cMeta = ATTR_CITY_META.find(c => c.city === city) || ATTR_CITY_META[0];
+        const grpIdx = parseInt(document.getElementById("add-attr-group").value) || 0;
+        const grp = cMeta.groups[grpIdx] || cMeta.groups[0];
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+          lat = (grp.fly ? grp.fly[0] : cMeta.fly[0]) + jitter();
+          lng = (grp.fly ? grp.fly[1] : cMeta.fly[1]) + jitter();
+        }
+        spot = {
+          id: newId, kind: "attr", isCustom: true, addedBy: author,
+          lat, lng, city, area: grp.areas[0], icon: "🆕", name, source: "mine",
+          rating: "🆕 旅伴新增", wikiJa: name, wikiZh: name,
+          detail: note || `由 **${author}** 在雲端共享清單新加入的關西景點！`,
+          highlights: [note ? `旅伴推薦筆記：${note}` : `分區：${grp.name}`, `新增者：${author}`],
+          transport: transport || `${city}・${grp.areas[0]}（點下方開啟 Google 地圖導航）`,
+          hours: "請依店家公告", stay: metaVal || "建議 1 小時", note, q: `${name} ${city}`
+        };
+      }
+
+      addModal.classList.remove("open");
+      // Reset inputs cleanly
+      ["add-name","add-gmap-input","add-meta-val","add-transport","add-note","add-lat","add-lng"].forEach(i => document.getElementById(i).value = "");
+      document.getElementById("add-coord-status").textContent = "尚未指定座標（未填也沒關係，送出會先幫你放在選定區域中心點！）";
+
+      await mutateCloud(st => {
+        if (!Array.isArray(st.customSpots)) st.customSpots = [];
+        st.customSpots.push(spot);
+        if (!st.votes) st.votes = {};
+        st.votes[newId] = [author];
+      });
+
+      // Jump straight to the new item on the active tab!
+      const targetTab = kind === "food" ? "food" : "attractions";
+      document.querySelector(`.tab-btn[data-tab="${targetTab}"]`)?.click();
+      setTimeout(() => {
+        if (kind === "food") {
+          selectedFoodCats = [spot.cat];
+          curFoodArea = "all"; curFoodZone = null; curFoodZoneLabel = "";
+          renderFoodSidebar(); buildFoodMarkers(false); renderFoodDetail();
+          openFoodAccordionItem(newId, true, true);
+        } else {
+          curAttrPanelCity = spot.city;
+          renderAttrDetail();
+          openAttrAccordionItem(newId, true, true);
+        }
+      }, 160);
+    });
+
     // ==================== INIT ====================
-    document.getElementById("badge-attr-total").textContent = attractions.length;
-    document.getElementById("badge-food-total").textContent = foods.length;
-    saveWishlist();
+    populateAddFormSelects();
+    updateUserBadge();
+    rebuildMergedData();
     buildAttrMarkers();
     renderAttrDetail();
     buildTransitMap();
@@ -3920,6 +4508,9 @@
     renderFoodSidebar();
     buildFoodMarkers(false);
     renderFoodDetail();
+    syncFromCloud(false);
+    setInterval(() => { if (!document.hidden) syncFromCloud(true); }, 12000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) syncFromCloud(true); });
   </script>
 </body>
 </html>
