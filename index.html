@@ -14,34 +14,34 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     :root {
-      --bg: #f5f2eb;
-      --surface: #ffffff;
-      --surface-soft: #efe9df;
-      --ink: #1e2328;
-      --ink-muted: #5c646d;
-      --border: #dfd7cb;
-      --torii: #c93a2b;
-      --indigo: #1b4d63;
-      --indigo-bg: #e9f3f7;
-      --matcha: #28664b;
-      --matcha-bg: #eaf5ef;
-      --amber: #a85e07;
-      --amber-bg: #fef4df;
-      --radius: 14px;
-      --theme-accent: #c93a2b;
-      --theme-soft: #fdf2f0;
+      --bg: #F6F4EF;
+      --surface: #FFFFFF;
+      --surface-soft: #EFECE5;
+      --ink: #18181B;
+      --ink-muted: #71717A;
+      --border: #E4E0D8;
+      --torii: #B8332A;
+      --indigo: #1E3A5F;
+      --indigo-bg: #EEF3F7;
+      --matcha: #2D5A40;
+      --matcha-bg: #EDF4F0;
+      --amber: #92400E;
+      --amber-bg: #FAF3E8;
+      --radius: 8px;
+      --theme-accent: #B8332A;
+      --theme-soft: #FDF2F0;
     }
     body[data-active-tab="attractions"] {
-      --theme-accent: #c93a2b;
-      --theme-soft: #fdf2f0;
+      --theme-accent: #B8332A;
+      --theme-soft: #FDF2F0;
     }
     body[data-active-tab="transit"] {
-      --theme-accent: #0369a1;
-      --theme-soft: #eef6ff;
+      --theme-accent: #1E3A5F;
+      --theme-soft: #EEF3F7;
     }
     body[data-active-tab="food"] {
-      --theme-accent: #c25e00;
-      --theme-soft: #fff7ed;
+      --theme-accent: #9A4A04;
+      --theme-soft: #FAF4EC;
     }
 
     * { box-sizing: border-box; }
@@ -55,7 +55,8 @@
       font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
       background: var(--bg);
       color: var(--ink);
-      line-height: 1.55;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
     .tab-badge, .hero-stat-val, .acc-price-pill, .food-cat-count, .wish-count, .pin-meta {
       font-variant-numeric: tabular-nums;
@@ -65,202 +66,205 @@
       min-width: 0;
     }
     a { color: var(--indigo); text-decoration: none; }
-    .container { max-width: 1420px; margin: 0 auto; padding: 0 14px; }
+    .container { max-width: 1420px; margin: 0 auto; padding: 0 18px; }
 
-    /* Hero */
+    /* Hero — Minimalist Editorial Masthead */
     .hero {
-      background:
-        radial-gradient(circle at 88% 20%, rgba(201,58,43,0.22) 0%, transparent 45%),
-        radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-        linear-gradient(125deg, #12222d 0%, #1d3545 60%, #382024 100%);
-      background-size: auto, 16px 16px, auto;
-      color: #fff;
-      padding: 13px 0;
+      background: #14171A;
+      color: #F4F4F5;
+      padding: 16px 0 14px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .hero-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+    .hero-kicker {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #A1A1AA;
+      margin-bottom: 3px;
+    }
+    .hero-inner { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
     .hero h1 {
       margin: 0;
       font-family: "Noto Serif TC", "Noto Sans TC", serif;
-      font-size: clamp(18px, 2.2vw, 24px);
-      font-weight: 900;
-      letter-spacing: 0.02em;
+      font-size: clamp(19px, 2.2vw, 25px);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: #FFFFFF;
     }
-    .hero-sub { margin: 2px 0 0; font-size: 12.6px; color: rgba(255,255,255,0.82); }
+    .hero-sub { margin: 3px 0 0; font-size: 12.2px; color: #A1A1AA; font-weight: 400; }
+    .hero-sub strong { color: #E4E4E7; font-weight: 600; }
     .trip-pills { display: flex; flex-wrap: wrap; gap: 6px; }
     .trip-pill {
-      background: rgba(255,255,255,0.11);
-      border: 1px solid rgba(255,255,255,0.18);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11.8px;
-      font-weight: 700;
-      backdrop-filter: blur(4px);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #E4E4E7;
+      padding: 3px 9px;
+      border-radius: 3px;
+      font-size: 11.2px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
     }
 
-    /* Sticky Nav — Tier 1 (Dark Segmented Dock) & Tier 2 (Role-Coded Utility Tray) */
+    /* Sticky Nav — Tier 1 (Editorial Underline Tabs) & Tier 2 (Restrained Architectural Actions) */
     .nav-wrap {
       position: sticky; top: 0; z-index: 1000;
-      background: rgba(245, 242, 235, 0.96);
+      background: rgba(246, 244, 239, 0.96);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; flex-wrap: wrap; }
+    .nav-bar { display: flex; align-items: stretch; justify-content: space-between; gap: 12px; padding: 0; flex-wrap: wrap; }
     .tabs {
       display: flex;
-      gap: 4px;
+      gap: 2px;
       flex-wrap: wrap;
-      background: #182630;
-      padding: 4px;
-      border-radius: 13px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.28);
+      align-items: stretch;
     }
     .tab-btn {
       border: none;
+      border-bottom: 2.5px solid transparent;
       background: transparent;
-      color: rgba(255,255,255,0.74);
-      padding: 7px 14px;
-      border-radius: 9px;
-      font-size: 13.8px;
-      font-weight: 800;
+      color: var(--ink-muted);
+      padding: 11px 16px;
+      border-radius: 0;
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-family: inherit;
-      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      transition: color 0.14s ease, border-color 0.14s ease;
     }
-    .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .tab-btn:hover { color: var(--ink); }
     .tab-btn.active {
-      background: var(--theme-accent);
-      color: #fff;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.28);
+      color: var(--ink);
+      font-weight: 700;
+      border-bottom-color: var(--theme-accent);
     }
-    .tab-badge { font-size: 11px; padding: 1px 6px; border-radius: 999px; background: rgba(255,255,255,0.16); color: inherit; }
-    .tab-btn.active .tab-badge { background: rgba(255,255,255,0.26); color: #fff; }
+    .tab-badge {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--surface-soft);
+      color: #52525B;
+    }
+    .tab-btn.active .tab-badge { background: var(--theme-soft); color: var(--theme-accent); }
 
     .nav-right {
       display: flex;
       gap: 6px;
       align-items: center;
       flex-wrap: wrap;
-      background: #eae3d5;
-      padding: 4px 7px;
-      border-radius: 12px;
-      border: 1px solid #d8cfc0;
+      padding: 6px 0;
     }
     #switch-user-btn {
-      background: #1e293b;
-      color: #f8fafc;
-      border: 1px solid #0f172a;
-      border-radius: 999px;
-      padding: 5px 11px;
-      font-size: 12.2px;
-      font-weight: 800;
+      background: #FFFFFF;
+      color: #27272A;
+      border: 1px solid #D4CFC7;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 500;
     }
-    #switch-user-btn:hover { background: #334155; border-color: #1e293b; }
+    #switch-user-btn:hover { border-color: #18181B; color: #18181B; }
     #open-add-spot-btn {
-      background: #15803d;
-      color: #fff;
-      border: none;
-      border-radius: 999px;
-      padding: 6px 13px;
-      font-size: 12.4px;
-      font-weight: 800;
-      box-shadow: 0 2px 6px rgba(21,128,61,0.25);
+      background: #18181B;
+      color: #FFFFFF;
+      border: 1px solid #18181B;
+      border-radius: 5px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
       font-family: inherit;
+      transition: background 0.14s ease;
     }
-    #open-add-spot-btn:hover { background: #166534; }
+    #open-add-spot-btn:hover { background: #27272A; }
     #toggle-basemap-btn {
-      background: rgba(255,255,255,0.65);
-      color: #475569;
-      border: 1px dashed #94a3b8;
-      border-radius: 999px;
-      padding: 4px 10px;
+      background: #FFFFFF;
+      color: #52525B;
+      border: 1px solid #D4CFC7;
+      border-radius: 5px;
+      padding: 5px 10px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 500;
     }
-    #toggle-basemap-btn:hover { background: #fff; color: #1e293b; border-style: solid; }
+    #toggle-basemap-btn:hover { border-color: #18181B; color: #18181B; }
     .wish-open-btn {
-      border: 1.5px solid #f43f5e;
-      background: #fff1f2;
-      color: #be123c;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 800;
+      border: 1px solid var(--torii);
+      background: #FFFFFF;
+      color: var(--torii);
+      padding: 5px 11px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-family: inherit;
     }
-    .wish-open-btn:hover { background: #ffe4e6; }
+    .wish-open-btn:hover { background: var(--theme-soft); }
     .wish-count {
-      background: #e11d48; color: #fff; min-width: 20px; height: 20px;
-      border-radius: 999px; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px;
+      background: var(--torii); color: #fff; min-width: 18px; height: 18px;
+      border-radius: 3px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px;
     }
 
-    .tab-panel { display: none; padding: 10px 0 24px; }
+    .tab-panel { display: none; padding: 12px 0 28px; }
     .tab-panel.active { display: block; }
 
-    /* Toolbar — Tier 3 (Left Color-Bar City Zone Cards) */
+    /* Toolbar — Tier 3 (Horizontal Index Tags with Subtle City Dots) */
     .toolbar-row {
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
-      background: #fff;
-      border: 1px solid #e2d9c8;
-      border-radius: 12px;
-      padding: 7px 11px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 4px 0 10px;
+      box-shadow: none;
     }
     .jump-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
     .jump-btn {
-      border: 1px solid #cbd5e1;
-      border-left: 4px solid #64748b;
-      background: #f8fafc;
-      color: #1e293b;
-      padding: 5px 10px;
-      border-radius: 7px;
-      font-size: 12.2px;
-      font-weight: 700;
+      border: 1px solid #DCD7CE;
+      background: #FFFFFF;
+      color: #3F3F46;
+      padding: 5px 11px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
       font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: 0.14s;
     }
-    .jump-btn:hover { filter: brightness(0.96); }
-    .jump-btn.active { background: #1e293b; color: #fff; border-color: #1e293b; }
-
-    .jump-btn[data-city="大阪"], .jump-btn[data-area="大阪"] {
-      border-left-color: #0284c7; background: #f0f9ff; color: #0c4a6e;
+    .jump-btn:hover { border-color: #18181B; color: #18181B; background: #FAF9F5; }
+    .jump-btn[data-city="大阪"]::before, .jump-btn[data-area="大阪"]::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%; background: #1E3A5F; flex-shrink: 0;
     }
-    .jump-btn[data-city="大阪"].active, .jump-btn[data-area="大阪"].active {
-      background: #0284c7; color: #fff; border-color: #0284c7;
+    .jump-btn[data-city="京都"]::before, .jump-btn[data-area="京都"]::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%; background: #B8332A; flex-shrink: 0;
     }
-    .jump-btn[data-city="京都"], .jump-btn[data-area="京都"] {
-      border-left-color: #c93a2b; background: #fff5f5; color: #7f1d1d;
+    .jump-btn[data-city="奈良"]::before, .jump-btn[data-city="宇治"]::before,
+    .jump-btn[data-area="奈良"]::before, .jump-btn[data-area="神戶・其他"]::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%; background: #2D5A40; flex-shrink: 0;
     }
-    .jump-btn[data-city="京都"].active, .jump-btn[data-area="京都"].active {
-      background: #c93a2b; color: #fff; border-color: #c93a2b;
+    .jump-btn.active {
+      background: #18181B;
+      color: #FFFFFF;
+      border-color: #18181B;
+      font-weight: 600;
     }
-    .jump-btn[data-city="奈良"], .jump-btn[data-city="宇治"], .jump-btn[data-area="奈良"], .jump-btn[data-area="神戶・其他"] {
-      border-left-color: #15803d; background: #f0fdf4; color: #14532d;
-    }
-    .jump-btn[data-city="奈良"].active, .jump-btn[data-city="宇治"].active, .jump-btn[data-area="奈良"].active, .jump-btn[data-area="神戶・其他"].active {
-      background: #15803d; color: #fff; border-color: #15803d;
-    }
-    #transit-filter .jump-btn {
-      border-left-color: #0369a1; background: #f0f9ff; color: #0c4a6e;
-    }
-    #transit-filter .jump-btn.active {
-      background: #0369a1; color: #fff; border-color: #0369a1;
-    }
-    .jump-btn[data-city="all"], .jump-btn[data-area="all"], #transit-filter .jump-btn[data-mode="all"] {
-      border-left-color: #334155; background: #f1f5f9; color: #1e293b;
-    }
-    .jump-btn[data-city="all"].active, .jump-btn[data-area="all"].active, #transit-filter .jump-btn[data-mode="all"].active {
-      background: #1e293b; color: #fff; border-color: #1e293b;
+    .jump-btn[data-city="大阪"].active::before, .jump-btn[data-area="大阪"].active::before,
+    .jump-btn[data-city="京都"].active::before, .jump-btn[data-area="京都"].active::before,
+    .jump-btn[data-city="奈良"].active::before, .jump-btn[data-city="宇治"].active::before,
+    .jump-btn[data-area="奈良"].active::before, .jump-btn[data-area="神戶・其他"].active::before {
+      background: #FFFFFF;
     }
 
     /* Main Split Layout */
@@ -278,101 +282,109 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
-    /* Tier 4 — Dark Slate Map HUD Bar */
+    /* Tier 4 — Warm-Stone Architectural Map Header */
     .map-top-bar {
       display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
       gap: 8px;
       margin-bottom: 0;
-      background: #1e293b;
-      color: #e2e8f0;
-      padding: 7px 11px;
-      border-radius: 10px 10px 0 0;
+      background: #FAF9F5;
+      border-bottom: 1px solid var(--border);
+      color: #52525B;
+      padding: 7px 12px;
+      border-radius: var(--radius) var(--radius) 0 0;
     }
-    .map-top-bar .filter-strip > span { color: #cbd5e1 !important; }
-    .map-top-bar #food-active-summary { color: #fbbf24 !important; }
-    .filter-strip { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+    .map-top-bar .filter-strip > span { color: #71717A !important; font-weight: 500 !important; }
+    .map-top-bar #food-active-summary { color: #B8332A !important; font-weight: 600 !important; }
+    .filter-strip { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
     .mini-chip {
       border: 1px solid var(--border); background: var(--bg); color: var(--ink);
-      padding: 3px 9px; border-radius: 999px; font-size: 11.8px; font-weight: 700; cursor: pointer; font-family: inherit;
+      padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; cursor: pointer; font-family: inherit;
     }
-    .mini-chip.active { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+    .mini-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
     .map-top-bar .mini-chip {
-      background: rgba(255,255,255,0.10);
-      color: #cbd5e1;
-      border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 6px;
+      background: transparent;
+      color: #71717A;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 500;
     }
-    .map-top-bar .mini-chip:hover { background: rgba(255,255,255,0.18); color: #fff; }
+    .map-top-bar .mini-chip:hover { color: #18181B; background: rgba(0,0,0,0.04); }
     .map-top-bar .mini-chip.active {
-      background: #f59e0b;
-      color: #0f172a;
-      border-color: #fbbf24;
-      font-weight: 800;
+      background: #FFFFFF;
+      color: #18181B;
+      border-color: #D4CFC7;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      font-weight: 600;
     }
 
     .map-box {
       width: 100%;
       height: 600px;
-      border-radius: 0 0 10px 10px;
+      border-radius: 0 0 var(--radius) var(--radius);
       overflow: hidden;
-      border: 1px solid #d5cfc4;
-      border-top: none;
-      background: #e9eff3;
+      border: none;
+      background: #ECEAE4;
     }
     @media (max-width: 1024px) {
       .map-box { height: 430px; }
     }
 
-    /* Custom Leaflet Pin Styles */
+    /* Custom Leaflet Pin Styles — Architectural Dots + Dark Ink Callouts */
     .leaflet-div-icon { background: transparent; border: none; }
     .l-pin {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      background: rgba(255, 255, 255, 0.96);
-      border: 1.8px solid #94a3b8;
-      border-radius: 999px;
-      padding: 2px 8px 2px 5px;
+      gap: 5px;
+      background: rgba(24, 24, 27, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 4px;
+      padding: 3px 9px;
       font-size: 11.5px;
-      font-weight: 800;
-      color: #1e2328;
+      font-weight: 500;
+      color: #FFFFFF;
       white-space: nowrap;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.22);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.20);
       transform: translate(-50%, -50%);
       transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
       cursor: pointer;
     }
     .l-pin.compact {
       position: relative;
-      width: 27px;
-      height: 27px;
+      width: 13px;
+      height: 13px;
       padding: 0;
       justify-content: center;
-      font-size: 13px;
       border-radius: 50%;
+      background: #18181B;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
     }
+    .l-pin.compact > span:not(.p-dot):not(.pin-name) { display: none; }
     .l-pin.compact .pin-name { display: none; }
     .l-pin.compact .p-dot {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 8px;
-      height: 8px;
-      border: 1.5px solid #fff;
+      position: static;
+      width: 100%;
+      height: 100%;
+      border: none;
     }
     .l-pin:hover, .l-pin.hovered {
       width: auto;
       height: auto;
-      padding: 3px 9px 3px 6px;
-      border-radius: 999px;
-      transform: translate(-50%, -50%) scale(1.12);
-      border-color: var(--theme-accent);
-      background: #fff4f2;
-      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.28);
+      overflow: visible;
+      padding: 3px 9px;
+      border-radius: 4px;
+      transform: translate(-50%, -50%) scale(1.06);
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(24, 24, 27, 0.96);
+      color: #FFFFFF;
+      box-shadow: 0 5px 16px rgba(0, 0, 0, 0.28);
     }
+    .l-pin:hover > span, .l-pin.hovered > span, .l-pin.pinned > span { display: inline; }
     .l-pin:hover .p-dot, .l-pin.hovered .p-dot, .l-pin.pinned .p-dot {
       position: static;
       width: 7px;
@@ -383,55 +395,59 @@
     .l-pin.pinned {
       width: auto;
       height: auto;
-      padding: 3px 9px 3px 6px;
-      border-radius: 999px;
-      border-color: var(--theme-accent);
-      border-width: 2.5px;
-      background: var(--theme-soft);
-      transform: translate(-50%, -50%) scale(1.1);
+      overflow: visible;
+      padding: 3px 9px;
+      border-radius: 4px;
+      border-color: #B8332A;
+      border-width: 1.5px;
+      background: #B8332A;
+      color: #FFFFFF;
+      font-weight: 600;
+      transform: translate(-50%, -50%) scale(1.06);
     }
     .l-pin.pinned .pin-name { display: inline; }
 
     .p-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .dot-both { background: #dc2626; }
-    .dot-mine { background: #d97706; }
-    .dot-web { background: #0284c7; }
-    .dot-transit { background: #1b4d63; }
+    .dot-both { background: #B8332A; }
+    .dot-mine { background: #D97706; }
+    .dot-web { background: #2563EB; }
+    .dot-transit { background: #1E3A5F; }
 
     /* Clean light basemap subtle warmth & region box banners */
     .clean-basemap .leaflet-tile-pane {
-      filter: sepia(10%) saturate(125%) contrast(103%) brightness(101%);
+      filter: sepia(10%) saturate(110%) contrast(102%) brightness(101%);
     }
     .region-banner {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 800;
-      color: #1e293b;
+      gap: 4px;
+      padding: 2px 9px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #27272A;
       background: rgba(255, 255, 255, 0.90) !important;
       backdrop-filter: blur(4px);
       white-space: nowrap;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
       transform: translate(-50%, -50%);
       cursor: pointer;
-      border: 1.5px solid #64748b;
+      border: 1px solid #A1A1AA;
       transition: transform 0.14s ease;
     }
     .region-banner:hover {
-      transform: translate(-50%, -50%) scale(1.07);
+      transform: translate(-50%, -50%) scale(1.05);
     }
     .region-banner.sub {
-      font-size: 11px;
-      padding: 2px 9px;
+      font-size: 10.5px;
+      padding: 2px 8px;
       opacity: 0.94;
     }
     .region-banner.transit-muted {
       font-size: 10.5px;
       padding: 2px 7px;
-      opacity: 0.72;
+      opacity: 0.68;
       pointer-events: none;
       box-shadow: none;
       border-width: 1px;
@@ -443,23 +459,23 @@
       align-items: center;
       gap: 5px;
       background: #ffffff;
-      border: 2.2px solid #1b4d63;
-      border-radius: 11px;
-      padding: 4px 10px;
-      font-size: 12.5px;
-      font-weight: 800;
-      color: #111827;
+      border: 1.8px solid #1E3A5F;
+      border-radius: 5px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #18181B;
       white-space: nowrap;
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.20);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
       transform: translate(-50%, -50%);
       cursor: pointer;
       transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
     }
     .transit-tool-pin.z-slim {
       padding: 3px 8px;
-      font-size: 11.5px;
-      border-width: 2px;
-      border-radius: 9px;
+      font-size: 11.2px;
+      border-width: 1.6px;
+      border-radius: 4px;
     }
     .transit-tool-pin.z-slim .pin-meta {
       display: none;
@@ -467,7 +483,7 @@
     .transit-tool-pin.z-mini {
       padding: 3px 6px;
       font-size: 11px;
-      border-width: 1.8px;
+      border-width: 1.5px;
       border-radius: 999px;
       gap: 2px;
     }
@@ -476,11 +492,16 @@
       display: none;
     }
     .transit-tool-pin:hover, .transit-tool-pin.hovered {
-      transform: translate(-50%, -50%) scale(1.08);
-      background: #fff7ed;
-      border-radius: 11px;
-      padding: 5px 10px;
-      box-shadow: 0 8px 22px rgba(201, 58, 43, 0.34);
+      transform: translate(-50%, -50%) scale(1.06);
+      background: #18181B;
+      color: #FFFFFF;
+      border-radius: 5px;
+      padding: 4px 9px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+    }
+    .transit-tool-pin:hover .pin-meta, .transit-tool-pin.hovered .pin-meta {
+      background: rgba(255,255,255,0.16);
+      color: #FFFFFF;
     }
     .transit-tool-pin.hovered .pin-short-txt,
     .transit-tool-pin.hovered .pin-meta,
@@ -489,65 +510,67 @@
       display: inline !important;
     }
     .transit-tool-pin.pinned {
-      background: #ffe8e5;
-      border-color: var(--torii) !important;
-      border-width: 2.8px;
-      border-radius: 11px;
-      padding: 5px 10px;
-      transform: translate(-50%, -50%) scale(1.06);
+      background: #B8332A;
+      color: #FFFFFF;
+      border-color: #B8332A !important;
+      border-width: 2px;
+      border-radius: 5px;
+      padding: 4px 9px;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+    .transit-tool-pin.pinned .pin-meta {
+      background: rgba(255,255,255,0.22);
+      color: #FFFFFF;
     }
     .pin-meta {
-      background: #f1f5f9;
-      color: #0f172a;
-      padding: 1.5px 6px;
-      border-radius: 6px;
-      font-size: 11.5px;
-      font-weight: 800;
+      background: var(--surface-soft);
+      color: #3F3F46;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
     }
 
-    /* Enlarged Time & Price Hero Stat Cards */
+    /* Magazine Editorial Spec Table */
     .hero-stat-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 0;
       margin: 12px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
     }
     .hero-stat-card {
-      border-radius: 10px;
-      padding: 10px 12px;
-      border: 1px solid #e6dfd3;
-      border-left: 3.5px solid var(--theme-accent);
-      background: #faf8f4;
+      border-radius: 0;
+      padding: 2px 12px 2px 0;
+      border: none !important;
+      background: transparent !important;
     }
-    .hero-stat-card.time {
-      background: #faf8f4;
-      border-color: #e6dfd3;
-      border-left-color: #0369a1;
-    }
-    .hero-stat-card.price {
-      background: #faf8f4;
-      border-color: #e6dfd3;
-      border-left-color: #c25e00;
+    .hero-stat-card:last-child {
+      border-left: 1px solid var(--border) !important;
+      padding-left: 14px;
+      padding-right: 0;
     }
     .hero-stat-label {
-      font-size: 12px;
-      font-weight: 800;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
       color: var(--ink-muted);
       margin-bottom: 2px;
     }
     .hero-stat-val {
-      font-size: 21px;
-      font-weight: 800;
-      line-height: 1.25;
-      color: var(--ink);
-      letter-spacing: -0.01em;
+      font-family: "Noto Serif TC", "Noto Sans TC", serif;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.28;
+      color: var(--ink) !important;
+      letter-spacing: 0;
     }
-    .hero-stat-card.time .hero-stat-val { color: #13445a; }
-    .hero-stat-card.price .hero-stat-val { color: #9a4a04; }
     .hero-stat-sub {
-      font-size: 11.5px;
+      font-size: 11.2px;
       color: var(--ink-muted);
-      font-weight: 600;
+      font-weight: 400;
       margin-top: 3px;
     }
     .transit-quick-btn {
@@ -557,23 +580,23 @@
       gap: 8px;
       width: 100%;
       text-align: left;
-      padding: 10px 12px;
-      border-radius: 11px;
-      border: 1.5px solid var(--border);
+      padding: 9px 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
       background: #fff;
       cursor: pointer;
       font-family: inherit;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       transition: 0.14s;
     }
     .transit-quick-btn:hover {
-      border-color: var(--torii);
-      background: #fff7f5;
+      border-color: var(--ink);
+      background: #FAF9F5;
     }
     .transit-quick-meta {
-      font-size: 14px;
-      font-weight: 800;
-      color: #9a4a04;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--torii);
       white-space: nowrap;
     }
 
@@ -581,7 +604,7 @@
     .food-layout {
       display: grid;
       grid-template-columns: 235px minmax(0, 1fr) 435px;
-      gap: 12px;
+      gap: 14px;
       align-items: start;
     }
     @media (max-width: 1280px) {
@@ -596,7 +619,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -612,8 +635,9 @@
     }
     .food-sidebar-head h3 {
       margin: 0;
+      font-family: "Noto Serif TC", "Noto Sans TC", serif;
       font-size: 13.5px;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--ink);
     }
     .food-mode-row {
@@ -623,7 +647,7 @@
       gap: 6px;
       font-size: 11.5px;
       color: var(--ink-muted);
-      font-weight: 700;
+      font-weight: 500;
     }
     .food-mode-row label {
       display: inline-flex;
@@ -633,13 +657,13 @@
     }
     .food-all-btn {
       width: 100%;
-      padding: 8px 10px;
-      border-radius: 9px;
-      border: 1.5px solid var(--border);
-      background: #faf7f2;
+      padding: 7px 10px;
+      border-radius: 5px;
+      border: 1px solid #DCD7CE;
+      background: #FAF9F5;
       color: var(--ink);
-      font-size: 12.5px;
-      font-weight: 800;
+      font-size: 12.2px;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -648,6 +672,10 @@
       transition: 0.14s;
     }
     .food-all-btn.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
       background: var(--torii);
       color: #fff;
       border-color: var(--torii);
@@ -663,14 +691,14 @@
     }
     .food-cat-btn {
       width: 100%;
-      padding: 7px 9px;
-      border-radius: 8px;
+      padding: 6px 9px;
+      border-radius: 5px;
       border: 1px solid transparent;
-      border-left: 3px solid transparent;
+      border-left: 2.5px solid transparent;
       background: transparent;
-      color: var(--ink);
+      color: #3F3F46;
       font-size: 12.2px;
-      font-weight: 700;
+      font-weight: 500;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -681,27 +709,27 @@
       transition: 0.13s;
     }
     .food-cat-btn:hover {
-      background: #faf7f2;
-      color: var(--theme-accent);
+      background: #FAF9F5;
+      color: var(--ink);
     }
     .food-cat-btn.active {
       background: var(--theme-soft);
       border-color: transparent;
-      border-left-color: var(--theme-accent);
-      color: var(--theme-accent);
-      font-weight: 800;
+      border-left-color: var(--torii);
+      color: var(--ink);
+      font-weight: 600;
     }
     .food-cat-count {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 1px 7px;
-      border-radius: 999px;
-      background: #f1ece4;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--surface-soft);
       color: var(--ink-muted);
       flex-shrink: 0;
     }
     .food-cat-btn.active .food-cat-count {
-      background: var(--theme-accent);
+      background: var(--torii);
       color: #fff;
     }
 
@@ -718,11 +746,11 @@
     }
     .panel-hover-hint {
       font-size: 11.5px;
-      font-weight: 700;
-      color: #64748b;
+      font-weight: 500;
+      color: var(--ink-muted);
       background: transparent;
       border: none;
-      border-bottom: 1px dashed #dfd7cb;
+      border-bottom: 1px dashed var(--border);
       padding: 0 2px 6px;
       border-radius: 0;
       line-height: 1.4;
@@ -737,31 +765,32 @@
     #attr-city-tabs .mini-chip {
       background: transparent;
       border: none;
-      border-bottom: 2.5px solid transparent;
-      border-radius: 6px 6px 0 0;
-      color: #64748b;
+      border-bottom: 2px solid transparent;
+      border-radius: 4px 4px 0 0;
+      color: var(--ink-muted);
       padding: 5px 9px;
+      font-weight: 500;
     }
     #attr-city-tabs .mini-chip:hover {
       color: var(--ink);
-      background: #faf8f4;
+      background: #FAF9F5;
     }
     #attr-city-tabs .mini-chip.active {
-      background: var(--theme-soft);
-      border-bottom-color: var(--theme-accent);
-      color: var(--theme-accent);
-      font-weight: 800;
+      background: transparent;
+      border-bottom-color: var(--torii);
+      color: var(--ink);
+      font-weight: 700;
     }
     .acc-city-block {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
     .acc-city-title {
       font-family: "Noto Serif TC", "Noto Sans TC", serif;
       font-size: 15px;
-      font-weight: 900;
+      font-weight: 700;
       color: var(--ink);
       background: transparent;
-      border-bottom: 2px solid var(--theme-accent);
+      border-bottom: 1.5px solid var(--ink);
       padding: 8px 2px 6px;
       border-radius: 0;
       margin-bottom: 8px;
@@ -770,22 +799,22 @@
       justify-content: space-between;
     }
     .acc-dist-group {
-      border: 1px solid #e5dec9;
-      border-left: 4px solid var(--theme-accent);
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      border-radius: 6px;
       margin-bottom: 8px;
       background: #fff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+      box-shadow: none;
       overflow: hidden;
     }
     .acc-dist-summary {
       list-style: none;
       cursor: pointer;
-      padding: 9px 11px;
-      font-size: 12.6px;
-      font-weight: 800;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-weight: 600;
       color: var(--ink);
-      background: #faf8f4;
+      background: #FAF9F5;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -795,19 +824,19 @@
     .acc-dist-summary::-webkit-details-marker { display: none; }
     .acc-dist-fly {
       font-size: 10.5px;
-      font-weight: 800;
-      color: #64748b;
-      background: transparent;
-      border: 1px solid #cbd5e1;
-      border-radius: 999px;
+      font-weight: 600;
+      color: #52525B;
+      background: #fff;
+      border: 1px solid #D4CFC7;
+      border-radius: 3px;
       padding: 1px 8px;
       cursor: pointer;
       font-family: inherit;
     }
     .acc-dist-fly:hover {
-      background: var(--theme-accent);
+      background: var(--ink);
       color: #fff;
-      border-color: var(--theme-accent);
+      border-color: var(--ink);
     }
     .acc-items-wrap {
       padding: 0;
@@ -817,24 +846,27 @@
     }
     .acc-item {
       border: none;
-      border-bottom: 1px solid #f1ece3;
+      border-bottom: 1px solid #F1EDE5;
       border-radius: 0;
       background: #fff;
       overflow: hidden;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: background 0.14s ease;
     }
     .acc-item:last-child { border-bottom: none; }
     .acc-item.open {
-      margin: 8px 6px;
-      border: 2px solid var(--theme-accent);
-      border-radius: 11px;
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.09);
+      margin: 0;
+      border: none;
+      border-top: 2px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      border-radius: 0;
+      background: #FAF9F5;
+      box-shadow: none;
     }
     .acc-row {
       width: 100%;
       border: none;
       background: transparent;
-      padding: 9px 11px;
+      padding: 9px 12px;
       cursor: pointer;
       text-align: left;
       font-family: inherit;
@@ -845,11 +877,11 @@
       transition: background 0.12s ease;
     }
     .acc-row:hover {
-      background: #faf8f4;
+      background: #FAF9F5;
     }
     .acc-item.open .acc-row {
-      background: var(--theme-soft);
-      border-bottom: 1px solid #e5dec9;
+      background: #F4F1EA;
+      border-bottom: 1px solid var(--border);
     }
     .acc-row-left {
       display: flex;
@@ -860,27 +892,28 @@
     }
     .acc-row-name {
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 500;
       color: var(--ink);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .acc-item.open .acc-row-name { font-weight: 700; }
     .acc-row-meta {
       display: inline-flex;
       align-items: center;
       gap: 5px;
       flex-shrink: 0;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 500;
       color: var(--ink-muted);
     }
     .acc-price-pill {
-      background: #fef3c7;
-      color: #92400e;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-weight: 800;
+      background: var(--surface-soft);
+      color: #3F3F46;
+      padding: 1.5px 6px;
+      border-radius: 3px;
+      font-weight: 600;
     }
     .acc-chev {
       font-size: 11px;
@@ -889,12 +922,12 @@
     }
     .acc-item.open .acc-chev {
       transform: rotate(180deg);
-      color: var(--theme-accent);
+      color: var(--torii);
     }
     .acc-body {
       display: none;
-      padding: 12px;
-      background: #fff;
+      padding: 14px;
+      background: #FAF9F5;
     }
     .acc-item.open .acc-body {
       display: block;
@@ -906,11 +939,11 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
       max-height: 700px;
       overflow-y: auto;
       position: sticky;
-      top: 60px;
+      top: 56px;
     }
     @media (max-width: 1024px) {
       .detail-panel { position: static; max-height: none; }
@@ -983,12 +1016,12 @@
 
     .detail-section { margin: 12px 0; }
     .detail-section h4 {
-      margin: 0 0 5px; font-size: 13.5px; font-weight: 800; color: var(--indigo);
+      margin: 0 0 5px; font-size: 12.5px; font-weight: 700; color: var(--ink); letter-spacing: 0.03em;
       display: flex; align-items: center; gap: 5px;
     }
-    .detail-text { margin: 0; font-size: 14px; color: #2b3137; line-height: 1.72; }
+    .detail-text { margin: 0; font-size: 13.5px; color: #3F3F46; font-weight: 400; line-height: 1.75; }
     .highlight-list {
-      margin: 4px 0 0; padding-left: 18px; font-size: 13.5px; color: #2b3137;
+      margin: 4px 0 0; padding-left: 18px; font-size: 13px; color: #3F3F46;
     }
     .highlight-list li { margin-bottom: 4px; }
 
@@ -996,26 +1029,26 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0;
     }
     .info-box {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 8px 10px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
       font-size: 12.2px;
     }
     .info-box strong { display: block; color: var(--ink-muted); font-size: 11px; margin-bottom: 2px; }
 
     .spot-note {
-      background: #fffbeb; border: 1px dashed #e2c26b; color: #7c5106;
-      padding: 9px 11px; border-radius: 10px; font-size: 13px; font-weight: 700; margin: 10px 0;
+      background: #F3EFE6; border: none; border-left: 2.5px solid var(--torii); color: #27272A;
+      padding: 8px 11px; border-radius: 0 4px 4px 0; font-size: 12.8px; font-weight: 500; margin: 10px 0;
     }
 
     .spot-actions { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border); }
     .btn-action {
-      flex: 1; text-align: center; padding: 9px 12px; border-radius: 10px; font-size: 13.5px; font-weight: 800;
-      cursor: pointer; font-family: inherit; border: 1.5px solid #3b82f6; background: #eff6ff; color: #1d4ed8;
+      flex: 1; text-align: center; padding: 8px 12px; border-radius: 4px; font-size: 12.8px; font-weight: 600;
+      cursor: pointer; font-family: inherit; border: 1px solid var(--ink); background: #FFFFFF; color: var(--ink);
       transition: 0.14s;
     }
-    .btn-action:hover { background: #dbeafe; text-decoration: none; }
-    .btn-action.fav { background: #fff1f2; border: 1.5px solid #f43f5e; color: #be123c; }
-    .btn-action.fav:hover { background: #ffe4e6; }
-    .btn-action.fav.saved { background: #e11d48; border-color: #e11d48; color: #fff; }
+    .btn-action:hover { background: var(--surface-soft); text-decoration: none; }
+    .btn-action.fav { background: #FFFFFF; border: 1px solid #D4CFC7; color: var(--ink); }
+    .btn-action.fav:hover { border-color: var(--torii); color: var(--torii); }
+    .btn-action.fav.saved { background: var(--torii); border-color: var(--torii); color: #FFFFFF; }
 
     details.closed-details {
       margin-top: 14px; background: #fff5f5; border: 1px solid #f2c6c6;
@@ -1045,17 +1078,17 @@
     .btn-secondary { background: #fff; color: var(--ink); border: 1px solid var(--border); padding: 8px 12px; border-radius: 9px; font-weight: 700; cursor: pointer; font-family: inherit; }
 
     .sync-pill {
-      font-size: 11.5px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 999px;
+      font-size: 11.2px;
+      font-weight: 500;
+      padding: 2px 4px;
+      border-radius: 4px;
       background: transparent;
-      color: #166534;
+      color: #52525B;
       border: none;
       white-space: nowrap;
     }
-    .sync-pill.syncing { background: #fef9c3; color: #854d0e; }
-    .sync-pill.offline { background: #fee2e2; color: #991b1b; }
+    .sync-pill.syncing { background: #FAF3E8; color: #92400E; padding: 2px 6px; }
+    .sync-pill.offline { background: #FDF2F0; color: #B8332A; padding: 2px 6px; }
     .dot-custom { background: #10b981; }
     .vb-custom { background: #d1fae5; color: #065f46; }
     .form-grid { display: flex; flex-direction: column; gap: 11px; }
@@ -1201,29 +1234,29 @@
         gap: 5px;
         background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: 11px;
-        padding: 5px 7px;
+        border-radius: 6px;
+        padding: 4px 6px;
         margin: 8px 0 2px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: none;
         min-width: 0;
         max-width: 100%;
         overscroll-behavior-x: contain;
       }
       .mview-label {
-        font-size: 11.5px;
-        font-weight: 800;
+        font-size: 11px;
+        font-weight: 600;
         color: var(--ink-muted);
         white-space: nowrap;
       }
       .mview-btn {
         flex: 1;
         border: 1px solid var(--border);
-        background: var(--bg);
+        background: #FAF9F5;
         color: var(--ink);
         padding: 5px 4px;
-        border-radius: 8px;
+        border-radius: 4px;
         font-size: 11.5px;
-        font-weight: 800;
+        font-weight: 600;
         cursor: pointer;
         font-family: inherit;
         white-space: nowrap;
@@ -1231,15 +1264,15 @@
         transition: 0.14s;
       }
       .mview-btn.active {
-        background: var(--indigo);
+        background: var(--ink);
         color: #fff;
-        border-color: var(--indigo);
-        box-shadow: 0 2px 6px rgba(27,77,99,0.22);
+        border-color: var(--ink);
+        box-shadow: none;
       }
       .mview-btn.drag-one {
-        background: #fff4e5;
-        color: #9a3412;
-        border-color: #fdba74;
+        background: #FAF3E8;
+        color: #92400E;
+        border-color: #D97706;
       }
 
       /* Natural single-page mobile scrolling (no trapped nested detail scrollbox) */
@@ -1281,14 +1314,15 @@
         align-items: center;
         justify-content: center;
         width: 100%;
-        margin-top: 7px;
-        padding: 8px 10px;
-        border-radius: 9px;
-        border: 1px solid #cbd5e1;
-        background: #eef4f7;
-        color: var(--indigo);
-        font-size: 12.5px;
-        font-weight: 800;
+        margin-top: 0;
+        padding: 9px 10px;
+        border-radius: 0 0 var(--radius) var(--radius);
+        border: none;
+        border-top: 1px solid var(--border);
+        background: #FAF9F5;
+        color: var(--ink);
+        font-size: 12.2px;
+        font-weight: 600;
         cursor: pointer;
         font-family: inherit;
       }
@@ -1297,15 +1331,15 @@
         right: 14px;
         bottom: 18px;
         z-index: 1500;
-        border: none;
+        border: 1px solid rgba(255,255,255,0.2);
         border-radius: 999px;
-        background: var(--indigo);
+        background: var(--ink);
         color: #fff;
-        padding: 9px 14px;
-        font-size: 12.5px;
-        font-weight: 800;
+        padding: 9px 15px;
+        font-size: 12px;
+        font-weight: 600;
         font-family: inherit;
-        box-shadow: 0 6px 20px rgba(15,23,42,0.32);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.26);
         cursor: pointer;
       }
       .mobile-back-map-fab.show {
@@ -1363,23 +1397,27 @@
       .food-cat-btn {
         width: auto;
         flex-shrink: 0;
-        padding: 5px 10px;
-        border-radius: 999px;
-        border: 1px solid var(--border);
+        padding: 4px 10px;
+        border-radius: 4px;
+        border: 1px solid #DCD7CE;
         background: #fff;
         font-size: 12px;
       }
       .food-cat-btn.active {
-        background: var(--theme-soft);
-        border-color: var(--theme-accent);
-        color: var(--theme-accent);
+        background: var(--ink);
+        border-color: var(--ink);
+        color: #fff;
+      }
+      .food-cat-btn.active .food-cat-count {
+        background: rgba(255,255,255,0.2);
+        color: #fff;
       }
     }
 
     @media (max-width: 768px) {
       .container { padding: 0 10px; }
-      .hero { padding: 8px 0; }
-      .hero h1 { font-size: 16.5px; }
+      .hero { padding: 10px 0; }
+      .hero h1 { font-size: 17px; }
       .hero-sub { display: none; }
       .trip-pills {
         flex-wrap: nowrap;
@@ -1392,29 +1430,30 @@
         -webkit-overflow-scrolling: touch;
       }
       .trip-pills::-webkit-scrollbar { display: none; }
-      .trip-pill { flex-shrink: 0; font-size: 11px; padding: 2px 8px; }
+      .trip-pill { flex-shrink: 0; font-size: 10.8px; padding: 2px 7px; }
 
-      .nav-bar { padding: 6px 0; gap: 5px; }
+      .nav-bar { padding: 0; gap: 0; }
       .tabs {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 4px;
-        padding: 3px;
+        gap: 0;
+        padding: 0;
         width: 100%;
         min-width: 0;
         max-width: 100%;
+        border-bottom: 1px solid var(--border);
       }
       .tab-btn {
         justify-content: center;
         min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
-        padding: 6px 3px;
-        font-size: 11.8px;
-        gap: 3px;
+        padding: 9px 3px;
+        font-size: 12px;
+        gap: 4px;
         white-space: nowrap;
       }
-      .tab-badge { font-size: 10px; padding: 1px 5px; }
+      .tab-badge { font-size: 10px; padding: 0 4px; }
       .tab-btn[data-tab="transit"] .tab-badge { display: none; }
       .acc-dist-fly { flex-shrink: 0; white-space: nowrap; }
       .nav-right {
@@ -1425,8 +1464,9 @@
         max-width: 100%;
         width: 100%;
         gap: 5px;
-        padding: 4px 6px;
-        border-radius: 10px;
+        padding: 6px 0;
+        background: transparent;
+        border: none;
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
       }
@@ -1437,7 +1477,7 @@
         padding: 4px 9px !important;
       }
 
-      .toolbar-row { margin-bottom: 6px; gap: 4px; padding: 5px 7px; border-radius: 10px; }
+      .toolbar-row { margin-bottom: 8px; gap: 4px; padding: 4px 0 8px; }
       .toolbar-row > span { display: none; }
       .jump-group {
         flex-wrap: nowrap;
@@ -1457,10 +1497,10 @@
         flex-shrink: 0;
         white-space: nowrap;
         padding: 5px 10px;
-        font-size: 12px;
+        font-size: 11.8px;
       }
 
-      .map-card { padding: 6px; }
+      .map-card { padding: 0; }
       .map-top-bar { gap: 5px; margin-bottom: 0; padding: 6px 8px; }
       .filter-strip {
         flex-wrap: nowrap;
@@ -1522,14 +1562,15 @@
     <div class="container">
       <div class="hero-inner">
         <div>
-          <h1>🗾 2027 關西 6天5夜 真實地圖探索指南</h1>
-          <p class="hero-sub">結合<strong>真實關西地圖</strong>與你的 Google 地圖收藏（含完整景點擴充、實景照片與深度介紹）！滑鼠滑過圖標看介紹，點一下可釘選。</p>
+          <div class="hero-kicker">KANSAI WINTER ARCHIVE · 2027.01.07 — 01.12</div>
+          <h1>關西六日行旅誌｜大阪・京都・宇治・奈良</h1>
+          <p class="hero-sub">結合<strong>關西實景地理座標</strong>與個人地圖收藏，點選圖釘即可瀏覽現地影像、詳細筆記與交通動線。</p>
         </div>
         <div class="trip-pills">
-          <span class="trip-pill">📅 2027/1/7–1/12 (6天5夜)</span>
-          <span class="trip-pill">👥 4人同行</span>
-          <span class="trip-pill">🏙️ 前3晚大阪（萩之茶屋）＋ ⛩️ 後2晚京都（二條城）</span>
-          <span class="trip-pill">❄️ 1月約 3–11°C</span>
+          <span class="trip-pill">2027/01/07–01/12 · 6天5夜</span>
+          <span class="trip-pill">4人同行</span>
+          <span class="trip-pill">大阪萩之茶屋 3泊 ＋ 京都二條城 2泊</span>
+          <span class="trip-pill">冬季氣溫 3–11°C</span>
         </div>
       </div>
     </div>
@@ -1540,22 +1581,22 @@
       <div class="nav-bar">
         <div class="tabs">
           <button class="tab-btn active" data-tab="attractions">
-            📍 景點真實地圖 <span class="tab-badge" id="badge-attr-total">0</span>
+            01 景點探索 <span class="tab-badge" id="badge-attr-total">0</span>
           </button>
           <button class="tab-btn" data-tab="transit">
-            🚆 交通真實路線圖 <span class="tab-badge">哪到哪對照</span>
+            02 交通動線 <span class="tab-badge">路線指南</span>
           </button>
           <button class="tab-btn" data-tab="food">
-            🍜 關西美食地圖 <span class="tab-badge" id="badge-food-total">0</span>
+            03 關西飲食 <span class="tab-badge" id="badge-food-total">0</span>
           </button>
         </div>
         <div class="nav-right">
-          <span class="sync-pill" id="cloud-sync-pill" title="4 人開啟同一網址皆自動同步最新景點與愛心">☁️ 4人雲端同步中</span>
-          <button class="jump-btn" id="switch-user-btn" title="設定你的暱稱，點愛心或新增地點時會顯示是誰加的">👤 我是：<span id="cur-user-name">Alan</span></button>
-          <button class="btn-primary" id="open-add-spot-btn">➕ 新增景點 / 美食</button>
-          <button class="jump-btn" id="toggle-basemap-btn">🗺️ 地圖底圖：簡潔觀光圖</button>
+          <span class="sync-pill" id="cloud-sync-pill" title="4 人開啟同一網址皆自動同步最新景點與愛心">● 4人雲端同步中</span>
+          <button class="jump-btn" id="switch-user-btn" title="設定你的暱稱，點愛心或新增地點時會顯示是誰加的">我是：<span id="cur-user-name">Alan</span></button>
+          <button class="btn-primary" id="open-add-spot-btn">＋ 新增地點</button>
+          <button class="jump-btn" id="toggle-basemap-btn">底圖：簡潔觀光圖</button>
           <button class="wish-open-btn" id="open-wishlist-btn">
-            ❤️ 大家想去/想吃 <span class="wish-count" id="wishlist-count">0</span>
+            ♥ 收藏清單 <span class="wish-count" id="wishlist-count">0</span>
           </button>
         </div>
       </div>
@@ -1564,31 +1605,31 @@
 
   <main class="container">
     <div class="mobile-view-bar" id="mobile-view-bar">
-      <span class="mview-label">📱 手機檢視：</span>
-      <button type="button" class="mview-btn active" data-mview="split">🔀 上圖下表</button>
-      <button type="button" class="mview-btn" data-mview="map">🗺️ 大地圖</button>
-      <button type="button" class="mview-btn" data-mview="list">📋 大列表</button>
-      <button type="button" class="mview-btn" id="mobile-drag-toggle-btn" title="切換單指滑網頁或單指移地圖">🖐️ 雙指移圖</button>
+      <span class="mview-label">檢視：</span>
+      <button type="button" class="mview-btn active" data-mview="split">上圖下表</button>
+      <button type="button" class="mview-btn" data-mview="map">放大地圖</button>
+      <button type="button" class="mview-btn" data-mview="list">放大清單</button>
+      <button type="button" class="mview-btn" id="mobile-drag-toggle-btn" title="切換單指滑網頁或單指移地圖">雙指移圖</button>
     </div>
 
     <!-- ==================== TAB 1: ATTRACTIONS REAL MAP ==================== -->
     <section class="tab-panel active" id="tab-attractions">
       <div class="toolbar-row">
         <div class="jump-group" id="attr-camera-btns">
-          <span style="font-size:12px;font-weight:800;color:var(--ink-muted);">快速飛往區域（連動右側列表）：</span>
-          <button class="jump-btn active" data-lat="34.77" data-lng="135.58" data-zoom="10" data-city="all" data-group="">🗾 關西全境</button>
-          <button class="jump-btn" data-lat="34.675" data-lng="135.505" data-zoom="13" data-city="大阪" data-group="">🏙️ 大阪全區</button>
-          <button class="jump-btn" data-lat="34.648" data-lng="135.505" data-zoom="15" data-city="大阪" data-group="🗼 新世界・天王寺・通天閣・住吉">🏨 大阪住宿・新世界</button>
-          <button class="jump-btn" data-lat="34.668" data-lng="135.501" data-zoom="15" data-city="大阪" data-group="🎯 難波・心齋橋・道頓堀・本町">🎯 大阪難波・心齋橋</button>
-          <button class="jump-btn" data-lat="34.700" data-lng="135.502" data-zoom="14" data-city="大阪" data-group="🌃 梅田・天滿・中之島">🌃 梅田・天滿</button>
-          <button class="jump-btn" data-lat="34.675" data-lng="135.500" data-zoom="13" data-city="大阪" data-group="🏯 大阪城・大阪港海遊館・灣區">🏯 大阪城・大阪港</button>
-          <button class="jump-btn" data-lat="35.012" data-lng="135.755" data-zoom="12" data-city="京都" data-group="">⛩️ 京都全區</button>
-          <button class="jump-btn" data-lat="35.012" data-lng="135.756" data-zoom="15" data-city="京都" data-group="🛍️ 河原町・錦市場・烏丸・中京">🏨 京都住宿・二條/烏丸</button>
-          <button class="jump-btn" data-lat="35.001" data-lng="135.778" data-zoom="15" data-city="京都" data-group="👘 清水寺・祇園・東山">👘 清水寺・祇園</button>
-          <button class="jump-btn" data-lat="35.012" data-lng="135.676" data-zoom="14" data-city="京都" data-group="🎋 嵐山・嵯峨野・鈴蟲寺・洛西">🎋 嵐山・鈴蟲寺</button>
-          <button class="jump-btn" data-lat="35.033" data-lng="135.724" data-zoom="14" data-city="京都" data-group="✨ 金閣寺・龍安寺・北野・上京">✨ 金閣・洛北</button>
-          <button class="jump-btn" data-lat="34.685" data-lng="135.840" data-zoom="15" data-city="奈良" data-group="🦌 奈良公園・東大寺・春日大社">🦌 奈良公園</button>
-          <button class="jump-btn" data-lat="34.890" data-lng="135.802" data-zoom="14" data-city="宇治" data-group="🍵 宇治 平等院・任天堂博物館">🍵 宇治</button>
+          <span style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-right:2px;">區域索引</span>
+          <button class="jump-btn active" data-lat="34.77" data-lng="135.58" data-zoom="10" data-city="all" data-group="">關西全境</button>
+          <button class="jump-btn" data-lat="34.675" data-lng="135.505" data-zoom="13" data-city="大阪" data-group="">大阪全區</button>
+          <button class="jump-btn" data-lat="34.648" data-lng="135.505" data-zoom="15" data-city="大阪" data-group="🗼 新世界・天王寺・通天閣・住吉">大阪住宿・新世界</button>
+          <button class="jump-btn" data-lat="34.668" data-lng="135.501" data-zoom="15" data-city="大阪" data-group="🎯 難波・心齋橋・道頓堀・本町">難波・心齋橋</button>
+          <button class="jump-btn" data-lat="34.700" data-lng="135.502" data-zoom="14" data-city="大阪" data-group="🌃 梅田・天滿・中之島">梅田・天滿</button>
+          <button class="jump-btn" data-lat="34.675" data-lng="135.500" data-zoom="13" data-city="大阪" data-group="🏯 大阪城・大阪港海遊館・灣區">大阪城・大阪港</button>
+          <button class="jump-btn" data-lat="35.012" data-lng="135.755" data-zoom="12" data-city="京都" data-group="">京都全區</button>
+          <button class="jump-btn" data-lat="35.012" data-lng="135.756" data-zoom="15" data-city="京都" data-group="🛍️ 河原町・錦市場・烏丸・中京">京都住宿・二條/烏丸</button>
+          <button class="jump-btn" data-lat="35.001" data-lng="135.778" data-zoom="15" data-city="京都" data-group="👘 清水寺・祇園・東山">清水寺・祇園</button>
+          <button class="jump-btn" data-lat="35.012" data-lng="135.676" data-zoom="14" data-city="京都" data-group="🎋 嵐山・嵯峨野・鈴蟲寺・洛西">嵐山・鈴蟲寺</button>
+          <button class="jump-btn" data-lat="35.033" data-lng="135.724" data-zoom="14" data-city="京都" data-group="✨ 金閣寺・龍安寺・北野・上京">金閣・洛北</button>
+          <button class="jump-btn" data-lat="34.685" data-lng="135.840" data-zoom="15" data-city="奈良" data-group="🦌 奈良公園・東大寺・春日大社">奈良公園</button>
+          <button class="jump-btn" data-lat="34.890" data-lng="135.802" data-zoom="14" data-city="宇治" data-group="🍵 宇治 平等院・任天堂博物館">宇治</button>
         </div>
       </div>
 
@@ -1597,17 +1638,17 @@
           <div class="map-top-bar">
             <div class="filter-strip" id="attr-src-filter">
               <button class="mini-chip active" data-val="all">全部地點</button>
-              <button class="mini-chip" data-val="both">🔥 雙重推薦</button>
-              <button class="mini-chip" data-val="mine">⭐ 我的地圖</button>
-              <button class="mini-chip" data-val="web">🌐 網路必去補充</button>
+              <button class="mini-chip" data-val="both">雙重推薦</button>
+              <button class="mini-chip" data-val="mine">我的收藏</button>
+              <button class="mini-chip" data-val="web">推薦補充</button>
             </div>
             <div class="filter-strip">
-              <button class="mini-chip active" id="attr-label-toggle">🏷️ 自動標籤（放大顯示地名）</button>
-              <span style="font-size:11.5px;font-weight:700;color:var(--ink-muted);">🏨住宿 🔴雙重 🟠自存 🔵推薦</span>
+              <button class="mini-chip active" id="attr-label-toggle">自動標籤（放大顯示地名）</button>
+              <span style="font-size:11px;font-weight:500;">●雙重 ●自存 ●推薦</span>
             </div>
           </div>
           <div class="map-box" id="attr-map"></div>
-          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">⬇️ 滑到下方看詳細介紹與實景照片</button>
+          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">↓ 前往下方詳細介紹與實景照片</button>
         </div>
 
         <aside class="detail-panel" id="attr-detail-panel"></aside>
@@ -1618,24 +1659,24 @@
     <section class="tab-panel" id="tab-transit">
       <div class="toolbar-row">
         <div class="jump-group" id="transit-filter">
-          <button class="jump-btn active" data-mode="all">🗺️ 顯示全部路線與住宿</button>
-          <button class="jump-btn" data-mode="airport">✈️ 關西機場 ⇄ 大阪／京都</button>
-          <button class="jump-btn" data-mode="city">🚄 大阪 ➔ 京都 ／ 奈良・宇治</button>
-          <button class="jump-btn" data-mode="hotels">🏨 看我們的大阪・京都住宿</button>
+          <button class="jump-btn active" data-mode="all">顯示全部路線與住宿</button>
+          <button class="jump-btn" data-mode="airport">關西機場 ⇄ 大阪／京都</button>
+          <button class="jump-btn" data-mode="city">大阪 ➔ 京都 ／ 奈良・宇治</button>
+          <button class="jump-btn" data-mode="hotels">大阪・京都兩間住宿位置</button>
         </div>
-        <span style="font-size:12.5px;font-weight:700;color:var(--indigo);">👆 點右側「哪到哪」路線或地圖色線，兩邊都會同步展開大字體時間與票價！</span>
+        <span style="font-size:12px;font-weight:500;color:var(--ink-muted);">點選右側路線或地圖色線，兩側同步展開車程與票價</span>
       </div>
 
       <div class="split-layout">
         <div class="map-card">
           <div class="map-top-bar">
-            <div class="filter-strip" style="font-size:12px;font-weight:700;color:var(--ink-muted);">
-              <span>🏨 我們兩間住宿</span> · <span>🟠 南海電鐵</span> · <span>🔵 JR路線</span> · <span>🟣 阪急電鐵</span> · <span>🟢 京阪電車</span> · <span>🔴 近鐵電車</span>
+            <div class="filter-strip" style="font-size:11.5px;font-weight:500;">
+              <span>住宿兩館</span> · <span>南海</span> · <span>JR</span> · <span>阪急</span> · <span>京阪</span> · <span>近鐵</span>
             </div>
-            <button class="mini-chip active" id="transit-label-toggle">🏷️ 自動縮放標籤（拉遠自動精簡）</button>
+            <button class="mini-chip active" id="transit-label-toggle">自動縮放標籤（拉遠自動精簡）</button>
           </div>
           <div class="map-box" id="transit-map"></div>
-          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">⬇️ 滑到下方看詳細介紹與實景照片</button>
+          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">↓ 前往下方路線時間與票價表</button>
         </div>
 
         <aside class="detail-panel" id="transit-detail-panel"></aside>
@@ -1646,33 +1687,33 @@
     <section class="tab-panel" id="tab-food">
       <div class="toolbar-row">
         <div class="jump-group" id="food-camera-btns">
-          <span style="font-size:12px;font-weight:800;color:var(--ink-muted);">美食熱區飛往（同步右側清單）：</span>
-          <button class="jump-btn active" data-lat="34.81" data-lng="135.63" data-zoom="10" data-zone="" data-area="all" data-label="">🗾 關西美食全覽</button>
-          <button class="jump-btn" data-lat="34.650" data-lng="135.505" data-zoom="15" data-zone="34.635,34.660,135.490,135.518" data-area="大阪" data-label="🏨 大阪住宿周邊(新世界/木津)">🏨 大阪住宿周邊(新世界)</button>
-          <button class="jump-btn" data-lat="34.670" data-lng="135.502" data-zoom="15" data-zone="34.661,34.685,135.490,135.510" data-area="大阪" data-label="🔥 難波・心齋橋・道頓堀">🔥 難波・心齋橋</button>
-          <button class="jump-btn" data-lat="34.702" data-lng="135.503" data-zoom="14" data-zone="34.688,34.735,135.480,135.538" data-area="大阪" data-label="🏙️ 梅田・中崎町・天滿">🏙️ 梅田・中崎町・天滿</button>
-          <button class="jump-btn" data-lat="34.665" data-lng="135.506" data-zoom="16" data-zone="34.660,34.672,135.502,135.515" data-area="大阪" data-label="🐟 黑門市場・日本橋">🐟 黑門・日本橋</button>
-          <button class="jump-btn" data-lat="35.012" data-lng="135.756" data-zoom="15" data-zone="35.002,35.025,135.740,135.764" data-area="京都" data-label="🏨 京都住宿周邊(二條/烏丸)">🏨 京都住宿周邊(二條/烏丸)</button>
-          <button class="jump-btn" data-lat="35.006" data-lng="135.769" data-zoom="15" data-zone="34.999,35.014,135.760,135.778" data-area="京都" data-label="🍢 京都河原町・錦市場・祇園">🍢 京都河原町・祇園</button>
-          <button class="jump-btn" data-lat="34.997" data-lng="135.781" data-zoom="16" data-zone="34.992,35.004,135.776,135.787" data-area="京都" data-label="🏮 京都清水坂・八坂">🏮 京都清水坂</button>
-          <button class="jump-btn" data-lat="35.015" data-lng="135.677" data-zoom="15" data-zone="35.005,35.025,135.665,135.690" data-area="京都" data-label="🎋 京都嵐山">🎋 京都嵐山</button>
-          <button class="jump-btn" data-lat="34.683" data-lng="135.832" data-zoom="15" data-zone="34.675,34.695,135.820,135.855" data-area="奈良" data-label="🦌 奈良美食">🦌 奈良美食</button>
+          <span style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-right:2px;">食域索引</span>
+          <button class="jump-btn active" data-lat="34.81" data-lng="135.63" data-zoom="10" data-zone="" data-area="all" data-label="">關西飲食全覽</button>
+          <button class="jump-btn" data-lat="34.650" data-lng="135.505" data-zoom="15" data-zone="34.635,34.660,135.490,135.518" data-area="大阪" data-label="大阪住宿周邊(新世界/木津)">大阪住宿・新世界</button>
+          <button class="jump-btn" data-lat="34.670" data-lng="135.502" data-zoom="15" data-zone="34.661,34.685,135.490,135.510" data-area="大阪" data-label="難波・心齋橋・道頓堀">難波・心齋橋</button>
+          <button class="jump-btn" data-lat="34.702" data-lng="135.503" data-zoom="14" data-zone="34.688,34.735,135.480,135.538" data-area="大阪" data-label="梅田・中崎町・天滿">梅田・中崎町・天滿</button>
+          <button class="jump-btn" data-lat="34.665" data-lng="135.506" data-zoom="16" data-zone="34.660,34.672,135.502,135.515" data-area="大阪" data-label="黑門市場・日本橋">黑門・日本橋</button>
+          <button class="jump-btn" data-lat="35.012" data-lng="135.756" data-zoom="15" data-zone="35.002,35.025,135.740,135.764" data-area="京都" data-label="京都住宿周邊(二條/烏丸)">京都住宿・二條/烏丸</button>
+          <button class="jump-btn" data-lat="35.006" data-lng="135.769" data-zoom="15" data-zone="34.999,35.014,135.760,135.778" data-area="京都" data-label="京都河原町・錦市場・祇園">京都河原町・祇園</button>
+          <button class="jump-btn" data-lat="34.997" data-lng="135.781" data-zoom="16" data-zone="34.992,35.004,135.776,135.787" data-area="京都" data-label="京都清水坂・八坂">京都清水坂</button>
+          <button class="jump-btn" data-lat="35.015" data-lng="135.677" data-zoom="15" data-zone="35.005,35.025,135.665,135.690" data-area="京都" data-label="京都嵐山">京都嵐山</button>
+          <button class="jump-btn" data-lat="34.683" data-lng="135.832" data-zoom="15" data-zone="34.675,34.695,135.820,135.855" data-area="奈良" data-label="奈良美食">奈良</button>
         </div>
       </div>
 
       <div class="food-layout">
         <aside class="food-cat-sidebar">
           <div class="food-sidebar-head">
-            <h3>🏷️ 依你的分類點選顯示</h3>
+            <h3>料理分類</h3>
           </div>
           <div class="food-mode-row">
-            <span>點選分類篩選地圖：</span>
+            <span>篩選方式：</span>
             <label title="開啟後可同時勾選多個分類疊加在地圖上">
               <input type="checkbox" id="food-multi-mode" /> 複選疊加
             </label>
           </div>
           <button class="food-all-btn active" id="food-all-btn">
-            <span>🌟 全部美食顯示</span>
+            <span>全部美食</span>
             <span id="food-all-count">0</span>
           </button>
           <div class="food-cat-list" id="food-cat-filter"></div>
@@ -1686,12 +1727,12 @@
               <button class="mini-chip" data-area="京都">京都</button>
               <button class="mini-chip" data-area="奈良">奈良</button>
               <button class="mini-chip" data-area="神戶・其他">神戶/宇治</button>
-              <span id="food-active-summary" style="font-size:12px;font-weight:800;color:var(--torii);margin-left:4px;"></span>
+              <span id="food-active-summary" style="font-size:11.5px;font-weight:600;margin-left:4px;"></span>
             </div>
-            <button class="mini-chip" id="food-label-toggle">🏷️ 自動顯示店名</button>
+            <button class="mini-chip" id="food-label-toggle">自動顯示店名</button>
           </div>
           <div class="map-box" id="food-map"></div>
-          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">⬇️ 滑到下方看詳細介紹與實景照片</button>
+          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">↓ 前往下方餐廳清單與詳情</button>
         </div>
 
         <aside class="detail-panel">
@@ -3743,7 +3784,7 @@
       osm: { url:"https://tile.openstreetmap.org/{z}/{x}/{y}.png", attr:"&copy; OpenStreetMap contributors", maxNativeZoom:19, maxZoom:19 }
     };
     let useDetailedOsm = false;
-    document.getElementById("toggle-basemap-btn").textContent = "🗺️ 地圖底圖：簡潔觀光圖";
+    document.getElementById("toggle-basemap-btn").textContent = "底圖：簡潔觀光圖";
 
     function createMap(elId, center, zoom) {
       const m = L.map(elId, { zoomControl:true }).setView(center, zoom);
@@ -3789,7 +3830,7 @@
         obj.tileLayer.options.maxZoom = cfg.maxZoom;
         document.getElementById(obj.elId).classList.toggle("clean-basemap", !useDetailedOsm);
       });
-      document.getElementById("toggle-basemap-btn").textContent = useDetailedOsm ? "🗺️ 地圖底圖：詳細街道圖 (OSM)" : "🗺️ 地圖底圖：簡潔觀光圖";
+      document.getElementById("toggle-basemap-btn").textContent = useDetailedOsm ? "底圖：詳細街道 (OSM)" : "底圖：簡潔觀光圖";
     });
 
     // ==================== REGION BOXES OVERLAY (大阪/京都/宇治/奈良 & 次分區) ====================
