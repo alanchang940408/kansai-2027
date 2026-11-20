@@ -71,43 +71,71 @@
     a { color: #111111; text-decoration: none; }
     .container { max-width: 1440px; margin: 0 auto; padding: 0 18px; }
 
-    /* Hero — Compact Light Editorial Masthead (Pinterest / Airbnb Inspiration) */
+    /* Hero — Casa BRUTUS / Kinfolk Japanese Editorial Magazine Masthead */
     .hero {
       background: #FFFFFF;
       color: var(--ink);
-      padding: 14px 0 12px;
-      border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+      padding: 18px 0 16px;
+      border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+    }
+    .hero-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+    .hero-brand { display: flex; align-items: stretch; gap: 14px; min-width: 0; }
+    .hero-stamp {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      font-family: "Noto Serif TC", serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.22em;
+      color: #FFFFFF;
+      background: #111111;
+      padding: 6px 5px;
+      border-radius: 4px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
     .hero-kicker {
       font-size: 10.5px;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: #E60023;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
-    .hero-inner { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
     .hero h1 {
       margin: 0;
-      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
-      font-size: clamp(19px, 2.2vw, 24px);
-      font-weight: 800;
-      letter-spacing: -0.01em;
+      font-family: "Noto Serif TC", "PingFang TC", serif;
+      font-size: clamp(20px, 2.5vw, 30px);
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      line-height: 1.22;
       color: #111111;
     }
-    .hero-sub { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-muted); font-weight: 400; }
+    .hero-sub { margin: 4px 0 0; font-size: 12.5px; color: var(--ink-muted); font-weight: 400; }
     .hero-sub strong { color: #111111; font-weight: 600; }
-    .trip-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .trip-pills { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
     .trip-pill {
-      background: #F4F4F2;
-      border: none;
-      color: #3F3F46;
-      padding: 5px 11px;
-      border-radius: 999px;
+      background: #FAF9F6;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      color: #111111;
+      padding: 6px 12px;
+      border-radius: 12px;
       font-size: 11.2px;
       font-weight: 600;
-      letter-spacing: 0.01em;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1px;
+      text-align: left;
+      font-family: inherit;
     }
+    button.trip-pill { cursor: pointer; transition: border-color 0.14s ease, transform 0.14s ease, box-shadow 0.14s ease; }
+    button.trip-pill:hover { border-color: #111111; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); }
+    .trip-pill-kicker { font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; color: #717171; text-transform: uppercase; }
+    .trip-pill-main { font-size: 11.8px; font-weight: 700; color: #111111; }
 
     /* Tier 1 Sticky App Bar — Segmented Tabs Track + Distinct Soft Actions + Pinterest Red Save CTA */
     .nav-wrap {
@@ -258,12 +286,43 @@
       background: #FFFFFF;
     }
 
-    /* Main Split Layout */
+    /* Main Split Layout — Airbnb / Mindtrip Full-Height Split Screen on Desktop */
     .split-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.32fr) minmax(380px, 0.98fr);
-      gap: 16px;
+      grid-template-columns: minmax(430px, 1.06fr) minmax(0, 1.14fr);
+      gap: 20px;
       align-items: start;
+    }
+    @media (min-width: 1025px) {
+      .split-layout .detail-panel { order: 1; }
+      .split-layout .map-card {
+        order: 2;
+        position: sticky;
+        top: 66px;
+        height: calc(100vh - 82px);
+        border-radius: 24px;
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.08);
+      }
+      .split-layout .map-box,
+      .food-layout .map-box {
+        height: 100% !important;
+        border-radius: 24px;
+      }
+      .map-card { position: relative; }
+      .map-top-bar {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        z-index: 450;
+        background: rgba(255, 255, 255, 0.90) !important;
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.72) !important;
+        border-radius: 999px !important;
+        padding: 6px 12px !important;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.11);
+      }
+      .map-card .leaflet-top { top: 62px; }
     }
     @media (max-width: 1024px) {
       .split-layout { grid-template-columns: minmax(0, 1fr); }
@@ -592,18 +651,70 @@
       white-space: nowrap;
     }
 
-    /* Tab 3: Food Sidebar Category Filter + 3-Col Layout */
+    /* Tab 3: Food Category Pill Bar + Side-by-Side Split-Screen Feed & Sticky Map */
     .food-layout {
       display: grid;
-      grid-template-columns: 235px minmax(0, 1fr) 435px;
-      gap: 14px;
+      grid-template-columns: minmax(430px, 1.06fr) minmax(0, 1.14fr);
+      gap: 14px 20px;
       align-items: start;
     }
-    @media (max-width: 1280px) {
-      .food-layout { grid-template-columns: 220px minmax(0, 1fr); }
-      .food-layout .detail-panel { grid-column: 1 / -1; position: static; max-height: 620px; }
+    @media (min-width: 1025px) {
+      .food-layout .food-cat-sidebar {
+        grid-column: 1;
+        grid-row: 1;
+        max-height: none;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 10px;
+        padding: 12px 14px;
+        border-radius: 18px;
+      }
+      .food-layout .food-sidebar-head {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-right: auto;
+      }
+      .food-layout .food-all-btn {
+        width: auto;
+        padding: 5px 12px;
+      }
+      .food-layout .food-cat-list {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-height: none;
+        overflow: visible;
+        gap: 6px;
+        padding-right: 0;
+      }
+      .food-layout .food-cat-btn {
+        width: auto;
+        border-radius: 999px;
+        background: #EFEFEF;
+        padding: 5px 11px;
+        font-size: 11.8px;
+      }
+      .food-layout .food-cat-btn.active {
+        background: #111111;
+        color: #FFFFFF;
+      }
+      .food-layout .detail-panel {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .food-layout .map-card {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        position: sticky;
+        top: 66px;
+        height: calc(100vh - 82px);
+        border-radius: 24px;
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.08);
+      }
     }
-    @media (max-width: 820px) {
+    @media (max-width: 1024px) {
       .food-layout { grid-template-columns: minmax(0, 1fr); }
     }
     .food-cat-sidebar {
@@ -717,16 +828,36 @@
       color: #FFFFFF;
     }
 
-    /* Right Panel: Pinterest Visual Pin Card Feed + City/Category Groups */
+    /* Right Panel: Editorial Chapter Sections + Pinterest Visual Pin Card Feed */
     .panel-sticky-bar {
       position: sticky;
       top: -16px;
-      z-index: 5;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(10px);
-      margin: -16px -16px 12px -16px;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      margin: -16px -16px 14px -16px;
       padding: 10px 16px;
       border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+    }
+    @media (min-width: 1025px) {
+      .detail-panel {
+        position: static !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+      .panel-sticky-bar {
+        position: sticky;
+        top: 66px;
+        margin: 0 0 16px 0;
+        padding: 10px 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(17, 17, 17, 0.07);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      }
     }
     .panel-hover-hint {
       font-size: 11.5px;
@@ -746,7 +877,7 @@
       align-items: center;
     }
     #attr-city-tabs .mini-chip {
-      background: #F1F1EF;
+      background: #EFEFEF;
       border: none;
       border-radius: 999px;
       color: #444444;
@@ -755,7 +886,7 @@
     }
     #attr-city-tabs .mini-chip:hover {
       color: #111111;
-      background: #E5E5E2;
+      background: #E2E2E0;
     }
     #attr-city-tabs .mini-chip.active {
       background: #111111;
@@ -778,79 +909,88 @@
     .panel-mode-toggle:hover { background: #E2E2E0; }
     .panel-mode-toggle.active { background: #111111; color: #FFFFFF; }
     .acc-city-block {
-      margin-bottom: 18px;
+      margin-bottom: 24px;
     }
     .acc-city-title {
-      font-family: "Noto Sans TC", "PingFang TC", sans-serif;
-      font-size: 15px;
-      font-weight: 800;
+      font-family: "Noto Serif TC", "PingFang TC", serif;
+      font-size: 18px;
+      font-weight: 900;
       color: #111111;
       background: transparent;
       border-bottom: none;
-      padding: 6px 2px;
+      padding: 4px 2px 8px;
       border-radius: 0;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .acc-dist-group {
-      border: 1px solid rgba(17, 17, 17, 0.06);
-      border-radius: 18px;
-      margin-bottom: 12px;
-      background: #FFFFFF;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-      overflow: hidden;
+      border: none;
+      border-radius: 0;
+      margin-bottom: 22px;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
     }
     .acc-dist-summary {
       list-style: none;
       cursor: pointer;
-      padding: 11px 14px;
-      font-size: 13px;
-      font-weight: 700;
+      padding: 10px 2px;
+      margin-bottom: 12px;
+      font-family: "Noto Serif TC", "Noto Sans TC", serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
       color: #111111;
-      background: #FFFFFF;
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
       user-select: none;
-      border-bottom: 1px solid transparent;
+      border-bottom: 2px solid #111111;
     }
     .acc-dist-group[open] .acc-dist-summary {
-      border-bottom-color: rgba(17, 17, 17, 0.06);
-      background: #FFFFFF;
+      border-bottom-color: #111111;
+      background: transparent;
     }
     .acc-dist-summary::-webkit-details-marker { display: none; }
     .acc-dist-fly {
       font-size: 11px;
       font-weight: 700;
       color: #222222;
-      background: #EFEFEF;
-      border: none;
+      background: #FFFFFF;
+      border: 1px solid rgba(17, 17, 17, 0.12);
       border-radius: 999px;
-      padding: 4px 10px;
+      padding: 4px 11px;
       cursor: pointer;
-      font-family: inherit;
+      font-family: "Noto Sans TC", sans-serif;
     }
     .acc-dist-fly:hover {
       background: #111111;
       color: #FFFFFF;
+      border-color: #111111;
     }
     .acc-items-wrap {
       padding: 0;
       display: flex;
       flex-direction: column;
       gap: 0;
+      background: #FFFFFF;
+      border-radius: 16px;
+      overflow: hidden;
     }
-    /* Pinterest 2-Column Visual Pin Card Grid for Attractions & Food */
+    /* Pinterest + Editorial Magazine 2-Column Pin Card Grid */
     .detail-panel:not(.compact-list-mode) #attr-list-body .acc-items-wrap,
     .detail-panel:not(.compact-list-mode) #food-list-body .acc-items-wrap {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 11px;
-      padding: 12px;
-      background: #FAF9F6;
+      gap: 14px;
+      padding: 2px 0;
+      background: transparent;
+      border-radius: 0;
+      overflow: visible;
     }
     .acc-item {
       border: none;
@@ -858,29 +998,29 @@
       border-radius: 0;
       background: #FFFFFF;
       overflow: hidden;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.20s ease, box-shadow 0.20s ease;
     }
     .acc-item:last-child { border-bottom: none; }
     .detail-panel:not(.compact-list-mode) #attr-list-body .acc-item,
     .detail-panel:not(.compact-list-mode) #food-list-body .acc-item {
       border: 1px solid rgba(17, 17, 17, 0.06);
-      border-radius: 16px;
+      border-radius: 18px;
       background: #FFFFFF;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.04);
       display: flex;
       flex-direction: column;
     }
     .detail-panel:not(.compact-list-mode) #attr-list-body .acc-item:not(.open):hover,
     .detail-panel:not(.compact-list-mode) #food-list-body .acc-item:not(.open):hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
     }
     .detail-panel:not(.compact-list-mode) #attr-list-body .acc-item.open,
     .detail-panel:not(.compact-list-mode) #food-list-body .acc-item.open {
       grid-column: 1 / -1;
       border: 1.5px solid #111111;
-      border-radius: 18px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
+      border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
       background: #FFFFFF;
     }
     .acc-item.open {
@@ -893,7 +1033,7 @@
     .pin-cover-wrap {
       position: relative;
       width: 100%;
-      height: 136px;
+      height: 168px;
       background: linear-gradient(135deg, #F1EFEA 0%, #E6E2DA 100%);
       overflow: hidden;
       cursor: pointer;
@@ -917,12 +1057,12 @@
       background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.65), transparent 60%), linear-gradient(145deg, #F3F1EC 0%, #E7E3DA 100%);
     }
     .pin-cover-fallback .pin-fb-ico {
-      font-size: 26px;
+      font-size: 28px;
       line-height: 1;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
     }
     .pin-cover-fallback .pin-fb-area {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #666666;
       letter-spacing: 0.03em;
@@ -942,8 +1082,23 @@
     .pin-cover-grad {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.34) 100%);
+      background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.42) 100%);
       z-index: 1;
+      pointer-events: none;
+    }
+    .pin-src-tag {
+      position: absolute;
+      top: 9px;
+      left: 9px;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(6px);
+      color: #111111;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.10);
       pointer-events: none;
     }
     .pin-heart-btn {
@@ -984,11 +1139,59 @@
       font-weight: 600;
       padding: 2px 8px;
       border-radius: 999px;
-      max-width: calc(100% - 16px);
+      max-width: calc(100% - 68px);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       pointer-events: none;
+    }
+    .pin-rating-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      color: #111111;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .pin-card-excerpt {
+      display: none;
+      margin: 2px 0 4px;
+      font-size: 11.5px;
+      line-height: 1.48;
+      color: #666666;
+      overflow: hidden;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .detail-panel:not(.compact-list-mode) .acc-item:not(.open) .pin-card-excerpt {
+      display: -webkit-box;
+    }
+    .pin-card-footer {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding-top: 6px;
+      margin-top: 2px;
+      border-top: 1px dashed rgba(17, 17, 17, 0.08);
+      font-size: 10.5px;
+      color: #717171;
+      font-weight: 600;
+    }
+    .detail-panel:not(.compact-list-mode) .acc-item:not(.open) .pin-card-footer {
+      display: flex;
+    }
+    .pin-card-meta-pill {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
     }
     .acc-row {
       width: 100%;
@@ -1008,8 +1211,8 @@
     .detail-panel:not(.compact-list-mode) #food-list-body .acc-item:not(.open) .acc-row {
       flex-direction: column;
       align-items: stretch;
-      gap: 5px;
-      padding: 10px 11px 11px;
+      gap: 4px;
+      padding: 11px 13px 12px;
       flex: 1;
       justify-content: space-between;
     }
@@ -1024,15 +1227,13 @@
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      font-size: 12.8px;
-      font-weight: 700;
-      line-height: 1.35;
+      font-size: 13.5px;
+      font-weight: 800;
+      line-height: 1.32;
     }
     .detail-panel:not(.compact-list-mode) #attr-list-body .acc-item:not(.open) .acc-row-meta,
     .detail-panel:not(.compact-list-mode) #food-list-body .acc-item:not(.open) .acc-row-meta {
-      width: 100%;
-      justify-content: space-between;
-      font-size: 10.8px;
+      display: none;
     }
     .acc-row:hover {
       background: #FAF9F6;
@@ -1091,7 +1292,7 @@
       display: block;
     }
 
-    /* Right Detailed Rich Panel */
+    /* Right Detailed Rich Panel (Mobile card styling; desktop becomes free-scrolling feed above) */
     .detail-panel {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1660,10 +1861,13 @@
 
       .detail-panel:not(.compact-list-mode) #attr-list-body .acc-items-wrap,
       .detail-panel:not(.compact-list-mode) #food-list-body .acc-items-wrap {
-        gap: 9px;
-        padding: 9px;
+        gap: 10px;
+        padding: 4px 0;
       }
-      .pin-cover-wrap { height: 114px; }
+      .pin-cover-wrap { height: 126px; }
+      .pin-src-tag { top: 6px; left: 6px; font-size: 9.5px; padding: 2px 6px; }
+      .pin-rating-tag { bottom: 6px; right: 6px; font-size: 9.5px; padding: 2px 6px; }
+      .pin-card-excerpt { font-size: 11px; -webkit-line-clamp: 2; }
 
       .map-card { padding: 0; }
       .map-top-bar { gap: 5px; margin-bottom: 0; padding: 6px 8px; }
@@ -1726,16 +1930,27 @@
   <header class="hero">
     <div class="container">
       <div class="hero-inner">
-        <div>
-          <div class="hero-kicker">KANSAI 2027 · PINBOOK</div>
-          <h1>關西六日行旅誌｜大阪・京都・宇治・奈良</h1>
-          <p class="hero-sub">結合<strong>關西實景地理座標</strong>與圖卡收藏牆，點選圖卡或地圖圖標即可同步檢視影像、詳細筆記與交通動線。</p>
+        <div class="hero-brand">
+          <div class="hero-stamp" aria-hidden="true">関西冬旅</div>
+          <div>
+            <div class="hero-kicker">ISSUE 01 · KANSAI WINTER JOURNAL · 2027.01.07 — 01.12</div>
+            <h1>關西六日行旅誌｜大阪・京都・宇治・奈良</h1>
+            <p class="hero-sub">左側流覽<strong>視覺靈感圖卡牆</strong>，右側鎖定全螢幕即時地理座標，點擊飯店、景點或餐廳即時連動導航。</p>
+          </div>
         </div>
         <div class="trip-pills">
-          <span class="trip-pill">2027/01/07–01/12 · 6天5夜</span>
-          <span class="trip-pill">4人同行</span>
-          <span class="trip-pill">大阪萩之茶屋 3泊 ＋ 京都二條城 2泊</span>
-          <span class="trip-pill">冬季 3–11°C</span>
+          <button type="button" class="trip-pill" onclick="flyToBaseHotel(34.6468, 135.5026, '大阪')" title="點擊地圖飛往大阪下榻飯店">
+            <span class="trip-pill-kicker">01 / OSAKA BASE · 1/7–1/10 (3泊)</span>
+            <span class="trip-pill-main">🏨 Haginochaya Serenity Suites ↗</span>
+          </button>
+          <button type="button" class="trip-pill" onclick="flyToBaseHotel(35.0124, 135.7548, '京都')" title="點擊地圖飛往京都下榻飯店">
+            <span class="trip-pill-kicker">02 / KYOTO BASE · 1/10–1/12 (2泊)</span>
+            <span class="trip-pill-main">🏨 KOKO HOTEL 二条城 ↗</span>
+          </button>
+          <div class="trip-pill">
+            <span class="trip-pill-kicker">03 / WINTER ARCHIVE</span>
+            <span class="trip-pill-main">👥 4人同行 · 冬季 3–11°C</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3670,6 +3885,28 @@
       return String(str || "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[ch]));
     }
 
+    function plainExcerpt(str, maxLen = 48) {
+      const clean = String(str || "").replace(/\*\*/g, "").replace(/`/g, "").replace(/\s+/g, " ").trim();
+      return clean.length > maxLen ? clean.slice(0, maxLen).trim() + "…" : clean;
+    }
+
+    window.flyToBaseHotel = function(lat, lng, city) {
+      const activePanel = document.querySelector(".tab-panel.active")?.id || "tab-attractions";
+      const targetMap = activePanel === "tab-transit" ? transitMapObj : (activePanel === "tab-food" ? foodMapObj : attrMapObj);
+      if (targetMap?.map) {
+        if (document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
+          setMobileViewMode("split");
+        }
+        targetMap.map.flyTo([lat, lng], 15, { duration: 0.75 });
+      }
+      if (activePanel === "tab-attractions") {
+        curAttrPanelCity = city || "all";
+        attrTargetGroup = "";
+        attrAllDistrictsOpen = true;
+        renderAttrDetail();
+      }
+    };
+
     const pinCoverTasks = [];
     let pinCoverInFlight = 0;
     const PIN_COVER_MAX_CONCURRENT = 3;
@@ -4193,7 +4430,7 @@
     ];
 
     let curAttrPanelCity = "all";
-    let attrAllDistrictsOpen = false;
+    let attrAllDistrictsOpen = true;
     let attrTargetGroup = "";
 
     function renderHotelReferencePins(mapObj, existingLayers) {
@@ -4216,14 +4453,15 @@
 
     function scrollItemIntoPanel(itemEl) {
       if (!itemEl) return;
-      if (window.innerWidth <= 1024) {
-        const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 80;
-        const y = (window.scrollY || window.pageYOffset || 0) + itemEl.getBoundingClientRect().top - navH - 10;
+      const scroller = itemEl.closest(".detail-panel");
+      const isWindowScroll = window.innerWidth <= 1024 || !scroller || (typeof getComputedStyle === "function" && getComputedStyle(scroller).overflowY === "visible");
+      if (isWindowScroll) {
+        const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 64;
+        const barH = scroller?.querySelector(".panel-sticky-bar")?.getBoundingClientRect().height || 76;
+        const y = (window.scrollY || window.pageYOffset || 0) + itemEl.getBoundingClientRect().top - navH - barH - 12;
         window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
         return;
       }
-      const scroller = itemEl.closest(".detail-panel");
-      if (!scroller) return;
       const sRect = scroller.getBoundingClientRect();
       const iRect = itemEl.getBoundingClientRect();
       const offsetTop = iRect.top - sRect.top + scroller.scrollTop;
@@ -4451,7 +4689,7 @@
         chip.addEventListener("click", () => {
           curAttrPanelCity = chip.dataset.city;
           attrTargetGroup = "";
-          attrAllDistrictsOpen = false;
+          attrAllDistrictsOpen = true;
           renderAttrDetail();
           const meta = ATTR_CITY_META.find(c => c.city === curAttrPanelCity);
           if (meta) attrMapObj.map.flyTo([meta.fly[0], meta.fly[1]], meta.fly[2], { duration: 0.65 });
@@ -4512,6 +4750,11 @@
             ${items.map(item => {
               const voters = getVoters(item.id);
               const isOpen = lockedAttrId === item.id;
+              const srcTag = item.isCustom ? "🆕 旅伴" : (item.source === "both" ? "🔥 必去" : (item.source === "mine" ? "⭐ 私房" : "🌐 精選"));
+              const starTxt = (item.rating || "推薦").split(" ")[0].replace("★", "");
+              const stayTxt = (item.stay || "約 1 小時").replace("建議 ", "");
+              const transitTxt = (item.transport || "查 Google 地圖").split("/")[0].split("（")[0].trim();
+              const excerpt = plainExcerpt(item.detail, 46);
               return `
                 <div class="acc-item ${isOpen ? "open" : ""}" id="attr-acc-${item.id}">
                   <div class="pin-cover-wrap" onclick="openAttrAccordionItem('${item.id}', false, true)">
@@ -4521,8 +4764,10 @@
                     </div>
                     <img class="pin-cover-img" data-pin-id="${item.id}" data-pin-kind="attr" alt="${escapeHtml(item.name)}" />
                     <div class="pin-cover-grad"></div>
+                    <span class="pin-src-tag">${srcTag}</span>
                     <button type="button" class="pin-heart-btn ${voters.length ? "active" : ""}" data-pin-wish="${item.id}" onclick="event.stopPropagation(); toggleWish('${item.id}', 'attr')" title="收藏／取消想去">${voters.length > 1 ? "♥" + voters.length : "♥"}</button>
                     <span class="pin-badge-tag">${escapeHtml(item.area || item.city || "")}</span>
+                    <span class="pin-rating-tag">★ ${escapeHtml(starTxt)}</span>
                   </div>
                   <button class="acc-row" type="button" data-id="${item.id}">
                     <span class="acc-row-left">
@@ -4530,8 +4775,13 @@
                       <span>${item.icon}</span>
                       <span class="acc-row-name">${item.isCustom ? "🆕 " : ""}${item.name}</span>
                     </span>
+                    <span class="pin-card-excerpt">${escapeHtml(excerpt)}</span>
+                    <span class="pin-card-footer">
+                      <span class="pin-card-meta-pill">⏱ ${escapeHtml(stayTxt)} · ${escapeHtml(transitTxt)}</span>
+                      <span id="attr-heart-${item.id}" data-attr-heart="${item.id}">${voters.length ? `❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
+                    </span>
                     <span class="acc-row-meta">
-                      <span id="attr-heart-${item.id}">${voters.length ? `❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
+                      <span data-attr-heart="${item.id}">${voters.length ? `❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
                       <span>${(item.rating || "🆕").split(" ")[0]}</span>
                       <span class="acc-chev">▾</span>
                     </span>
@@ -5088,7 +5338,7 @@
       catsToShow.forEach((meta, idx) => {
         const catItems = shown.filter(f => (f.cats || [f.cat]).includes(meta.key));
         if (!catItems.length) return;
-        const startOpen = selectedFoodCats.length > 0 || Boolean(curFoodZone) || foodAllGroupsOpen || renderedCatIdx < 2;
+        const startOpen = selectedFoodCats.length > 0 || Boolean(curFoodZone) || foodAllGroupsOpen || renderedCatIdx < 3;
         renderedCatIdx++;
         groupsHtml += `
           <details class="acc-dist-group" ${startOpen ? "open" : ""}>
@@ -5100,6 +5350,10 @@
                 const domKey = `${meta.key.replace(/[^a-zA-Z0-9]/g, "")}_${idx}_${item.id}_${i}`;
                 const voters = getVoters(item.id);
                 const isOpen = lockedFoodId === item.id;
+                const priceTag = item.price || "美食推薦";
+                const starTxt = (item.rating || "推薦").split(" ")[0].replace("★", "");
+                const transitTxt = (item.transport || "查 Google 地圖").split("/")[0].split("（")[0].trim();
+                const excerpt = plainExcerpt(item.detail, 46);
                 return `
                   <div class="acc-item ${isOpen ? "open" : ""}" id="food-acc-${domKey}" data-id="${item.id}" data-domkey="${domKey}">
                     <div class="pin-cover-wrap" onclick="openFoodAccordionItem('${item.id}', false, true, '${domKey}')">
@@ -5109,14 +5363,21 @@
                       </div>
                       <img class="pin-cover-img" data-pin-id="${item.id}" data-pin-kind="food" alt="${escapeHtml(item.name)}" />
                       <div class="pin-cover-grad"></div>
+                      <span class="pin-src-tag">💴 ${escapeHtml(priceTag)}</span>
                       <button type="button" class="pin-heart-btn ${voters.length ? "active" : ""}" data-pin-wish="${item.id}" onclick="event.stopPropagation(); toggleWish('${item.id}', 'food')" title="收藏／取消想吃">${voters.length > 1 ? "♥" + voters.length : "♥"}</button>
                       <span class="pin-badge-tag">${escapeHtml(item.area || meta.key || "")}</span>
+                      <span class="pin-rating-tag">★ ${escapeHtml(starTxt)}</span>
                     </div>
                     <button class="acc-row" type="button" data-id="${item.id}" data-domkey="${domKey}">
                       <span class="acc-row-left">
                         <span class="p-dot" style="background:${item.isCustom ? "#10b981" : meta.color};"></span>
                         <span>${meta.icon}</span>
                         <span class="acc-row-name">${item.isCustom ? "🆕 " : ""}${item.name}${item.note ? " 📝" : ""}</span>
+                      </span>
+                      <span class="pin-card-excerpt">${escapeHtml(excerpt)}</span>
+                      <span class="pin-card-footer">
+                        <span class="pin-card-meta-pill">🚇 ${escapeHtml(transitTxt)}</span>
+                        <span data-food-heart="${item.id}">${voters.length ? `❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
                       </span>
                       <span class="acc-row-meta">
                         <span data-food-heart="${item.id}">${voters.length ? `❤️${voters.length > 1 ? voters.length : ""}` : ""}</span>
@@ -5289,7 +5550,7 @@
         attrMapObj.map.flyTo([parseFloat(btn.dataset.lat), parseFloat(btn.dataset.lng)], parseInt(btn.dataset.zoom), { duration: 0.7 });
         curAttrPanelCity = btn.dataset.city || "all";
         attrTargetGroup = btn.dataset.group || "";
-        attrAllDistrictsOpen = false;
+        attrAllDistrictsOpen = !attrTargetGroup;
         lockedAttrId = null;
         renderAttrDetail();
         if (attrTargetGroup) {
@@ -5514,8 +5775,10 @@
       });
       if (kind === "attr") {
         buildAttrMarkers();
+        const heartTxt = newVoters.length ? `❤️${newVoters.length > 1 ? newVoters.length : ""}` : "";
         const heartEl = document.getElementById("attr-heart-" + id);
-        if (heartEl) heartEl.textContent = newVoters.length ? `❤️${newVoters.length > 1 ? newVoters.length : ""}` : "";
+        if (heartEl) heartEl.textContent = heartTxt;
+        document.querySelectorAll(`[data-attr-heart="${id}"]`).forEach(el => { el.textContent = heartTxt; });
         const btnEl = document.getElementById("attr-wish-btn-" + id);
         if (btnEl) {
           btnEl.classList.toggle("saved", willSave);
