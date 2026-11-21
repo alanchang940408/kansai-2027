@@ -46,6 +46,10 @@
       --theme-accent: #111111;
       --theme-soft: #F3F3F1;
     }
+    body[data-active-tab="events"] {
+      --theme-accent: #111111;
+      --theme-soft: #F3F3F1;
+    }
 
     * { box-sizing: border-box; }
     html, body {
@@ -1778,7 +1782,7 @@
       .nav-bar { padding: 4px 0 2px; gap: 2px; }
       .tabs {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 3px;
         padding: 3px;
         margin: 2px 0 0;
@@ -1903,10 +1907,601 @@
 
     @media (max-width: 520px) {
       .mview-label { display: none; }
-      .tab-btn[data-tab="transit"] .tab-badge { display: none; }
+      .tab-btn[data-tab="transit"] .tab-badge,
+      .tab-btn[data-tab="events"] .tab-badge { display: none; }
       .tab-btn { font-size: 11px; padding: 6px 2px; gap: 2px; }
       .tab-badge { font-size: 9.5px; padding: 0 4px; }
       .acc-dist-fly { flex-shrink: 0; white-space: nowrap; }
+    }
+
+    /* ==================== TAB 4: SPECIAL WINTER EVENTS ==================== */
+    .ev-alert-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 980px) {
+      .ev-alert-grid { grid-template-columns: 1fr; }
+    }
+    .ev-alert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--ink);
+      border-radius: 14px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: #333333;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.48;
+    }
+    .ev-alert-card.is-red { border-left-color: #E60023; background: #FFFDFD; }
+    .ev-alert-card.is-amber { border-left-color: #D97706; background: #FFFEFA; }
+    .ev-alert-card.is-slate { border-left-color: #475569; }
+    .ev-alert-icon { font-size: 14px; line-height: 1.3; flex-shrink: 0; }
+    .ev-alert-card strong { color: var(--ink); font-weight: 700; }
+
+    .ev-toolbar-card {
+      background: var(--surface);
+      border: 1px solid rgba(17, 17, 17, 0.07);
+      border-radius: 18px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ev-toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ev-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .ev-seg-track {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      background: var(--surface-soft);
+      padding: 3px;
+      border-radius: 999px;
+      flex-wrap: wrap;
+    }
+    .ev-seg-btn {
+      border: none;
+      background: transparent;
+      color: #555555;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+      white-space: nowrap;
+    }
+    .ev-seg-btn:hover { color: var(--ink); background: rgba(255, 255, 255, 0.65); }
+    .ev-seg-btn.active {
+      background: var(--ink);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .ev-dot-osaka, .ev-dot-kyoto {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .ev-dot-osaka { background: #2563EB; }
+    .ev-dot-kyoto { background: #E60023; }
+    .ev-seg-btn.active .ev-dot-osaka, .ev-seg-btn.active .ev-dot-kyoto { background: #FFFFFF; }
+
+    .ev-day-hint-pill {
+      font-size: 11.4px;
+      font-weight: 600;
+      color: #444444;
+      background: #F6F5F2;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .ev-utilities {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+    .ev-search-box {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .ev-search-input {
+      width: 190px;
+      max-width: 100%;
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      background: #FAF9F6;
+      border-radius: 999px;
+      padding: 5px 26px 5px 12px;
+      font-size: 12px;
+      font-family: inherit;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.14s ease, background 0.14s ease, width 0.18s ease;
+    }
+    .ev-search-input:focus {
+      border-color: var(--ink);
+      background: #FFFFFF;
+      width: 225px;
+    }
+    .ev-search-clear {
+      position: absolute;
+      right: 8px;
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 0 3px;
+      display: none;
+    }
+    .ev-search-clear.visible { display: inline-flex; }
+    .ev-fav-filter-btn {
+      border: 1px solid rgba(230, 0, 35, 0.20);
+      background: #FFF1F2;
+      color: #BE123C;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.14s ease;
+      white-space: nowrap;
+    }
+    .ev-fav-filter-btn:hover { background: #FFE4E6; }
+    .ev-fav-filter-btn.active {
+      background: #E60023;
+      color: #FFFFFF;
+      border-color: #E60023;
+      box-shadow: 0 3px 10px rgba(230, 0, 35, 0.24);
+    }
+    .ev-fav-count-pill {
+      background: rgba(190, 18, 60, 0.12);
+      padding: 0 6px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .ev-fav-filter-btn.active .ev-fav-count-pill {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    .ev-cat-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .ev-cat-chip {
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      background: #FAF9F6;
+      color: #333333;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 11.8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.14s ease;
+    }
+    .ev-cat-chip:hover { border-color: rgba(17, 17, 17, 0.3); background: #FFFFFF; }
+    .ev-cat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .ev-cat-count {
+      font-size: 10.5px;
+      opacity: 0.72;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .ev-cat-chip.active {
+      background: var(--ink);
+      color: #FFFFFF;
+      border-color: var(--ink);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+    }
+    .ev-cat-chip.active .ev-cat-count { opacity: 0.9; }
+
+    #tab-events .hotel-toggle-chip {
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      background: #FFFBEB;
+      color: #92400E;
+    }
+    #tab-events .hotel-toggle-chip.active {
+      background: #111111;
+      color: #FDE68A;
+      border-color: #D97706;
+    }
+    @media (min-width: 1025px) {
+      #tab-events .map-card .leaflet-top { top: 72px; }
+    }
+    .ev-map-legend {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      z-index: 440;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      border-radius: 12px;
+      padding: 6px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      align-items: center;
+      font-size: 10.8px;
+      font-weight: 600;
+      color: #333333;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+      max-width: calc(100% - 24px);
+    }
+    @media (max-width: 1024px) {
+      .ev-map-legend { bottom: 48px; }
+      .ev-toolbar-card { padding: 9px 10px; border-radius: 16px; }
+      .ev-utilities { margin-left: 0; width: 100%; }
+      .ev-search-box { flex: 1 1 160px; }
+      .ev-search-input, .ev-search-input:focus { width: 100%; }
+    }
+    .ev-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .ev-legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1.5px solid #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      flex-shrink: 0;
+    }
+
+    .ev-pin {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      color: #FFFFFF;
+      font-size: 14px;
+      border: 2.5px solid #FFFFFF;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
+      transform: translate(-50%, -50%);
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+      cursor: pointer;
+    }
+    .ev-pin:hover {
+      transform: translate(-50%, -50%) scale(1.16);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.36);
+    }
+    .ev-pin.is-fav::after {
+      content: "♥";
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #E60023;
+      color: #FFFFFF;
+      font-size: 9px;
+      line-height: 14px;
+      text-align: center;
+      border: 1.5px solid #FFFFFF;
+    }
+    .ev-pin.is-active {
+      transform: translate(-50%, -50%) scale(1.24);
+      box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.24), 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+    .ev-pin-label {
+      position: absolute;
+      left: 50%;
+      top: -8px;
+      transform: translate(-50%, -100%);
+      background: rgba(17, 17, 17, 0.94);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .ev-hotel-pin {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #111111;
+      color: #FFFFFF;
+      border: 2px solid #F59E0B;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+      cursor: pointer;
+    }
+
+    .ev-pop-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+    .ev-pop-title { font-size: 14.2px; font-weight: 800; color: var(--ink); margin: 0 0 3px; }
+    .ev-pop-venue { font-size: 11.8px; font-weight: 600; color: var(--ink-muted); margin-bottom: 6px; }
+    .ev-pop-desc { font-size: 12px; color: #333333; margin: 0 0 8px; line-height: 1.5; }
+    .ev-pop-meta {
+      font-size: 11.4px;
+      color: #444444;
+      background: #F6F5F2;
+      border-radius: 9px;
+      padding: 7px 9px;
+      margin-bottom: 9px;
+      line-height: 1.48;
+    }
+    .ev-pop-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ev-pop-btn {
+      flex: 1 1 auto;
+      text-align: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      border: 1px solid rgba(17, 17, 17, 0.14);
+      background: #FFFFFF;
+      color: var(--ink);
+    }
+    .ev-pop-btn:hover { background: #F1F1EF; }
+    .ev-pop-btn.is-fav { background: #E60023; color: #FFFFFF; border-color: #E60023; }
+    .ev-pop-btn.is-map { background: #111111; color: #FFFFFF; border-color: #111111; }
+
+    .ev-panel-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 9px 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+    .ev-summary-text { font-size: 13px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .ev-summary-text span { color: #E60023; }
+    .ev-panel-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .ev-panel-btn {
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      background: #FAF9F6;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 11.6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .ev-panel-btn:hover { background: #EFEFEF; }
+
+    .ev-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .ev-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 13px 15px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+    }
+    .ev-card:hover {
+      border-color: rgba(17, 17, 17, 0.28);
+      box-shadow: var(--shadow-md);
+    }
+    .ev-card.active {
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08), var(--shadow-md);
+      background: #FFFEFC;
+    }
+    .ev-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .ev-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+    .ev-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .ev-pill-osaka { background: #EFF6FF; color: #1D4ED8; }
+    .ev-pill-kyoto { background: #FEF2F2; color: #B91C1C; }
+    .ev-pill-date { background: #F4F4F2; color: #333333; }
+    .ev-pill-exact { background: #111111; color: #FDE68A; }
+    .ev-pill-last { background: #FEE2E2; color: #B91C1C; border: 1px solid rgba(185, 28, 28, 0.2); }
+    .ev-pill-open { background: #ECFDF5; color: #047857; border: 1px solid rgba(4, 120, 87, 0.2); }
+    .ev-pill-hot { background: #FEF3C7; color: #92400E; border: 1px solid rgba(146, 64, 14, 0.2); }
+
+    .ev-fav-btn {
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      background: #FFFFFF;
+      color: #666666;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      flex-shrink: 0;
+      transition: all 0.14s ease;
+    }
+    .ev-fav-btn:hover { border-color: #E60023; color: #E60023; }
+    .ev-fav-btn.active {
+      background: #E60023;
+      color: #FFFFFF;
+      border-color: #E60023;
+    }
+
+    .ev-title {
+      margin: 0 0 3px;
+      font-size: 15.2px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .ev-venue {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+    .ev-desc {
+      margin: 0 0 8px;
+      font-size: 12.6px;
+      color: #2B2B2B;
+      line-height: 1.55;
+    }
+    .ev-meta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 12px;
+      font-size: 11.6px;
+      color: #4B5563;
+      background: #FAF9F6;
+      border-radius: 10px;
+      padding: 7px 10px;
+      margin-bottom: 8px;
+    }
+    .ev-meta-grid strong { color: var(--ink); font-weight: 700; }
+    .ev-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .ev-dist {
+      font-size: 11.4px;
+      font-weight: 600;
+      color: #6B7280;
+      font-variant-numeric: tabular-nums;
+    }
+    .ev-btn-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .ev-action-btn {
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      background: #FFFFFF;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.14s ease;
+    }
+    .ev-action-btn:hover { background: #F1F1EF; }
+    .ev-action-btn.primary {
+      background: var(--ink);
+      color: #FFFFFF;
+      border-color: var(--ink);
+    }
+    .ev-action-btn.primary:hover { background: #2D2D2D; }
+
+    .ev-empty-state {
+      background: var(--surface);
+      border: 1px dashed rgba(17, 17, 17, 0.2);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--ink-muted);
+    }
+    .ev-empty-state h3 { margin: 0 0 6px; color: var(--ink); font-size: 16px; }
+    .ev-empty-state p { margin: 0 0 14px; font-size: 13px; }
+
+    .ev-extra-notes-card {
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px 15px;
+      box-shadow: var(--shadow-sm);
+    }
+    .ev-extra-notes-title {
+      margin: 0 0 8px;
+      font-size: 13.8px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .ev-extra-notes-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 12.2px;
+      color: #333333;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
   </style>
 </head>
@@ -1953,6 +2548,9 @@
           </button>
           <button class="tab-btn" data-tab="food">
             關西飲食 <span class="tab-badge" id="badge-food-total">0</span>
+          </button>
+          <button class="tab-btn" data-tab="events">
+            特別活動 <span class="tab-badge" id="badge-events-total">51</span>
           </button>
         </div>
         <div class="nav-right">
@@ -2121,6 +2719,108 @@
               <li>人類皆麵類 近未來與日本文化的融合（永久歇業｜麵清單）</li>
             </ul>
           </details>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: SPECIAL WINTER EVENTS ==================== -->
+    <section class="tab-panel" id="tab-events">
+      <div class="ev-alert-grid" aria-label="出發前重點提醒">
+        <div class="ev-alert-card is-red">
+          <span class="ev-alert-icon">🔴</span>
+          <div><strong>1/9–1/11 三連休＋十日戎＋巨蛋演唱會：</strong>成人之日連假撞上十日戎與巨蛋公演（1/7 Snow Man、1/10–12 Hey! Say! JUMP），住宿、新幹線與 USJ 人潮較多，建議提早訂位。</div>
+        </div>
+        <div class="ev-alert-card is-amber">
+          <span class="ev-alert-icon">⏳</span>
+          <div><strong>1/10–1/12 多項活動壓軸閉幕：</strong>鋼鍊展 <strong>1/10 止</strong>；USJ 聖誕夜間秀、ENLIGHTENMENT 光影秀、白隱禪師展、永井豪展 <strong>1/11 止</strong>；海遊館點燈 <strong>1/12 止</strong>。</div>
+        </div>
+        <div class="ev-alert-card is-slate">
+          <span class="ev-alert-icon">ℹ️</span>
+          <div><strong>常見誤會避雷：</strong>御堂筋／中之島／萬博點燈已於 12/31 前結束；三十三間堂通し矢與全國女子駅傳在 <strong>1/17</strong>；京都南座 1 月休館；阪急情人節展 <strong>1/20</strong> 才開幕。</div>
+        </div>
+      </div>
+
+      <div class="ev-toolbar-card">
+        <div class="ev-toolbar-row">
+          <div class="ev-filter-group">
+            <div class="ev-seg-track" id="ev-city-tabs" role="tablist" aria-label="活動城市篩選">
+              <button type="button" class="ev-seg-btn active" data-city="all">全部關西</button>
+              <button type="button" class="ev-seg-btn" data-city="大阪"><span class="ev-dot-osaka"></span>大阪</button>
+              <button type="button" class="ev-seg-btn" data-city="京都"><span class="ev-dot-kyoto"></span>京都</button>
+            </div>
+            <div class="ev-seg-track" id="ev-day-tabs" role="tablist" aria-label="活動日期篩選">
+              <button type="button" class="ev-seg-btn active" data-day="all">全期間 (1/7–12)</button>
+              <button type="button" class="ev-seg-btn" data-day="7">1/7 (四)</button>
+              <button type="button" class="ev-seg-btn" data-day="8">1/8 (五)</button>
+              <button type="button" class="ev-seg-btn" data-day="9">1/9 (六) 宵戎</button>
+              <button type="button" class="ev-seg-btn" data-day="10">1/10 (日) 本戎</button>
+              <button type="button" class="ev-seg-btn" data-day="11">1/11 (一) 成人之日</button>
+              <button type="button" class="ev-seg-btn" data-day="12">1/12 (二)</button>
+            </div>
+            <span class="ev-day-hint-pill" id="ev-day-context-pill">📅 1/7–1/12 全區 6 天總覽</span>
+          </div>
+
+          <div class="ev-utilities">
+            <div class="ev-search-box">
+              <input type="text" class="ev-search-input" id="ev-search-input" placeholder="搜尋活動、地點或關鍵字…" aria-label="搜尋特別活動" />
+              <button type="button" class="ev-search-clear" id="ev-search-clear-btn" title="清除搜尋">✕</button>
+            </div>
+            <button type="button" class="ev-fav-filter-btn" id="ev-fav-filter-btn">
+              ♥ 只看收藏 <span class="ev-fav-count-pill" id="ev-fav-count">0</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="ev-toolbar-row">
+          <div class="ev-cat-strip" id="ev-cat-tabs" role="tablist" aria-label="活動類別篩選"></div>
+        </div>
+      </div>
+
+      <div class="split-layout">
+        <div class="map-card">
+          <div class="map-top-bar">
+            <div class="filter-strip" id="ev-jump-strip">
+              <button type="button" class="mini-chip active" data-jump="fit">關西全景</button>
+              <button type="button" class="mini-chip" data-lat="34.655" data-lng="135.505" data-zoom="14">大阪住宿・天王寺・難波</button>
+              <button type="button" class="mini-chip" data-lat="34.699" data-lng="135.498" data-zoom="14">梅田・中之島</button>
+              <button type="button" class="mini-chip" data-lat="34.660" data-lng="135.431" data-zoom="14">大阪灣區</button>
+              <button type="button" class="mini-chip" data-lat="35.000" data-lng="135.758" data-zoom="13">京都住宿・中京・京都站</button>
+              <button type="button" class="mini-chip" data-lat="35.008" data-lng="135.783" data-zoom="14">京都東山・岡崎</button>
+              <button type="button" class="mini-chip" data-lat="35.025" data-lng="135.710" data-zoom="13">北野・仁和寺・嵐山</button>
+            </div>
+            <button type="button" class="mini-chip hotel-toggle-chip active" id="ev-toggle-hotels-btn">🏨 飯店座標</button>
+          </div>
+          <div class="map-box" id="events-map"></div>
+          <div class="ev-map-legend" aria-label="活動地圖圖例">
+            <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#E60023;"></span>傳統祭典</span>
+            <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#9A3412;"></span>京の冬の旅</span>
+            <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#D97706;"></span>點燈・樂園</span>
+            <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#0F766E;"></span>美術館・快閃</span>
+            <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#7C3AED;"></span>演出・草莓季</span>
+            <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#111111; border-color:#F59E0B;"></span>下榻飯店</span>
+          </div>
+          <button type="button" class="mobile-jump-list-btn" onclick="scrollToActiveDetailPanel()">↓ 前往下方特別活動清單與詳情</button>
+        </div>
+
+        <aside class="detail-panel" id="events-detail-panel">
+          <div class="ev-panel-toolbar">
+            <div class="ev-summary-text" id="ev-result-summary">顯示 <span>0</span> 個活動地點</div>
+            <div class="ev-panel-actions">
+              <button type="button" class="ev-panel-btn" id="ev-fit-results-btn">🗺️ 全景顯示</button>
+              <button type="button" class="ev-panel-btn" id="ev-reset-filters-btn" style="display:none;">↺ 重設篩選</button>
+            </div>
+          </div>
+
+          <div class="ev-cards-list" id="ev-cards-list"></div>
+
+          <div class="ev-extra-notes-card">
+            <h3 class="ev-extra-notes-title">📌 全區／會場待定補充活動（無法單點標記於地圖）</h3>
+            <ul class="ev-extra-notes-list">
+              <li><strong>🛍️ 大阪・京都各大百貨 1 月冬季折扣季（Winter Sale）：</strong>梅田（阪急／阪神／大丸／LUCUA）、心齋橋（大丸／PARCO）、難波（高島屋／Parks）、京都河原町（高島屋／大丸）與京都伊勢丹於 1 月中旬同步展開冬季出清。</li>
+              <li><strong>⛩️ 京都「都七福神まいり」（1/1 ～ 1/31 全月）：</strong>京都新春巡禮定番，於 1 月內巡拜松崎大黒天、赤山禅院、萬福寺、革堂、六波羅蜜寺、ゑびす神社、東寺共七座寺社祈福集印。</li>
+              <li><strong>🌟 hololive production official pop up shop in OSAKA（1/9 ～ 1/17）：</strong>已宣布於大阪舉辦期間限定快閃店，詳細商場樓層與入場整理券規定請以官方後續公告為準。</li>
+            </ul>
+          </div>
         </aside>
       </div>
     </section>
@@ -3883,7 +4583,7 @@
 
     window.flyToBaseHotel = function(lat, lng, city) {
       const activePanel = document.querySelector(".tab-panel.active")?.id || "tab-attractions";
-      const targetMap = activePanel === "tab-transit" ? transitMapObj : (activePanel === "tab-food" ? foodMapObj : attrMapObj);
+      const targetMap = activePanel === "tab-transit" ? transitMapObj : (activePanel === "tab-food" ? foodMapObj : (activePanel === "tab-events" ? eventsMapObj : attrMapObj));
       if (targetMap?.map) {
         if (document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
           setMobileViewMode("split");
@@ -3895,6 +4595,8 @@
         attrTargetGroup = "";
         attrAllDistrictsOpen = true;
         renderAttrDetail();
+      } else if (activePanel === "tab-events" && typeof evFocusHotelByCity === "function") {
+        evFocusHotelByCity(city);
       }
     };
 
@@ -4303,11 +5005,12 @@
     const attrMapObj = createMap("attr-map", [34.77, 135.58], 10);
     const transitMapObj = createMap("transit-map", [34.75, 135.56], 10);
     const foodMapObj = createMap("food-map", [34.81, 135.63], 10);
+    const eventsMapObj = createMap("events-map", [34.82, 135.63], 10);
 
     document.getElementById("toggle-basemap-btn").addEventListener("click", () => {
       useDetailedOsm = !useDetailedOsm;
       const cfg = useDetailedOsm ? tileConfigs.osm : tileConfigs.clean;
-      [attrMapObj, transitMapObj, foodMapObj].forEach(obj => {
+      [attrMapObj, transitMapObj, foodMapObj, eventsMapObj].forEach(obj => {
         obj.tileLayer.setUrl(cfg.url);
         obj.tileLayer.options.maxNativeZoom = cfg.maxNativeZoom;
         obj.tileLayer.options.maxZoom = cfg.maxZoom;
@@ -5458,11 +6161,11 @@
       document.querySelectorAll("#mobile-view-bar .mview-btn[data-mview]").forEach(b => {
         b.classList.toggle("active", b.dataset.mview === document.body.dataset.mview);
       });
-      [attrMapObj, transitMapObj, foodMapObj].forEach(o => {
+      [attrMapObj, transitMapObj, foodMapObj, eventsMapObj].forEach(o => {
         o.map.invalidateSize(true);
       });
       setTimeout(() => {
-        [attrMapObj, transitMapObj, foodMapObj].forEach(o => {
+        [attrMapObj, transitMapObj, foodMapObj, eventsMapObj].forEach(o => {
           o.map.invalidateSize(true);
         });
       }, 80);
@@ -5479,7 +6182,7 @@
         const nowOne = document.body.dataset.mdrag === "one";
         dragToggleBtn.classList.toggle("drag-one", nowOne);
         dragToggleBtn.textContent = nowOne ? "👆 單指移圖" : "🖐️ 雙指移圖";
-        [attrMapObj, transitMapObj, foodMapObj].forEach(o => {
+        [attrMapObj, transitMapObj, foodMapObj, eventsMapObj].forEach(o => {
           if (!o.map?.dragging) return;
           if (nowOne || window.innerWidth > 1024) o.map.dragging.enable();
           else o.map.dragging.disable();
@@ -5517,6 +6220,7 @@
       }
     }, { passive: true });
 
+    let evFirstOpened = false;
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -5526,9 +6230,14 @@
         document.body.dataset.activeTab = tab;
         document.getElementById("tab-" + tab).classList.add("active");
         setTimeout(() => {
-          const targetObj = tab === "attractions" ? attrMapObj : (tab === "transit" ? transitMapObj : foodMapObj);
+          const mapLookup = { attractions: attrMapObj, transit: transitMapObj, food: foodMapObj, events: eventsMapObj };
+          const targetObj = mapLookup[tab] || attrMapObj;
           targetObj.map.invalidateSize(true);
           targetObj.tileLayer.redraw();
+          if (tab === "events" && !evFirstOpened && typeof evFitCurrentResults === "function") {
+            evFirstOpened = true;
+            evFitCurrentResults();
+          }
           if (typeof observePinCovers === "function") observePinCovers();
         }, 120);
       });
@@ -5682,6 +6391,7 @@
       renderFoodSidebar();
       buildFoodMarkers(false);
       renderFoodDetail();
+      if (typeof renderEventsTab === "function") renderEventsTab(false);
       if (document.getElementById("wishlist-modal").classList.contains("open")) renderModal();
 
       if (preserveScroll) {
@@ -5775,6 +6485,8 @@
           btnEl.classList.toggle("saved", willSave);
           btnEl.textContent = willSave ? `❤️ ${currentUser}已想去` : `🤍 ${currentUser}想去`;
         }
+      } else if (kind === "event") {
+        if (typeof updateEventFavUI === "function") updateEventFavUI(id);
       } else {
         buildFoodMarkers(false);
         document.querySelectorAll(`[data-food-heart="${id}"]`).forEach(el => {
@@ -5808,7 +6520,9 @@
         const a = attractions.find(x => x.id === id);
         if (a) { list.push({ id, name: a.name, city: a.city, kind: "景點", voters }); return; }
         const f = foods.find(x => x.id === id);
-        if (f) list.push({ id, name: f.name, city: f.area, kind: "美食", voters });
+        if (f) { list.push({ id, name: f.name, city: f.area, kind: "美食", voters }); return; }
+        const ev = typeof EVENTS_2027 !== "undefined" ? EVENTS_2027.find(x => x.id === id) : null;
+        if (ev) list.push({ id, name: ev.name, city: ev.city, kind: "活動", voters });
       });
       return list;
     }
@@ -5873,10 +6587,11 @@
     document.getElementById("copy-wishlist-btn").addEventListener("click", async () => {
       const items = getVotedItemsSummary();
       if (!items.length) return alert("清單是空的喔！");
-      const a = items.filter(w => w.kind === "景點"), f = items.filter(w => w.kind === "美食");
+      const a = items.filter(w => w.kind === "景點"), f = items.filter(w => w.kind === "美食"), e = items.filter(w => w.kind === "活動");
       let txt = "🇯🇵 2027/1/7–1/12 關西 6天5夜｜大家想去 & 想吃：\n";
       if (a.length) txt += "\n📍【景點】\n" + a.map((x,i) => `${i+1}. [${x.city}] ${x.name} (${x.voters.join("、")})`).join("\n");
       if (f.length) txt += "\n\n🍜【美食】\n" + f.map((x,i) => `${i+1}. [${x.city}] ${x.name} (${x.voters.join("、")})`).join("\n");
+      if (e.length) txt += "\n\n🎉【特別活動】\n" + e.map((x,i) => `${i+1}. [${x.city}] ${x.name} (${x.voters.join("、")})`).join("\n");
       try { await navigator.clipboard.writeText(txt); alert("已複製！可直接貼到 Line 群組～"); }
       catch { prompt("請複製以下文字：", txt); }
     });
@@ -6096,6 +6811,1429 @@
       }, 160);
     });
 
+    // ==================== TAB 4: SPECIAL WINTER EVENTS (2027/1/7-1/12) ====================
+    const EV_CATEGORIES = {
+      festival: { label: "傳統祭典・神事", icon: "⛩️", color: "#E60023", bg: "#FEF2F2" },
+      winter_kyoto: { label: "京の冬の旅特別公開", icon: "🏯", color: "#9A3412", bg: "#FFF7ED" },
+      illumination: { label: "冬季點燈・夜間・樂園", icon: "✨", color: "#D97706", bg: "#FFFBEB" },
+      exhibition: { label: "美術館・特展・快閃", icon: "🎨", color: "#0F766E", bg: "#ECFDF5" },
+      stage_food: { label: "演出・歌舞伎・草莓季", icon: "🎤", color: "#7C3AED", bg: "#F5F3FF" }
+    };
+
+    const EVENTS_2027 = [
+      // ==================== 大阪 (25) ====================
+      {
+        id: "os_imamiya",
+        city: "大阪",
+        cat: "festival",
+        name: "今宮戎神社「十日戎」＆ 寶惠駕行列",
+        short: "今宮戎 十日戎",
+        venue: "今宮戎神社（浪速區）",
+        lat: 34.6548,
+        lng: 135.5026,
+        days: [9, 10, 11],
+        highlightDay: 10,
+        datesText: "1/9 宵戎・1/10 本戎・1/11 殘福",
+        hours: "24 小時（十日戎期間通宵開門）",
+        desc: "大阪最盛大的商売繁盛新年大祭，3 天吸引百萬人潮與大量屋台夜市；1/10 本戎舉辦著名的「寶惠駕行列」藝伎與福娘乘轎遊行。",
+        note: "距大阪住宿步行約 10 分鐘，建議避開傍晚最擁擠尖峰或體驗清晨參拜。",
+        q: "今宮戎神社 大阪"
+      },
+      {
+        id: "os_horikawa",
+        city: "大阪",
+        cat: "festival",
+        name: "堀川戎神社「十日戎」",
+        short: "堀川戎神社",
+        venue: "堀川戎神社（北區西天滿）",
+        lat: 34.6997,
+        lng: 135.5087,
+        days: [9, 10, 11],
+        datesText: "1/9（六）～ 1/11（一）",
+        hours: "十日戎期間夜間開放參拜",
+        desc: "與南邊的今宮戎齊名、被稱為「北大阪（キタ）的戎神」，境內授與祈求生意興隆的福笹與吉祥飾物。",
+        note: "鄰近南森町站與日本最長「天神橋筋商店街」，適合順路吃平價美食。",
+        q: "堀川戎神社 大阪"
+      },
+      {
+        id: "os_sumiyoshi",
+        city: "大阪",
+        cat: "festival",
+        name: "住吉大社「白馬神事（あおうましんじ）」",
+        short: "住吉大社 白馬神事",
+        venue: "住吉大社（住吉區）",
+        lat: 34.6126,
+        lng: 135.4930,
+        days: [7],
+        exactOnly: true,
+        datesText: "1/7（四）11:00～ 當日限定",
+        hours: "神事 11:00 開始",
+        desc: "源自平安時代宮中儀式，神馬「白雪號」依序巡拜各本宮並於境內奔馳；傳說新年初見白馬可驅邪並保佑一年無病息災。",
+        note: "當日有限定御朱印與「竹駒守」授與；可從新今宮搭南海電車直達住吉大社站。",
+        q: "住吉大社 大阪"
+      },
+      {
+        id: "os_usj",
+        city: "大阪",
+        cat: "illumination",
+        name: "USJ 25週年冬季活動 ＆ 美少女戰士 Cool Japan",
+        short: "USJ 聖誕秀/美戰",
+        venue: "日本環球影城（此花區）",
+        lat: 34.6654,
+        lng: 135.4323,
+        days: [7, 8, 9, 10, 11, 12],
+        lastDay: 11,
+        datesText: "冬祭至 1/17（聖誕夜間秀 1/11 止）",
+        hours: "依園區當日營業時間（建議早鳥入園）",
+        desc: "25週年冬祭與最大規模美食節至 1/17；Cool Japan 2027《美少女戰士》4-D 與雲霄飛車已搶先開跑。兩大聖誕夜間秀於 1/11 結束。",
+        note: "想完整看聖誕夜間秀建議排在 1/7–1/11；《名偵探柯南》與《藥師少女》要到 2/10 才開幕。",
+        q: "Universal Studios Japan"
+      },
+      {
+        id: "os_namba_light",
+        city: "大阪",
+        cat: "illumination",
+        name: "なんば光旅（難波光旅）＆ 通天閣首聯名點燈",
+        short: "難波光旅",
+        venue: "難波 Parks・難波 CITY・高島屋一帶",
+        lat: 34.6618,
+        lng: 135.5017,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/11/13 ～ 2027/2/14",
+        hours: "17:00 ～ 24:00（免費觀賞）",
+        desc: "南海難波站周邊約 100 萬顆 LED 點亮冬季夜空，必看 18 公尺高「光之瀑布」與 8 樓閃耀草原，9 樓並新增星空投影演出。",
+        note: "御堂筋燈飾於 12/31 已結束，1 月夜間想免費拍大阪燈海以難波光旅最推薦。",
+        q: "なんばパークス なんば光旅"
+      },
+      {
+        id: "os_tsutenkaku",
+        city: "大阪",
+        cat: "illumination",
+        name: "通天閣「なんば光旅」首度聯合點燈",
+        short: "通天閣夜間點燈",
+        venue: "通天閣・新世界（浪速區）",
+        lat: 34.6525,
+        lng: 135.5063,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/11/13 ～ 2027/2/14",
+        hours: "日沒～深夜點燈（與難波光旅連動）",
+        desc: "大阪新世界地標「通天閣」本季首度正式納入難波光旅聯動點燈陣容，夜間逛完新世界串炸或十日戎後可順道拍燈景。",
+        note: "距離大阪住宿步行約 8 分鐘，吃宵夜回飯店途中就能欣賞。",
+        q: "通天閣 大阪"
+      },
+      {
+        id: "os_castle_light",
+        city: "大阪",
+        cat: "illumination",
+        name: "大阪城イルミナージュ（大阪城光影祭）",
+        short: "大阪城光影祭",
+        venue: "大阪城西之丸庭園特設會場",
+        lat: 34.6873,
+        lng: 135.5234,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/11/20 ～ 2027/2/14",
+        hours: "17:00 ～ 22:00（最終入場 21:30）",
+        desc: "迎來 15 週年以「SHOGUN」為主題，用光影雕塑重現豐臣秀吉時代至今 400 年歷史，新增 4 公尺高「蝴蝶鞦韆」與光之南蠻船。",
+        note: "須購票進入西之丸庭園特設會場；夜間大阪城公園空曠較冷請注意保暖。",
+        q: "大阪城西の丸庭園"
+      },
+      {
+        id: "os_umekita_light",
+        city: "大阪",
+        cat: "illumination",
+        name: "梅田・Grand Green Osaka 香檳金點燈",
+        short: "梅田香檳金點燈",
+        venue: "うめきた公園・Grand Front 大阪",
+        lat: 34.7058,
+        lng: 135.4944,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/11/4 ～ 2027/2/28",
+        hours: "17:00 ～ 24:00（免費觀賞）",
+        desc: "隨著 Grand Green Osaka 公園區擴張，本季以歷來最多約 51 萬顆香檳金 LED 打造大人系優雅冬季街道，Grand Front 館內亦有主題裝置。",
+        note: "JR 大阪站出站即達，可搭配梅田百貨冬季折扣季或空中庭園夜景。",
+        q: "グラングリーン大阪"
+      },
+      {
+        id: "os_kaiyukan",
+        city: "大阪",
+        cat: "illumination",
+        name: "海遊館冬季點燈「SeaScape｜Namima」",
+        short: "海遊館點燈 (1/12止)",
+        venue: "海遊館前廣場・天保山海灣區",
+        lat: 34.6545,
+        lng: 135.4289,
+        days: [7, 8, 9, 10, 11, 12],
+        lastDay: 12,
+        datesText: "2026/11/20 ～ 2027/1/12（1/12 閉幕）",
+        hours: "17:00 ～ 21:00（免費觀賞）",
+        desc: "第 22 屆海遊館冬季點燈，館牆呈現閃耀巨大鯨鯊光雕，廣場海洋生物燈飾每 10 分鐘配合音樂變換光影演出。",
+        note: "1/12 結束後就撤展了！傍晚搭乘天保山摩天輪可俯瞰港灣點燈全景。",
+        q: "海遊館 大阪"
+      },
+      {
+        id: "os_teamlab",
+        city: "大阪",
+        cat: "illumination",
+        name: "teamLab Botanical Garden Osaka（長居植物園）",
+        short: "teamLab 長居植物園",
+        venue: "長居植物園（東住吉區）",
+        lat: 34.6105,
+        lng: 135.5216,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "1/7 ～ 1/12 每日正常開展（1/18 休園）",
+        hours: "18:00 ～ 20:30（最終入場 19:30）",
+        desc: "將廣闊真實森林化為互動數位光影藝術作品的夜間戶外展，巨型蛋形發光裝置與隨風與人互動的森林光影極具氛圍。",
+        note: "建議事先上網購票；1 月夜間戶外溫度低，務必穿戴毛帽、圍巾與保暖外套。",
+        q: "チームラボ ボタニカルガーデン 大阪"
+      },
+      {
+        id: "os_hirakata",
+        city: "大阪",
+        cat: "illumination",
+        name: "枚方公園「光之遊園地 ～Flowering Illumination～」",
+        short: "枚方公園夜間點燈",
+        venue: "ひらかたパーク（枚方市）",
+        lat: 34.8058,
+        lng: 135.6381,
+        days: [9, 10, 11],
+        datesText: "1 月為週末假日及特定日夜間開催（1/9–1/11）",
+        hours: "17:00 ～ 閉園（需對照官網營業日曆）",
+        desc: "17 公尺高新主燈「花之妖精城堡」登場，可在燈海包圍下搭乘 26 種夜間遊樂設施與摩天輪，氣氛浪漫。",
+        note: "位於大阪與京都之間的京阪電車沿線，1/10 從大阪換飯店到京都時也可考慮順路。",
+        q: "ひらかたパーク"
+      },
+      {
+        id: "os_harvest",
+        city: "大阪",
+        cat: "illumination",
+        name: "堺・ハーベストの丘「Wonder Night Hill」",
+        short: "Harvest Hill 點燈",
+        venue: "堺・緑のミュージアム ハーベストの丘",
+        lat: 34.4560,
+        lng: 135.5122,
+        days: [9, 10, 11],
+        datesText: "週末假日特定日夜間（1/9–1/11）",
+        hours: "17:30 ～ 21:00（最終入園 20:30）",
+        desc: "南大阪最大級百萬顆燈飾，包含森林家族（Sylvanian Families）聯名光影區、發光水豚與互動踏步發光裝置。",
+        note: "位於堺市郊區，白天與夜間完全換場制；出發前請務必再確認官網 1 月營業日曆。",
+        q: "ハーベストの丘 堺"
+      },
+      {
+        id: "os_umeda_skate",
+        city: "大阪",
+        cat: "illumination",
+        name: "梅田 Grand Front 戶外滑冰場「つるんつるん」",
+        short: "梅田戶外滑冰場",
+        venue: "Grand Front 大阪 うめきた廣場",
+        lat: 34.7042,
+        lng: 135.4947,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/11/21 ～ 2027/2/23",
+        hours: "11:00 ～ 21:00（最終入場 20:30，依平假日略異）",
+        desc: "就在 JR 大阪站正前方的都市型真冰滑冰場，夜間搭配周邊香檳金樹海燈飾滑冰很有日劇冬季感。",
+        note: "入場滑冰須配戴手套（現場可購），雨天可能暫停開放。",
+        q: "うめきた広場 ウメダアイスリンク"
+      },
+      {
+        id: "os_tenshiba_skate",
+        city: "大阪",
+        cat: "illumination",
+        name: "天王寺公園「てんしば☆滑冰場 てんスケ」",
+        short: "天王寺滑冰場",
+        venue: "天王寺公園エントランスエリア（てんしば）",
+        lat: 34.6484,
+        lng: 135.5105,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/11/19 ～ 2027/2/24",
+        hours: "11:00 ～ 20:00（依平假日及特別日微調）",
+        desc: "位於天王寺動物園大門前的草坪廣場冬季戶外滑冰場，抬頭就能看見阿倍野 Harukas 大樓。",
+        note: "距大阪住宿步行約 10 分鐘；必須配戴手套方可下場。",
+        q: "てんしば 大阪"
+      },
+      {
+        id: "os_city_museum",
+        city: "大阪",
+        cat: "exhibition",
+        name: "大阪市立美術館《ENLIGHTENMENT JAPAN》光影秀 ＆ 越南陶瓷展",
+        short: "大阪市立美術館光影秀",
+        venue: "大阪市立美術館（天王寺公園內）",
+        lat: 34.6501,
+        lng: 135.5105,
+        days: [7, 8, 9, 10, 11, 12],
+        lastDay: 11,
+        datesText: "光影秀 ～1/11 閉幕｜越南陶瓷展 1/9 開幕",
+        hours: "光影秀 17:45～21:15 共 5 場（1/11 最後一天）",
+        desc: "在國家登錄有形文化財大廳內上演 360° 韋瓦第《四季》光雕音樂秀（～1/11）；1/9 起同步舉辦《越南與海的陶瓷》特展。",
+        note: "光影秀現場不售票！須事前至官網／eplus 購買指定場次電子票（假日成人 ¥3,200）。",
+        q: "大阪市立美術館"
+      },
+      {
+        id: "os_nakanoshima",
+        city: "大阪",
+        cat: "exhibition",
+        name: "大阪中之島美術館：大英博物館江戶繪畫展 ＆ 創作女性的100年",
+        short: "中之島美術館雙特展",
+        venue: "大阪中之島美術館（北區中之島）",
+        lat: 34.6924,
+        lng: 135.4915,
+        days: [7, 8, 9, 10, 11, 12],
+        openDay: 9,
+        datesText: "江戶繪畫 ～1/31｜創作女性的100年 1/9 開幕",
+        hours: "10:00 ～ 17:00（一般週一休，1/11 國定假日預計開館）",
+        desc: "一次看兩個大展：《大英博物館日本美術收藏：百花繚亂》與 1/9 新開幕的《創作女性的 100 年》（上村松園、草間彌生、小野洋子等）。",
+        note: "建築本身極美，出發前建議確認 1/12 週二是否補休館。",
+        q: "大阪中之島美術館"
+      },
+      {
+        id: "os_nmao",
+        city: "大阪",
+        cat: "exhibition",
+        name: "國立國際美術館《言語重疊之處》現代美術展",
+        short: "國立國際美術館",
+        venue: "國立國際美術館（北區中之島）",
+        lat: 34.6918,
+        lng: 135.4920,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/12/1 ～ 2027/3/14",
+        hours: "10:00 ～ 17:00（週五六通常延長）",
+        desc: "緊鄰大阪中之島美術館的竹林造型地下美術館，推出特別展《言語重疊之處》與開館 50 週年紀念前導館藏展《歷史化的現代》。",
+        note: "可與隔壁大阪中之島美術館排在同一天上午參觀；請留意週一休／補休規定。",
+        q: "国立国際美術館 大阪"
+      },
+      {
+        id: "os_harukas",
+        city: "大阪",
+        cat: "exhibition",
+        name: "阿倍野 Harukas 美術館《Lucie Rie（露西·里）陶藝展》",
+        short: "Harukas 美術館",
+        venue: "阿倍野 Harukas 16 樓（阿倍野區）",
+        lat: 34.6461,
+        lng: 135.5136,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/12/26 ～ 2027/3/7",
+        hours: "10:00 ～ 20:00（週二三五／週末18:00止）",
+        desc: "回顧 20 世紀代表性女性陶藝大師露西·里（Lucie Rie）連結東西方美學的優雅器皿創作軌跡。",
+        note: "距大阪住宿步行約 12 分鐘，看完展可直接買票上 60 樓看關西夜景或逛近鐵百貨。",
+        q: "あべのハルカス美術館"
+      },
+      {
+        id: "os_fma",
+        city: "大阪",
+        cat: "exhibition",
+        name: "阪急梅田本店《鋼之鍊金術師×黃泉使者展》",
+        short: "鋼鍊×黃泉使者展 (1/10止)",
+        venue: "阪急梅田本店 9 樓藝廊",
+        lat: 34.7023,
+        lng: 135.4988,
+        days: [7, 8, 9, 10],
+        lastDay: 10,
+        datesText: "2026/12/16 ～ 2027/1/10（1/10 閉幕）",
+        hours: "配合百貨營業時間（最終日通常提早閉場）",
+        desc: "慶祝《鋼之鍊金術師》25 週年與《黃泉使者》5 週年的荒川弘雙週年原畫與立體展示大展，並販售大阪場首發周邊。",
+        note: "1/10 就是大阪場最後一天！動漫迷務必排在 1/7–1/10 前往，建議先確認需否預約場次。",
+        q: "阪急うめだ本店"
+      },
+      {
+        id: "os_george",
+        city: "大阪",
+        cat: "exhibition",
+        name: "大丸梅田店《好奇猴喬治展》",
+        short: "好奇猴喬治展",
+        venue: "大丸梅田店 7 樓特設會場",
+        lat: 34.7020,
+        lng: 135.4959,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2027/1/6 ～ 1/17",
+        hours: "配合大丸梅田店營業時間",
+        desc: "以「有你在的每一天都好快樂」為主題的經典繪本《好奇猴喬治》展覽與限定商品販售。",
+        note: "直結 JR 大阪站，可順便逛同棟大丸百貨 Nintendo OSAKA 與寶可夢中心。",
+        q: "大丸梅田店"
+      },
+      {
+        id: "os_parco",
+        city: "大阪",
+        cat: "exhibition",
+        name: "心齋橋 PARCO《GLITCH COLLECTION》日本首場快閃店",
+        short: "心齋橋PARCO快閃 (1/11止)",
+        venue: "心齋橋 PARCO（中央區）",
+        lat: 34.6745,
+        lng: 135.5008,
+        days: [7, 8, 9, 10, 11],
+        lastDay: 11,
+        datesText: "快閃店 ～1/11 閉幕｜壁面攝影展 ～1/17",
+        hours: "10:00 ～ 20:00",
+        desc: "超人氣 3DCG 動畫《神奇數位馬戲團》澳洲 Glitch 工作室日本首次聯名快閃店（～1/11），同館壁面另有《OSAKA STREET STYLE》大阪街拍展。",
+        note: "心齋橋 PARCO 6 樓另有吉伊卡哇、寶可夢、哥吉拉專賣店可一次逛完。",
+        q: "心斎橋PARCO"
+      },
+      {
+        id: "os_kabuki",
+        city: "大阪",
+        cat: "stage_food",
+        name: "新歌舞伎座「壽 初春歌舞伎特別公演」",
+        short: "新歌舞伎座 初春歌舞伎",
+        venue: "新歌舞伎座（上本町 YUFURA 6F）",
+        lat: 34.6648,
+        lng: 135.5196,
+        days: [9, 10, 11, 12],
+        openDay: 9,
+        datesText: "1/9（六）～ 1/24（日）",
+        hours: "晝之部 11:00 開演 ／ 夜之部 16:30 開演",
+        desc: "2027 年關西正月大歌舞伎移師上本町新歌舞伎座！片岡愛之助、中村鴈治郎、市川中車等豪華陣容演出《義經千本櫻》《鷺娘》等名作。",
+        note: "1/9 開幕；近鐵「大阪上本町站」直結，也可看部分場次體驗傳統日本劇場。",
+        q: "新歌舞伎座 大阪"
+      },
+      {
+        id: "os_dome",
+        city: "大阪",
+        cat: "stage_food",
+        name: "京セラドーム大阪：Snow Man (1/7) ＆ Hey! Say! JUMP (1/10–12)",
+        short: "大阪巨蛋 演唱會",
+        venue: "京瓷巨蛋大阪（西區）",
+        lat: 34.6693,
+        lng: 135.4761,
+        days: [7, 10, 11, 12],
+        datesText: "1/7 Snow Man｜1/10・11・12 Hey! Say! JUMP",
+        hours: "1/7(16:00)・1/10(17:00)・1/11(17:00)・1/12(16:00)",
+        desc: "超人氣偶像團體連續於大阪巨蛋開唱！即使沒有購票進場，也要注意散場時段長堀鶴見綠地線與阪神難波線會湧現大量人潮。",
+        note: "1/10–1/12 演唱會使大阪住宿需求極高，心齋橋／難波周邊餐廳晚餐尖峰建議訂位。",
+        q: "京セラドーム大阪"
+      },
+      {
+        id: "os_johall",
+        city: "大阪",
+        cat: "stage_food",
+        name: "大阪城 Hall「LIVE SDD 2027」大型公益演唱會",
+        short: "大阪城Hall LIVE SDD",
+        venue: "大阪城ホール（中央區）",
+        lat: 34.6894,
+        lng: 135.5297,
+        days: [10],
+        exactOnly: true,
+        datesText: "1/10（日）16:00 開演",
+        hours: "15:00 開場 ／ 16:00 開演",
+        desc: "FM 大阪主辦的反酒駕公益大型演唱會，集結 TRF、STARDUST REVUE、聖堂教父（Gospellers）、渋谷すばる、超ときめき♡宣伝部等群星。",
+        note: "散場時間預計傍晚至晚間，JR 大阪城公園站人潮較多。",
+        q: "大阪城ホール"
+      },
+      {
+        id: "os_festivalhall",
+        city: "大阪",
+        cat: "stage_food",
+        name: "Festival Hall「維也納約翰史特勞斯管弦樂團新年音樂會 2027」",
+        short: "Festival Hall 新年音樂會",
+        venue: "フェスティバルホール（北區中之島）",
+        lat: 34.6935,
+        lng: 135.4968,
+        days: [10],
+        exactOnly: true,
+        datesText: "1/10（日）單日公演",
+        hours: "午後／傍晚場次（依票券場次）",
+        desc: "在音響著稱的大阪中之島 Festival Hall 聆聽正統維也納新年華爾滋與波爾卡經典樂章。",
+        note: "位於中之島，可結合白天中之島美術館參觀行程。",
+        q: "フェスティバルホール 大阪"
+      },
+
+      // ==================== 京都 (26) ====================
+      {
+        id: "ky_ebisu",
+        city: "京都",
+        cat: "festival",
+        name: "京都ゑびす神社「十日ゑびす大祭（初ゑびす）」",
+        short: "京都ゑびす 十日戎",
+        venue: "京都ゑびす神社（東山區・鄰近祇園）",
+        lat: 34.9999,
+        lng: 135.7717,
+        days: [8, 9, 10, 11, 12],
+        highlightDay: 11,
+        datesText: "1/8 招福祭 ～ 1/12 撤福祭（1/11 舞妓授與福笹）",
+        hours: "1/9–1/10 通宵開門｜1/11 ～24:00｜1/8・12 至晚間",
+        desc: "京都版十日戎！1/9 宵祭有「招福鮪魚」奉納；最受歡迎的是 1/11「残り福祭」有祇園甲部等花街舞妓親自授與福笹！",
+        note: "距祇園四條站步行約 6 分；若在京都看 1/11 舞妓福笹建議提早排隊。",
+        q: "京都ゑびす神社"
+      },
+      {
+        id: "ky_kamigamo",
+        city: "京都",
+        cat: "festival",
+        name: "上賀茂神社「白馬奏覧神事」＆ 七草粥",
+        short: "上賀茂神社 白馬神事",
+        venue: "上賀茂神社（賀茂別雷神社・北區）",
+        lat: 35.0603,
+        lng: 135.7528,
+        days: [7],
+        exactOnly: true,
+        datesText: "1/7（四）10:00～ 當日限定",
+        hours: "神事 10:00｜牽馬之儀 12:00・13:00・14:00・15:00",
+        desc: "神社向神前獻上七草粥並讓神馬「神山號」於本殿前亮相、賜予大豆。境內亦可品嚐付費「厄除七草粥」，祈求整年健康避邪。",
+        note: "在世界遺產綠意境內體驗京都道地 1/7 人日節句文化。",
+        q: "上賀茂神社 京都"
+      },
+      {
+        id: "ky_saiin",
+        city: "京都",
+        cat: "festival",
+        name: "西院春日神社「若菜節句祭（七草粥）」",
+        short: "西院春日神社 七草粥",
+        venue: "西院春日神社（右京區）",
+        lat: 35.0050,
+        lng: 135.7294,
+        days: [7],
+        exactOnly: true,
+        datesText: "1/7（四）當日限定",
+        hours: "神事與授粥依社方當日公告（上午起）",
+        desc: "1/7 上午舉行神事後向參拜者授與「若菜粥」，特色是熱粥常搭配里芋、梅干與昆布等傳統食材，祈求無病息災。",
+        note: "阪急京都線「西院站」旁，從大阪搭乘阪急前往十分順路。",
+        q: "西院春日神社 京都"
+      },
+      {
+        id: "ky_gokonomiya",
+        city: "京都",
+        cat: "festival",
+        name: "御香宮神社「七種神事（名水七草粥）」",
+        short: "御香宮 名水七草粥",
+        venue: "御香宮神社（伏見桃山）",
+        lat: 34.9333,
+        lng: 135.7634,
+        days: [7],
+        exactOnly: true,
+        datesText: "1/7（四）當日限定",
+        hours: "神事後上午起授與（數量有限）",
+        desc: "江戶時代延續至今的伏見傳統行事，用日本名水百選「御香水」精心炊煮七草粥接待參拜者。",
+        note: "近京阪伏見桃山／近鐵桃山御陵前站，可順道逛伏見酒藏老街。",
+        q: "御香宮神社 京都"
+      },
+      {
+        id: "ky_sennyuji",
+        city: "京都",
+        cat: "festival",
+        name: "泉涌寺「泉山七福神巡禮」",
+        short: "泉涌寺 七福神巡禮",
+        venue: "御寺 泉涌寺山內各塔頭（東山區）",
+        lat: 34.9781,
+        lng: 135.7803,
+        days: [11],
+        exactOnly: true,
+        datesText: "1/11（一・成人之日）當日限定",
+        hours: "白天參拜時段（建議上午起巡禮）",
+        desc: "一年僅此一天！依序巡拜泉涌寺山內 7 座塔頭七福神加上番外 2 寺（愛染明王、楊貴妃觀音）共九福神，將「福笹」掛滿吉祥物帶回家。",
+        note: "很有儀式感的新年徒步健行祭典，山內有微坡建議穿好走的鞋。",
+        q: "泉涌寺 京都"
+      },
+      {
+        id: "ky_inari",
+        city: "京都",
+        cat: "festival",
+        name: "伏見稻荷大社「成年祭 (1/11) ＆ 奉射祭 (1/12)」",
+        short: "伏見稻荷 成年祭/奉射祭",
+        venue: "伏見稻荷大社（伏見區）",
+        lat: 34.9671,
+        lng: 135.7727,
+        days: [11, 12],
+        datesText: "1/11 13:00 成年祭｜1/12 14:00 奉射祭",
+        hours: "神事當日 13:00 / 14:00 起",
+        desc: "1/11 舉行祝福新成人並重現古裝束「元服式」的成年祭；1/12 舉行神職向天地四方射箭驅邪並占卜新年農作豐收的「奉射祭（御弓始神事）」。",
+        note: "JR 奈良線「稻荷站」出站即達，可免費觀禮並逛千本鳥居。",
+        q: "伏見稲荷大社"
+      },
+      {
+        id: "ky_chionin",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "知恩院「國寶三門樓上 ＆ 大方丈」特別公開",
+        short: "知恩院 國寶三門 (冬旅)",
+        venue: "知恩院（東山區）",
+        lat: 35.0063,
+        lng: 135.7838,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8 開幕 ～ 1/28（三門僅開至 1/28！）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】睽違 13 年公開日本現存最大級木造二重門「國寶三門」樓上內部！欣賞極彩色壁畫天井畫並遠眺京都市景。",
+        note: "三門樓梯陡峭須脫鞋；三門公開期特別短（僅至 1/28），拜觀料約 ¥800。",
+        q: "知恩院 三門"
+      },
+      {
+        id: "ky_kitano",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "北野天滿宮「寶物殿」名刀鬼切丸一舉公開",
+        short: "北野天滿宮 寶物殿 (冬旅)",
+        venue: "北野天滿宮（上京區）",
+        lat: 35.0292,
+        lng: 135.7350,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18（四）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】紀念 25 年一度「半萬燈祭」睽違 31 年特別公開！一次展出傳說源賴朝所傳國寶／重文太刀「鬼切丸（髭切）」等約 20 振名刀。",
+        note: "持北野天滿宮等西陣 5 社寺半券於周邊指定店鋪消費可享特別優待。",
+        q: "北野天満宮 宝物殿"
+      },
+      {
+        id: "ky_higashimukai",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "東向觀音寺「25年一度秘佛御開帳」",
+        short: "東向觀音寺 秘佛 (冬旅)",
+        venue: "東向觀音寺（上京區・北野天滿宮旁）",
+        lat: 35.0285,
+        lng: 135.7340,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18（四）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅 初公開！】北野天神「奧之院」，適逢 25 年一度秘佛「十一面觀音像」開帳，非常稀有。",
+        note: "就在北野天滿宮南側旁，建議與北野天滿宮寶物殿連排參觀。",
+        q: "東向観音寺 京都"
+      },
+      {
+        id: "ky_daikakuji",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "大覺寺「靈寶館」名刀薄綠（膝丸）特別公開",
+        short: "大覺寺 靈寶館 (冬旅)",
+        venue: "舊嵯峨御所 大覺寺（右京區嵐山北）",
+        lat: 35.0282,
+        lng: 135.6777,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18（四）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】睽違 45 年難得公開！展出與源義經相關的名刀「薄綠（膝丸）」及五大明王像，刀劍迷與北野天滿宮「髭切」合看必衝！",
+        note: "嵐山冬季遊客少而清幽，可同時造訪大澤池。",
+        q: "大覚寺 京都"
+      },
+      {
+        id: "ky_ninnaji",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "仁和寺「御影堂」內陣特別公開",
+        short: "仁和寺 御影堂 (冬旅)",
+        venue: "世界遺產 仁和寺（右京區）",
+        lat: 35.0311,
+        lng: 135.7138,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18（四）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】使用京都御所清涼殿古材建造的重要文化財「御影堂」開放內陣特別參觀，並可欣賞弘法大師像等寺寶。",
+        note: "搭乘嵐電（京福電車）北野線至御室仁和寺站步行即達。",
+        q: "仁和寺 京都"
+      },
+      {
+        id: "ky_higashihonganji",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "東本願寺「御影堂門」樓上特別公開",
+        short: "東本願寺 御影堂門 (冬旅)",
+        venue: "真宗本廟 東本願寺（下京區）",
+        lat: 34.9910,
+        lng: 135.7585,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18（四）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】睽違 5 年特別公開世界最大級木造二重門之一「御影堂門」樓上空間，居高俯瞰烏丸通與京都塔。",
+        note: "從 JR 京都車站步行約 7 分鐘可達，離京都住宿也很近。",
+        q: "東本願寺 京都"
+      },
+      {
+        id: "ky_toji",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "東寺「國寶五重塔初層公開 ＆ 後七日御修法」",
+        short: "東寺 五重塔/御修法",
+        venue: "世界遺產 東寺・教王護國寺（南區）",
+        lat: 34.9804,
+        lng: 135.7477,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18｜後七日御修法 1/8–1/14",
+        hours: "五重塔初層 10:00 ～ 16:30",
+        desc: "1/8 起特別公開國寶五重塔第一層內部極彩色密教空間；同時 1/8–14 舉行弘法大師空海創立、真言宗最高格式國家祈福法會「後七日御修法」。",
+        note: "可順路步行或搭一站近鐵前往京都車站南側。",
+        q: "東寺 五重塔 京都"
+      },
+      {
+        id: "ky_reikanji",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "靈鑑寺（舊谷之御所）特別公開",
+        short: "靈鑑寺 椿之寺 (冬旅)",
+        venue: "靈鑑寺（左京區・哲學之道旁）",
+        lat: 35.0207,
+        lng: 135.7963,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/14（日）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】睽違 7 年公開！皇室尼門跡寺院「椿之寺」，參觀書院、傳狩野派筆《四季花鳥圖》與東福門院相關文物。",
+        note: "與鄰近的光雲寺、京瓷美術館皆在洛東岡崎～哲學之道一帶。",
+        q: "霊鑑寺 京都"
+      },
+      {
+        id: "ky_kounji",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "光雲寺特別公開",
+        short: "光雲寺 庭園 (冬旅)",
+        venue: "光雲寺（左京區・南禪寺北側）",
+        lat: 35.0170,
+        lng: 135.7952,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18（四）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】睽違 16 年公開！東福門院菩提寺，欣賞傳運慶作聖觀音像及七代目小川治兵衛改修的借景池泉庭園。",
+        note: "平時完全不對外開放的清幽名剎，適合與靈鑑寺、南禪寺排在一起。",
+        q: "光雲寺 京都"
+      },
+      {
+        id: "ky_rokuoin",
+        city: "京都",
+        cat: "winter_kyoto",
+        name: "鹿王院特別公開",
+        short: "鹿王院 (冬旅)",
+        venue: "鹿王院（右京區嵯峨）",
+        lat: 35.0170,
+        lng: 135.6856,
+        days: [8, 9, 10, 11, 12],
+        openDay: 8,
+        datesText: "1/8（五）～ 3/18（四）",
+        hours: "10:00 ～ 16:30（最終接待 16:00）",
+        desc: "【第61回京の冬の旅】睽違 31 年特別公開！足利義滿創建的靜謐禪寺，擁有以嵐山為借景的枯山水庭園與舍利殿。",
+        note: "嵐電「鹿王院站」步行約 4 分，冬日避開渡月橋人潮的好選擇。",
+        q: "鹿王院 京都"
+      },
+      {
+        id: "ky_teamlab",
+        city: "京都",
+        cat: "illumination",
+        name: "teamLab Biovortex Kyoto（京都車站八條口）",
+        short: "teamLab 京都常設館",
+        venue: "teamLab Biovortex Kyoto（南區東九條）",
+        lat: 34.9834,
+        lng: 135.7654,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "常設展開館中（1/7–1/12 皆可預約）",
+        hours: "日間 ～ 21:00（最終入館通常 19:30）",
+        desc: "延床面積約 10,000 ㎡ 的日本國內最大規模 teamLab 常設美術館，集結 50+ 件「環境現象」沉浸式互動光影作品。",
+        note: "京都車站八條東口步行約 7 分，全室內空間完全不怕京都 1 月寒風！建議先購票。",
+        q: "チームラボ バイオヴォルテックス 京都"
+      },
+      {
+        id: "ky_station",
+        city: "京都",
+        cat: "illumination",
+        name: "京都車站大階梯冬季燈飾 ＆ 魯山人展",
+        short: "京都車站燈飾/魯山人展",
+        venue: "JR 京都車站大樓・美術館「えき」KYOTO（伊勢丹7F）",
+        lat: 34.9858,
+        lng: 135.7588,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "冬季燈飾夜間點燈｜魯山人展 1/2～",
+        hours: "大階梯免費｜美術館配合伊勢丹時間",
+        desc: "京都車站 171 階巨型大階梯呈現冬季限定圖案燈光秀；同站伊勢丹 7 樓展出《Rosanjin 的宇宙：北大路魯山人》陶藝書畫展。",
+        note: "1/10 抵達京都車站或晚間用餐購物時可順道欣賞免費燈光大階梯。",
+        q: "京都駅 大階段 美術館えきKYOTO"
+      },
+      {
+        id: "ky_kifune",
+        city: "京都",
+        cat: "illumination",
+        name: "貴船神社（碰運氣：積雪日限定點燈）",
+        short: "貴船神社 積雪點燈",
+        venue: "貴船神社（左京區鞍馬貴船）",
+        lat: 35.1217,
+        lng: 135.7629,
+        days: [9, 10, 11],
+        datesText: "例年 1 月中旬～2 月底週末積雪日限定",
+        hours: "僅限積雪當日 15:00 官方公布點燈至 20:00",
+        desc: "冬日絕景！只有在指定週末遇上積雪並經神社於當日 15:00 公告後才會開啟朱紅參道燈籠的夢幻雪夜點燈。",
+        note: "若未下雪則為一般白日參拜（仍很清幽）；山區氣溫極低且路面易結冰務必穿防滑鞋。",
+        q: "貴船神社 京都"
+      },
+      {
+        id: "ky_kyocera",
+        city: "京都",
+        cat: "exhibition",
+        name: "京都市京瓷美術館《吉卜力：白隱禪師的禪》＆ 日展",
+        short: "京瓷美術館 白隱展 (1/11止)",
+        venue: "京都市京セラ美術館（左京區岡崎）",
+        lat: 35.0129,
+        lng: 135.7836,
+        days: [7, 8, 9, 10, 11, 12],
+        lastDay: 11,
+        datesText: "《白隱さんの禅》～1/11 閉幕｜日展 ～1/16",
+        hours: "10:00 ～ 18:00（1/11 為展覽最終日）",
+        desc: "東山 Cube 展出吉卜力工作室企劃製作《白隱さんの禅》，結合江戶禪僧書畫與全新動畫影像；本館同步舉行第 119 回日展京都展。",
+        note: "1/11 就是白隱展最後一天！旁邊就是平安神宮與京近美，動線極佳。",
+        q: "京都市京セラ美術館"
+      },
+      {
+        id: "ky_momak",
+        city: "京都",
+        cat: "exhibition",
+        name: "京都國立近代美術館《珠寶為誰造夢》展",
+        short: "京都國立近代美術館",
+        venue: "京都國立近代美術館（左京區岡崎）",
+        lat: 35.0124,
+        lng: 135.7820,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "2026/10/24 ～ 2027/1/17",
+        hours: "10:00 ～ 18:00（週五通常夜間延長）",
+        desc: "匯集約 350 件國內外當代珠寶藝術設計作品的大規模特展，探索珠寶工藝與穿戴美學的新可能。",
+        note: "就在京瓷美術館正對面（平安神宮大鳥居旁），兩館可安排一起看。",
+        q: "京都国立近代美術館"
+      },
+      {
+        id: "ky_bunpaku",
+        city: "京都",
+        cat: "exhibition",
+        name: "京都文化博物館《永井豪展》＆《Jimmy大西展》",
+        short: "京都文化博物館 (永井豪1/11止)",
+        venue: "京都文化博物館（中京區・烏丸御池）",
+        lat: 35.0093,
+        lng: 135.7622,
+        days: [7, 8, 9, 10, 11, 12],
+        lastDay: 11,
+        datesText: "永井豪展 ～1/11 閉幕｜Jimmy大西展 ～2/7",
+        hours: "10:00 ～ 18:00（週五至 19:30）",
+        desc: "3F 展出能登半島地震復興祈念《永井豪紀念館復興展》（無敵鐵金剛／惡魔人，1/11 止）；4F 展出《Jimmy 大西「Home Town」京都展》。",
+        note: "距京都住宿（KOKO HOTEL 二條城）步行僅約 9 分鐘，紅磚舊日本銀行建築本身也超好拍！",
+        q: "京都文化博物館"
+      },
+      {
+        id: "ky_ryukoku",
+        city: "京都",
+        cat: "exhibition",
+        name: "龍谷博物館《佛教思想與文化：從印度到日本》特展",
+        short: "龍谷博物館 特展",
+        venue: "龍谷大學 龍谷ミュージアム（下京區）",
+        lat: 34.9910,
+        lng: 135.7534,
+        days: [9, 10, 11, 12],
+        openDay: 9,
+        datesText: "2027/1/9（六）開幕",
+        hours: "10:00 ～ 17:00（週一或節後休館請依官網）",
+        desc: "1/9 新登場！位於世界遺產西本願寺正對面的佛教專門博物館，系統性展示佛教由印度傳入東亞至日本的思想與藝術演變。",
+        note: "可與西本願寺、東本願寺御影堂門（京の冬の旅）排在同一半日散步路線。",
+        q: "龍谷ミュージアム 京都"
+      },
+      {
+        id: "ky_granvia",
+        city: "京都",
+        cat: "stage_food",
+        name: "京都格蘭比亞大酒店「草莓甜點自助餐」",
+        short: "格蘭比亞 草莓吃到飽",
+        venue: "ホテルグランヴィア京都 2F「Le Temps」",
+        lat: 34.9860,
+        lng: 135.7602,
+        days: [9, 10, 11, 12],
+        datesText: "例年 1/9 前後起至 5 月（建議先預約）",
+        hours: "下午茶時段 15:30–17:00 等（依飯店當期公告）",
+        desc: "JR 京都車站直結的超人氣草莓季吃到飽！每日嚴選 3 款新鮮草莓無限享用，搭配現做甜點與披薩、義大利麵等鹹食。",
+        note: "1 月為日本草莓最香甜季節，三連休非常搶手，務必事前線上訂位。",
+        q: "ホテルグランヴィア京都 ルタン"
+      },
+      {
+        id: "ky_chourakukan",
+        city: "京都",
+        cat: "stage_food",
+        name: "長樂館「草莓巧克力下午茶」",
+        short: "長樂館 草莓下午茶 (1/12開幕)",
+        venue: "長樂館（東山區・圓山公園旁）",
+        lat: 35.0031,
+        lng: 135.7800,
+        days: [12],
+        openDay: 12,
+        datesText: "2027/1/12（二）～ 3/19（1/12 首日登場）",
+        hours: "12:00–18:00（2 小時制，須提前預約）",
+        desc: "在指定為國家重要文化財的明治時期歐風洋館「迎賓之間」裡，享用季節草莓與巧克力交織的貴族感正統三層下午茶。",
+        note: "1/12 剛好是開賣第一天，從知恩院／八坂神社步行即達，建議提前預約席次。",
+        q: "長楽館 京都"
+      },
+      {
+        id: "ky_fauchon",
+        city: "京都",
+        cat: "stage_food",
+        name: "FAUCHON Hotel Kyoto「草莓下午茶」",
+        short: "FAUCHON 草莓下午茶",
+        venue: "フォションホテル京都（下京區河原町松原）",
+        lat: 34.9986,
+        lng: 135.7677,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "1 月草莓季持續供應（需預約）",
+        hours: "11:00– / 14:00– 等場次（2 小時制）",
+        desc: "巴黎百年美食名店 FAUCHON 位於鴨川與河原町之間的奢華精品飯店，推出大量使用甘王（あまおう）草莓的粉紅系高顏值下午茶。",
+        note: "離京都ゑびす神社與祇園四條僅數分鐘步程，適合逛十日戎後休息喝茶。",
+        q: "フォションホテル京都"
+      }
+    ];
+
+    const evState = {
+      city: "all",
+      day: "all",
+      cat: "all",
+      search: "",
+      onlyFav: false,
+      showHotels: true,
+      activeId: null
+    };
+
+    const evEventMarkersLayer = L.layerGroup().addTo(eventsMapObj.map);
+    const evHotelMarkersLayer = L.layerGroup().addTo(eventsMapObj.map);
+    const evMarkerById = new Map();
+    const evHotelMarkerById = new Map();
+
+    function evHaversineKm(lat1, lng1, lat2, lng2) {
+      const toRad = (deg) => (deg * Math.PI) / 180;
+      const R = 6371;
+      const dLat = toRad(lat2 - lat1);
+      const dLng = toRad(lng2 - lng1);
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function evGetHotelDistanceInfo(ev) {
+      const hotel = ev.city === "大阪" ? CONFIRMED_HOTELS[0] : CONFIRMED_HOTELS[1];
+      const km = evHaversineKm(ev.lat, ev.lng, hotel.lat, hotel.lng);
+      const label = ev.city === "大阪" ? "距大阪住宿" : "距京都住宿";
+      return `${label}約 ${km.toFixed(1)} km`;
+    }
+
+    function evGetSpecialBadge(ev, selectedDay) {
+      const dayNum = selectedDay === "all" ? null : Number(selectedDay);
+      if (dayNum !== null) {
+        if (ev.exactOnly || (ev.days.length === 1 && ev.days[0] === dayNum)) {
+          return { text: "⭐ 當日限定", cls: "ev-pill-exact", priority: 1 };
+        }
+        if (ev.lastDay === dayNum) {
+          return { text: `⏳ 1/${dayNum} 最後一天`, cls: "ev-pill-last", priority: 2 };
+        }
+        if (ev.highlightDay === dayNum) {
+          return { text: "🔥 今日焦點", cls: "ev-pill-hot", priority: 3 };
+        }
+        if (ev.openDay === dayNum) {
+          return { text: `🎉 1/${dayNum} 開幕`, cls: "ev-pill-open", priority: 3 };
+        }
+        return { text: "", cls: "", priority: 4 };
+      }
+
+      if (ev.exactOnly) {
+        return { text: `⭐ 1/${ev.days[0]} 限定`, cls: "ev-pill-exact", priority: 1 };
+      }
+      if (ev.lastDay) {
+        return { text: `⏳ 1/${ev.lastDay} 止`, cls: "ev-pill-last", priority: 2 };
+      }
+      if (ev.highlightDay) {
+        return { text: `🔥 1/${ev.highlightDay} 焦點`, cls: "ev-pill-hot", priority: 3 };
+      }
+      if (ev.openDay) {
+        return { text: `🎉 1/${ev.openDay} 開幕`, cls: "ev-pill-open", priority: 3 };
+      }
+      return { text: "", cls: "", priority: 4 };
+    }
+
+    function evGetBaseFiltered(ignoreCat = false) {
+      const q = evState.search.trim().toLowerCase();
+      const dayNum = evState.day === "all" ? null : Number(evState.day);
+      return EVENTS_2027.filter((ev) => {
+        if (evState.city !== "all" && ev.city !== evState.city) return false;
+        if (dayNum !== null && !ev.days.includes(dayNum)) return false;
+        if (!ignoreCat && evState.cat !== "all" && ev.cat !== evState.cat) return false;
+        if (evState.onlyFav && getVoters(ev.id).length === 0) return false;
+        if (q) {
+          const hay = `${ev.name} ${ev.short} ${ev.venue} ${ev.desc} ${ev.note} ${ev.city} ${EV_CATEGORIES[ev.cat].label}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function evGetSortedVisible() {
+      const list = evGetBaseFiltered(false);
+      const dayNum = evState.day === "all" ? null : Number(evState.day);
+      return list
+        .map((ev, idx) => ({ ev, idx, badge: evGetSpecialBadge(ev, evState.day) }))
+        .sort((a, b) => {
+          if (dayNum !== null && a.badge.priority !== b.badge.priority) {
+            return a.badge.priority - b.badge.priority;
+          }
+          if (evState.city === "all" && a.ev.city !== b.ev.city) {
+            return a.ev.city === "大阪" ? -1 : 1;
+          }
+          return a.idx - b.idx;
+        })
+        .map((item) => item.ev);
+    }
+
+    function evUpdateFavCountPill() {
+      const count = EVENTS_2027.filter((ev) => getVoters(ev.id).length > 0).length;
+      const el = document.getElementById("ev-fav-count");
+      if (el) el.textContent = String(count);
+    }
+
+    function evBuildEventIcon(ev) {
+      const cat = EV_CATEGORIES[ev.cat];
+      const isFav = getVoters(ev.id).length > 0;
+      const isActive = evState.activeId === ev.id;
+      const cls = `ev-pin${isFav ? " is-fav" : ""}${isActive ? " is-active" : ""}`;
+      const labelHtml = isActive ? `<span class="ev-pin-label">${escapeHtml(ev.short)}</span>` : "";
+      return L.divIcon({
+        className: "leaflet-div-icon",
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
+        popupAnchor: [0, -18],
+        html: `<div class="${cls}" style="background:${cat.color};">${labelHtml}<span>${cat.icon}</span></div>`
+      });
+    }
+
+    function evBuildEventPopup(ev) {
+      const cat = EV_CATEGORIES[ev.cat];
+      const voters = getVoters(ev.id);
+      const savedByMe = isVotedByMe(ev.id);
+      const badge = evGetSpecialBadge(ev, evState.day);
+      const badgeHtml = badge.text ? `<span class="ev-pill ${badge.cls}">${escapeHtml(badge.text)}</span>` : "";
+      const cityCls = ev.city === "大阪" ? "ev-pill-osaka" : "ev-pill-kyoto";
+      const votersStr = voters.length ? `<div><strong>已收藏：</strong>❤️ ${escapeHtml(voters.join("、"))}</div>` : "";
+      return `
+        <div>
+          <div class="ev-pop-badges">
+            <span class="ev-pill ${cityCls}">${escapeHtml(ev.city)}</span>
+            <span class="ev-pill" style="background:${cat.bg};color:${cat.color};">${cat.icon} ${escapeHtml(cat.label)}</span>
+            ${badgeHtml}
+          </div>
+          <h4 class="ev-pop-title">${escapeHtml(ev.name)}</h4>
+          <div class="ev-pop-venue">📍 ${escapeHtml(ev.venue)}</div>
+          <p class="ev-pop-desc">${escapeHtml(ev.desc)}</p>
+          <div class="ev-pop-meta">
+            <div><strong>日期：</strong>${escapeHtml(ev.datesText)}</div>
+            <div><strong>時間：</strong>${escapeHtml(ev.hours)}</div>
+            <div><strong>提醒：</strong>${escapeHtml(ev.note)}</div>
+            <div><strong>距離：</strong>${escapeHtml(evGetHotelDistanceInfo(ev))}</div>
+            ${votersStr}
+          </div>
+          <div class="ev-pop-actions">
+            <button type="button" class="ev-pop-btn ${savedByMe ? "is-fav" : ""}" onclick="toggleWish('${ev.id}','event')">
+              ${savedByMe ? `❤️ ${escapeHtml(currentUser)}已想去` : `🤍 ${escapeHtml(currentUser)}想去`}
+            </button>
+            <a class="ev-pop-btn is-map" href="${mapSearchUrl(ev.q || `${ev.lat},${ev.lng}`)}" target="_blank" rel="noopener">Google Maps ↗</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function evBuildHotelPopup(h) {
+      return `
+        <div>
+          <div class="ev-pop-badges">
+            <span class="ev-pill" style="background:#111111;color:#FDE68A;">🏨 確定下榻飯店</span>
+            <span class="ev-pill ${h.city === "大阪" ? "ev-pill-osaka" : "ev-pill-kyoto"}">${escapeHtml(h.city)}</span>
+          </div>
+          <h4 class="ev-pop-title">${escapeHtml(h.title)}</h4>
+          <div class="ev-pop-venue">📅 ${escapeHtml(h.pinMeta)} ｜ ${escapeHtml(h.area)}</div>
+          <p class="ev-pop-desc">${escapeHtml(h.subTime)}（${escapeHtml(h.bigTime)}）</p>
+          <div class="ev-pop-actions">
+            <a class="ev-pop-btn is-map" href="${mapSearchUrl(h.q)}" target="_blank" rel="noopener">Google Maps ↗</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function evRenderHotelsOnMap() {
+      evHotelMarkersLayer.clearLayers();
+      evHotelMarkerById.clear();
+      if (!evState.showHotels) return;
+
+      CONFIRMED_HOTELS.forEach((h) => {
+        const shortLabel = h.city === "大阪" ? "大阪住宿" : "京都住宿";
+        const icon = L.divIcon({
+          className: "leaflet-div-icon",
+          iconSize: [0, 0],
+          iconAnchor: [0, 0],
+          popupAnchor: [0, -16],
+          html: `<div class="ev-hotel-pin">🏨 ${escapeHtml(shortLabel)}</div>`
+        });
+        const marker = L.marker([h.lat, h.lng], { icon, zIndexOffset: 900 }).bindPopup(evBuildHotelPopup(h));
+        marker.addTo(evHotelMarkersLayer);
+        evHotelMarkerById.set(h.id, marker);
+      });
+    }
+
+    function evRenderEventsOnMap(visibleEvents) {
+      evEventMarkersLayer.clearLayers();
+      evMarkerById.clear();
+
+      visibleEvents.forEach((ev) => {
+        const isActive = evState.activeId === ev.id;
+        const marker = L.marker([ev.lat, ev.lng], {
+          icon: evBuildEventIcon(ev),
+          zIndexOffset: isActive ? 1000 : 100
+        });
+        marker.bindPopup(() => evBuildEventPopup(ev), { maxWidth: 310 });
+        marker.on("mouseover", () => {
+          if (evState.activeId !== ev.id) marker.setZIndexOffset(800);
+        });
+        marker.on("mouseout", () => {
+          marker.setZIndexOffset(evState.activeId === ev.id ? 1000 : 100);
+        });
+        marker.on("click", () => {
+          evSelectEvent(ev.id, { fly: false, scrollCard: true });
+        });
+        marker.addTo(evEventMarkersLayer);
+        evMarkerById.set(ev.id, marker);
+      });
+    }
+
+    window.evFitCurrentResults = function() {
+      const visible = evGetSortedVisible();
+      const pts = visible.map((ev) => [ev.lat, ev.lng]);
+      if (evState.showHotels && pts.length === 0) {
+        CONFIRMED_HOTELS.forEach((h) => pts.push([h.lat, h.lng]));
+      }
+      if (pts.length === 0) {
+        eventsMapObj.map.flyTo([34.82, 135.63], 10, { duration: 0.5 });
+        return;
+      }
+      if (pts.length === 1) {
+        eventsMapObj.map.flyTo(pts[0], 15, { duration: 0.5 });
+        return;
+      }
+      eventsMapObj.map.flyToBounds(L.latLngBounds(pts), { padding: [46, 46], maxZoom: 15, duration: 0.55 });
+    };
+
+    window.evFocusHotelByCity = function(city) {
+      const h = CONFIRMED_HOTELS.find((x) => x.city === city);
+      if (!h) return;
+      if (!evState.showHotels) {
+        evState.showHotels = true;
+        document.getElementById("ev-toggle-hotels-btn")?.classList.add("active");
+        evRenderHotelsOnMap();
+      }
+      const marker = evHotelMarkerById.get(h.id);
+      if (marker) {
+        setTimeout(() => marker.openPopup(), 240);
+      }
+    };
+
+    function evSelectEvent(id, { fly = true, scrollCard = false } = {}) {
+      const prevId = evState.activeId;
+      evState.activeId = id;
+      const ev = EVENTS_2027.find((x) => x.id === id);
+      if (!ev) return;
+
+      if (prevId && evMarkerById.has(prevId)) {
+        const prevEv = EVENTS_2027.find((x) => x.id === prevId);
+        const prevM = evMarkerById.get(prevId);
+        if (prevEv && prevM) {
+          prevM.setIcon(evBuildEventIcon(prevEv));
+          prevM.setZIndexOffset(100);
+        }
+      }
+      const marker = evMarkerById.get(id);
+      if (marker) {
+        marker.setIcon(evBuildEventIcon(ev));
+        marker.setZIndexOffset(1000);
+        if (fly) {
+          if (window.innerWidth <= 1024 && document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
+            setMobileViewMode("split");
+          }
+          eventsMapObj.map.flyTo([ev.lat, ev.lng], Math.max(eventsMapObj.map.getZoom(), 15), { duration: 0.5 });
+        }
+        marker.openPopup();
+      }
+
+      document.querySelectorAll("#ev-cards-list .ev-card.active").forEach((el) => el.classList.remove("active"));
+      const cardEl = document.getElementById(`ev-card-${id}`);
+      if (cardEl) {
+        cardEl.classList.add("active");
+        if (scrollCard) {
+          const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 80;
+          const top = (window.scrollY || window.pageYOffset || 0) + cardEl.getBoundingClientRect().top - navH - 14;
+          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        }
+      }
+    }
+
+    window.evFocusEvent = function(id, eventObj) {
+      if (eventObj) eventObj.stopPropagation();
+      evSelectEvent(id, { fly: true, scrollCard: false });
+      if (window.innerWidth <= 1024) {
+        scrollToActiveMap();
+      }
+    };
+
+    window.evSelectEventFromCard = function(id) {
+      evSelectEvent(id, { fly: true, scrollCard: false });
+      if (window.innerWidth <= 1024) {
+        scrollToActiveMap();
+      }
+    };
+
+    window.updateEventFavUI = function(id) {
+      evUpdateFavCountPill();
+      if (evState.onlyFav) {
+        renderEventsTab(false);
+        return;
+      }
+      const ev = EVENTS_2027.find((x) => x.id === id);
+      const marker = evMarkerById.get(id);
+      if (ev && marker) {
+        marker.setIcon(evBuildEventIcon(ev));
+        if (marker.isPopupOpen()) {
+          marker.setPopupContent(evBuildEventPopup(ev));
+        }
+      }
+      const btn = document.getElementById(`ev-fav-btn-${id}`);
+      if (btn) {
+        const voters = getVoters(id);
+        const savedByMe = isVotedByMe(id);
+        btn.classList.toggle("active", savedByMe);
+        btn.textContent = savedByMe
+          ? (voters.length > 1 ? `♥ 已想去 (${voters.length})` : "♥ 已想去")
+          : (voters.length ? `♡ 想去 (${voters.length})` : "♡ 想去");
+      }
+    };
+
+    function evUpdateDayContextPill() {
+      const pill = document.getElementById("ev-day-context-pill");
+      if (!pill) return;
+      const mapNotes = {
+        all: "📅 1/7–1/12 全區 6 天總覽",
+        "7": "🏨 1/7 (四) 住大阪 Haginochaya ｜ 住吉大社・上賀茂白馬神事",
+        "8": "🏨 1/8 (五) 住大阪 Haginochaya ｜ 京の冬の旅開幕・京都ゑびす招福祭",
+        "9": "🏨 1/9 (六) 住大阪 Haginochaya ｜ 三連休首日・今宮戎宵戎・新歌舞伎座開幕",
+        "10": "🚃 1/10 (日) 大阪➔京都移動日 ｜ 本戎寶惠駕・鋼鍊展最後一天",
+        "11": "🏨 1/11 (一) 住京都 KOKO 二條城 ｜ 成人之日・舞妓福笹・多展最後一天",
+        "12": "🏨 1/12 (二) 返程／收尾日 ｜ 伏見稻荷奉射祭・長樂館草莓開幕・海遊館最後一天"
+      };
+      pill.textContent = mapNotes[evState.day] || mapNotes.all;
+    }
+
+    function evRenderCategoryChips() {
+      const container = document.getElementById("ev-cat-tabs");
+      if (!container) return;
+      const baseList = evGetBaseFiltered(true);
+      const counts = {
+        all: baseList.length,
+        festival: 0,
+        winter_kyoto: 0,
+        illumination: 0,
+        exhibition: 0,
+        stage_food: 0
+      };
+      baseList.forEach((ev) => {
+        if (counts[ev.cat] !== undefined) counts[ev.cat] += 1;
+      });
+
+      const chips = [
+        { key: "all", label: "全部類別", icon: "🗺️", color: "#111111" },
+        ...Object.entries(EV_CATEGORIES).map(([key, c]) => ({
+          key,
+          label: c.label,
+          icon: c.icon,
+          color: c.color
+        }))
+      ];
+
+      container.innerHTML = chips
+        .map((c) => {
+          const active = evState.cat === c.key ? " active" : "";
+          const dotStyle = c.key === "all" ? "" : `<span class="ev-cat-dot" style="background:${c.color};"></span>`;
+          return `
+            <button type="button" class="ev-cat-chip${active}" data-cat="${c.key}">
+              ${dotStyle}<span>${c.icon} ${escapeHtml(c.label)}</span>
+              <span class="ev-cat-count">${counts[c.key]}</span>
+            </button>
+          `;
+        })
+        .join("");
+
+      container.querySelectorAll(".ev-cat-chip").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          evState.cat = btn.dataset.cat;
+          renderEventsTab(true);
+        });
+      });
+    }
+
+    function evRenderCards(visibleEvents) {
+      const container = document.getElementById("ev-cards-list");
+      const summaryEl = document.getElementById("ev-result-summary");
+      if (!container || !summaryEl) return;
+
+      summaryEl.innerHTML = `顯示 <span>${visibleEvents.length}</span> 個活動地點`;
+
+      const isFiltered =
+        evState.city !== "all" ||
+        evState.day !== "all" ||
+        evState.cat !== "all" ||
+        evState.search.trim() !== "" ||
+        evState.onlyFav;
+      const resetBtn = document.getElementById("ev-reset-filters-btn");
+      if (resetBtn) resetBtn.style.display = isFiltered ? "inline-flex" : "none";
+
+      if (visibleEvents.length === 0) {
+        container.innerHTML = `
+          <div class="ev-empty-state">
+            <h3>找不到符合條件的特別活動</h3>
+            <p>${evState.onlyFav ? "目前「只看收藏」沒有符合此條件的活動，可先點卡片右上角「♡ 想去」加入雲端清單。" : "試著調整城市、日期、類別或搜尋關鍵字看看。"}</p>
+            <button type="button" class="ev-action-btn primary" onclick="resetEventsFilters()">↺ 清除條件顯示全部活動</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = visibleEvents
+        .map((ev) => {
+          const cat = EV_CATEGORIES[ev.cat];
+          const voters = getVoters(ev.id);
+          const savedByMe = isVotedByMe(ev.id);
+          const isActive = evState.activeId === ev.id;
+          const badge = evGetSpecialBadge(ev, evState.day);
+          const cityCls = ev.city === "大阪" ? "ev-pill-osaka" : "ev-pill-kyoto";
+          const specialHtml = badge.text ? `<span class="ev-pill ${badge.cls}">${escapeHtml(badge.text)}</span>` : "";
+          const favText = savedByMe
+            ? (voters.length > 1 ? `♥ 已想去 (${voters.length})` : "♥ 已想去")
+            : (voters.length ? `♡ 想去 (${voters.length})` : "♡ 想去");
+
+          return `
+            <article class="ev-card${isActive ? " active" : ""}" id="ev-card-${ev.id}" onclick="evSelectEventFromCard('${ev.id}')">
+              <div class="ev-card-top">
+                <div class="ev-badge-row">
+                  <span class="ev-pill ${cityCls}">${escapeHtml(ev.city)}</span>
+                  <span class="ev-pill" style="background:${cat.bg};color:${cat.color};">${cat.icon} ${escapeHtml(cat.label)}</span>
+                  <span class="ev-pill ev-pill-date">${escapeHtml(ev.datesText)}</span>
+                  ${specialHtml}
+                </div>
+                <button type="button" id="ev-fav-btn-${ev.id}" class="ev-fav-btn${savedByMe ? " active" : ""}" onclick="event.stopPropagation(); toggleWish('${ev.id}', 'event')">
+                  ${favText}
+                </button>
+              </div>
+              <h3 class="ev-title">${escapeHtml(ev.name)}</h3>
+              <div class="ev-venue">📍 ${escapeHtml(ev.venue)}</div>
+              <p class="ev-desc">${escapeHtml(ev.desc)}</p>
+              <div class="ev-meta-grid">
+                <div><strong>⏰ 時間：</strong>${escapeHtml(ev.hours)}</div>
+                <div><strong>💡 備註：</strong>${escapeHtml(ev.note)}</div>
+              </div>
+              <div class="ev-actions">
+                <span class="ev-dist">📏 ${escapeHtml(evGetHotelDistanceInfo(ev))}</span>
+                <div class="ev-btn-group">
+                  <button type="button" class="ev-action-btn primary" onclick="evFocusEvent('${ev.id}', event)">📍 地圖定位</button>
+                  <a class="ev-action-btn" href="${mapSearchUrl(ev.q || `${ev.lat},${ev.lng}`)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Google Maps ↗</a>
+                </div>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+    }
+
+    window.resetEventsFilters = function() {
+      evState.city = "all";
+      evState.day = "all";
+      evState.cat = "all";
+      evState.search = "";
+      evState.onlyFav = false;
+      const si = document.getElementById("ev-search-input");
+      if (si) si.value = "";
+      document.getElementById("ev-search-clear-btn")?.classList.remove("visible");
+      document.getElementById("ev-fav-filter-btn")?.classList.remove("active");
+      document.querySelectorAll("#ev-city-tabs .ev-seg-btn").forEach((b) => b.classList.toggle("active", b.dataset.city === "all"));
+      document.querySelectorAll("#ev-day-tabs .ev-seg-btn").forEach((b) => b.classList.toggle("active", b.dataset.day === "all"));
+      renderEventsTab(true);
+    };
+
+    function renderEventsTab(shouldFitMap = false) {
+      evUpdateFavCountPill();
+      evUpdateDayContextPill();
+      evRenderCategoryChips();
+      const visible = evGetSortedVisible();
+      if (evState.activeId && !visible.some((ev) => ev.id === evState.activeId)) {
+        evState.activeId = null;
+      }
+      evRenderCards(visible);
+      evRenderEventsOnMap(visible);
+      if (shouldFitMap && document.body.dataset.activeTab === "events") {
+        evFitCurrentResults();
+      }
+    }
+
+    function initEventsTab() {
+      const badgeTotal = document.getElementById("badge-events-total");
+      if (badgeTotal) badgeTotal.textContent = String(EVENTS_2027.length);
+
+      document.querySelectorAll("#ev-city-tabs .ev-seg-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          evState.city = btn.dataset.city;
+          document.querySelectorAll("#ev-city-tabs .ev-seg-btn").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderEventsTab(true);
+        });
+      });
+
+      document.querySelectorAll("#ev-day-tabs .ev-seg-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          evState.day = btn.dataset.day;
+          document.querySelectorAll("#ev-day-tabs .ev-seg-btn").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderEventsTab(false);
+        });
+      });
+
+      const evSearchInput = document.getElementById("ev-search-input");
+      const evSearchClear = document.getElementById("ev-search-clear-btn");
+      if (evSearchInput && evSearchClear) {
+        evSearchInput.addEventListener("input", () => {
+          evState.search = evSearchInput.value;
+          evSearchClear.classList.toggle("visible", evState.search.length > 0);
+          renderEventsTab(false);
+        });
+        evSearchClear.addEventListener("click", () => {
+          evState.search = "";
+          evSearchInput.value = "";
+          evSearchClear.classList.remove("visible");
+          renderEventsTab(false);
+          evSearchInput.focus();
+        });
+      }
+
+      document.getElementById("ev-fav-filter-btn")?.addEventListener("click", (e) => {
+        evState.onlyFav = !evState.onlyFav;
+        e.currentTarget.classList.toggle("active", evState.onlyFav);
+        renderEventsTab(true);
+      });
+
+      document.getElementById("ev-toggle-hotels-btn")?.addEventListener("click", (e) => {
+        evState.showHotels = !evState.showHotels;
+        e.currentTarget.classList.toggle("active", evState.showHotels);
+        evRenderHotelsOnMap();
+      });
+
+      document.getElementById("ev-fit-results-btn")?.addEventListener("click", evFitCurrentResults);
+      document.getElementById("ev-reset-filters-btn")?.addEventListener("click", window.resetEventsFilters);
+
+      document.querySelectorAll("#ev-jump-strip .mini-chip").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll("#ev-jump-strip .mini-chip").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          if (btn.dataset.jump === "fit") {
+            evFitCurrentResults();
+          } else {
+            eventsMapObj.map.flyTo([Number(btn.dataset.lat), Number(btn.dataset.lng)], Number(btn.dataset.zoom || 14), { duration: 0.55 });
+          }
+        });
+      });
+
+      evRenderHotelsOnMap();
+      renderEventsTab(false);
+    }
+
     // ==================== INIT ====================
     populateAddFormSelects();
     updateUserBadge();
@@ -6107,6 +8245,7 @@
     renderFoodSidebar();
     buildFoodMarkers(false);
     renderFoodDetail();
+    initEventsTab();
     syncFromCloud(false);
     setInterval(() => { if (!document.hidden) syncFromCloud(true); }, 12000);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) syncFromCloud(true); });
