@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>旅日 eSIM 各家詳細對照表｜5天／6天方案・網速・頻寬・電信・價錢總整理</title>
+  <meta name="description" content="以各品牌橫向矩陣表格整理 DJB、Saily、威訊 WaySim、JOYTEL、翔翼、台哥大漫遊通、Trip.com、KKday/Klook、蝦皮熱門、Ubigi、Holafly、Airalo 與三大電信原號漫遊完整差異，支援 5天/6天價格即時切換。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F8F7F4;
+      --surface: #FFFFFF;
+      --frame: #1A1A1A;
+      --label-bg: #E5E5E2;
+      --header-bg: #F4F4F1;
+      --row-border: #D8D8D4;
+      --label-border: #C8C8C4;
+      --col-dash: #B8B8B4;
+      --ink: #111111;
+      --muted: #5E5E5B;
+      --dim: #717171;
+      --rec-bg: #F2FBF6;
+      --rec-ink: #0F766E;
+      --warn-ink: #B45309;
+      --note-bg: #F2F1ED;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Minimal Sticky Header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 247, 244, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--frame);
+    }
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 20px 0;
+    }
+    .topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+    }
+    .title-group {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .site-title {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+    }
+    .back-link {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+      border: 1px solid #C8C8C4;
+      background: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 999px;
+      transition: border-color 0.14s ease, color 0.14s ease;
+    }
+    .back-link:hover {
+      border-color: var(--frame);
+      color: var(--ink);
+    }
+
+    .day-toggle {
+      display: inline-flex;
+      background: #E5E5E2;
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid #C8C8C4;
+      gap: 2px;
+    }
+    .day-btn {
+      border: none;
+      background: transparent;
+      color: #444444;
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.14s ease, color 0.14s ease;
+    }
+    .day-btn:hover { color: var(--ink); }
+    .day-btn.active {
+      background: var(--frame);
+      color: #FFFFFF;
+    }
+
+    /* Quick Anchor Jump Strip */
+    .toc-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 7px 0 9px;
+      border-top: 1px solid #D8D8D4;
+      white-space: nowrap;
+      scrollbar-width: thin;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .toc-strip a {
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .toc-strip a:hover {
+      color: var(--ink);
+      background: #E5E5E2;
+    }
+
+    /* Main Content */
+    .page-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 20px 64px;
+    }
+
+    .intro-strip {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 26px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--row-border);
+      border-left: 4px solid var(--frame);
+    }
+
+    /* Brand Sections */
+    .brand-section {
+      margin-bottom: 42px;
+      scroll-margin-top: 108px;
+    }
+    .brand-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-bottom: 10px;
+    }
+    .brand-head h2 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .brand-sub {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* Reference-style Black-framed Matrix Table */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 2px solid var(--frame);
+      background: var(--surface);
+    }
+    table.matrix {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      min-width: 780px;
+    }
+    table.matrix.wide-8 {
+      min-width: 1040px;
+    }
+    table.matrix.narrow-2 {
+      min-width: 560px;
+    }
+    table.matrix.narrow-3 {
+      min-width: 680px;
+    }
+    table.matrix th.row-label {
+      width: 118px;
+      background: var(--label-bg);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      vertical-align: middle;
+      padding: 10px 8px;
+      border-right: 2px solid var(--frame);
+      border-bottom: 1px solid var(--label-border);
+      position: sticky;
+      left: 0;
+      z-index: 2;
+    }
+    table.matrix tr:last-child th.row-label {
+      border-bottom: none;
+    }
+
+    table.matrix td {
+      padding: 10px 13px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      vertical-align: top;
+      border-bottom: 1px solid var(--row-border);
+      border-right: 1px dashed var(--col-dash);
+      word-break: break-word;
+    }
+    table.matrix td:last-child {
+      border-right: none;
+    }
+    table.matrix tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* First Row: Card / Plan Header */
+    table.matrix tr.row-card th.row-label {
+      border-bottom: 2px solid var(--frame);
+    }
+    table.matrix tr.row-card td {
+      background: var(--header-bg);
+      font-size: 14.5px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--frame);
+    }
+    table.matrix tr.row-card td.col-rec {
+      background: var(--rec-bg);
+    }
+    .rec-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--rec-ink);
+      margin-bottom: 3px;
+      letter-spacing: 0.02em;
+    }
+    .dim-sub {
+      display: block;
+      margin-top: 3px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--dim);
+    }
+
+    /* Price Row */
+    table.matrix tr.row-price td {
+      background: #FCFCFA;
+    }
+    table.matrix tr.row-price td.col-rec {
+      background: var(--rec-bg);
+    }
+    .price-main {
+      font-size: 15px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+    }
+    .price-sub {
+      display: block;
+      margin-top: 2px;
+      font-size: 11.8px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+
+    .warn-inline {
+      color: var(--warn-ink);
+      font-weight: 600;
+    }
+    .dim-inline {
+      color: var(--dim);
+      font-size: 12.2px;
+    }
+
+    .brand-note {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: var(--note-bg);
+      border-left: 3px solid var(--frame);
+      font-size: 12.8px;
+      color: #2E2E2B;
+    }
+
+    /* Section 13: Glossary Grid */
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .glossary-box {
+      background: var(--surface);
+      border: 2px solid var(--frame);
+      padding: 14px 16px;
+    }
+    .glossary-box h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 900;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--row-border);
+    }
+    .glossary-box p {
+      margin: 0 0 6px;
+      font-size: 13.2px;
+      color: #222222;
+    }
+    .glossary-box p:last-child { margin-bottom: 0; }
+
+    @media (max-width: 720px) {
+      .topbar-inner { padding: 8px 14px 0; }
+      .page-wrap { padding: 16px 14px 48px; }
+      .brand-head h2 { font-size: 22px; }
+      table.matrix th.row-label { width: 96px; font-size: 12px; padding: 8px 6px; }
+      table.matrix td { font-size: 12.8px; padding: 8px 10px; }
+      .glossary-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-row">
+        <div class="title-group">
+          <h1 class="site-title">旅日 eSIM 各家詳細對照表</h1>
+          <a href="./index.html" class="back-link">← 關西 6天5夜導覽</a>
+        </div>
+        <div class="day-toggle" role="group" aria-label="天數價錢切換">
+          <button type="button" class="day-btn active" data-days="5">5 天行程</button>
+          <button type="button" class="day-btn" data-days="6">6 天（關西行程）</button>
+        </div>
+      </div>
+      <nav class="toc-strip" aria-label="品牌快速跳轉目錄">
+        <a href="#summary">跨家精選</a>
+        <span>·</span>
+        <a href="#djb">DJB</a>
+        <span>·</span>
+        <a href="#saily">Saily</a>
+        <span>·</span>
+        <a href="#waysim">威訊 WaySim</a>
+        <span>·</span>
+        <a href="#joytel">JOYTEL</a>
+        <span>·</span>
+        <a href="#aerobile">翔翼</a>
+        <span>·</span>
+        <a href="#twm">台哥大漫遊通</a>
+        <span>·</span>
+        <a href="#trip">Trip.com</a>
+        <span>·</span>
+        <a href="#ota">KKday / Klook</a>
+        <span>·</span>
+        <a href="#shopee">蝦皮平價</a>
+        <span>·</span>
+        <a href="#ubigi">Ubigi</a>
+        <span>·</span>
+        <a href="#global">Holafly / Airalo</a>
+        <span>·</span>
+        <a href="#telco">三大電信漫遊</a>
+        <span>·</span>
+        <a href="#glossary">名詞速解</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <p class="intro-strip">
+      <strong>閱讀方式：</strong>每家獨立成表，固定對齊「卡種 → 方案 → 網速 → 頻寬流量 → 電信業者 → 天數／熱點／AI → 價錢」，並依各家最新官網與主流通路實查資料整理（聚焦 <strong>每日 1GB 以上至吃到飽</strong>）。上方可隨時切換 <strong>5 天／6 天</strong> 參考價，<strong>★ 推薦</strong> 為該家最穩或 CP 值最高的代表方案。
+    </p>
+
+    <div id="sections-root"></div>
+
+    <section id="glossary" class="brand-section">
+      <div class="brand-head">
+        <h2>名詞與避雷速解</h2>
+        <p class="brand-sub">一次搞懂影響穩定度與價格落差的 4 個關鍵技術名詞</p>
+      </div>
+      <div class="glossary-grid">
+        <div class="glossary-box">
+          <h3>1. 共流 vs 單獨流量（獨立專線）</h3>
+          <p><strong>共流／共享頻寬：</strong>多位用戶或便宜多網漫遊共用一條通道，尖峰時段（如晚間飯店、環球影城／迪士尼）容易互相搶頻寬而降速，且常暗藏單日 2–5GB FUP 限速。</p>
+          <p><strong>單獨流量／獨立專線：</strong>如 DJB 暢日卡 Plus / Ultra 或高品質原生線路，提供獨立高優先權通道，無 FUP 門檻或門檻極高，不輕易被限速。</p>
+        </div>
+        <div class="glossary-box">
+          <h3>2. 日本原生 vs 第三方漫遊（ChatGPT / TikTok）</h3>
+          <p><strong>日本原生線路：</strong>直連日本本地電信（SoftBank / KDDI / Docomo），延遲低（20–50ms）且 IP 屬日本當地，<strong>ChatGPT 與 TikTok 皆可正常使用</strong>。</p>
+          <p><strong>第三方漫遊線路：</strong>便宜方案常經香港（CMHK / 3HK / csl）伺服器轉接，封包繞路延遲較高，且<strong>香港 IP 會封鎖 ChatGPT 與 TikTok</strong>。</p>
+        </div>
+        <div class="glossary-box">
+          <h3>3. 自然日制 vs 24 小時制（晚班機必看）</h3>
+          <p><strong>自然日制：</strong>過台灣時間或日本時間 23:59 即結算第 1 天（如 DJB 日本時間、威訊／JOYTEL／蝦皮台灣時間）。若晚上 9 點落地只用 3 小時就扣 1 天。</p>
+          <p><strong>24 小時制：</strong>從落地連網那一刻起算滿 24 小時才算 1 天（如 Saily、Ubigi、Holafly、Airalo、Trip.com 多數、Klook 多數），晚去早回完全不吃虧。</p>
+        </div>
+        <div class="glossary-box">
+          <h3>4. 出發前 30 秒必查</h3>
+          <p><strong>① 查 EID：</strong>手機撥號輸入 <code>*#06#</code>，有顯示 EID 碼才支援 eSIM（中港澳版 iPhone 與部分機型不支援）。</p>
+          <p><strong>② 關相簿備份：</strong>定量／每日型務必關閉 iCloud / Google Photos「使用行動數據自動備份」，避免第一天爆掉。</p>
+          <p><strong>③ Pixel 注意 &amp; 雙卡收簡訊：</strong>Pixel 用日本原生 IP 可能強制開啟相機快門聲；需收台灣銀行 OTP 簡訊可用「日本 eSIM 上網＋原門號開 Wi-Fi Calling」雙卡待機。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ROW_LABELS = {
+      summary: ['代表品牌／卡種', '主力方案', '網速', '頻寬與限速', '電信業者', '天數／熱點／AI', '價錢'],
+      brand:   ['卡種', '方案', '網速', '頻寬流量', '電信業者', '天數／熱點／AI', '價錢']
+    };
+
+    const CROSS_SUMMARY = {
+      id: 'summary',
+      title: '跨品牌精選主力總表',
+      sub: '每家挑 1 個最值得買的代表，一眼橫向對比（涵蓋每日 1G+ 至真吃到飽）',
+      tableClass: 'wide-8',
+      note: '快速結論：怕踩雷要真不降速選 DJB 暢日卡 Plus；重視 CP 值與穩定度選「台哥大預付卡漫遊通」或「威訊 SoftBank 原生」；搭晚班機想極致省錢選 Trip.com SoftBank 原生（24H 制）。',
+      columns: [
+        {
+          card: 'DJB 暢日卡 Plus',
+          rec: true,
+          plan: '真吃到飽不降速',
+          speed: '5G/4G（最高 1000 Mbps）',
+          bandwidth: '單獨流量（無 FUP 不降速）',
+          carrier: '四大（Docomo / SoftBank / KDDI / Rakuten）',
+          rules: '日本時間自然日・熱點友善・ChatGPT 可・24H 中文客服',
+          p5: '598–630元',
+          p5Sub: '約 120–126 元/日',
+          p6: '693–730元',
+          p6Sub: '約 116–122 元/日（每加1天約+100）'
+        },
+        {
+          card: '威訊 SoftBank 原生',
+          rec: true,
+          plan: '5G 原生吃到飽不降速',
+          speed: '5G/4G 原生高速（低延遲）',
+          bandwidth: '原生專線（主打不降速；大量熱點受 FUP）',
+          carrier: 'SoftBank 5G 原生',
+          rules: '台灣時間自然日・建議一機一卡・ChatGPT 可・24H 中文客服',
+          p5: '450–500元',
+          p5Sub: '9 折碼後約 405 元（約 81 元/日）',
+          p6: '480–550元',
+          p6Sub: '9 折碼後約 435 元（約 73 元/日）'
+        },
+        {
+          card: '台哥大 預付卡漫遊通',
+          rec: true,
+          plan: '落地即用型吃到飽',
+          speed: '4G/5G 電信直營高速',
+          bandwidth: '官方吃到飽不降速',
+          carrier: 'SoftBank / KDDI 雙網',
+          rules: '落地啟用・熱點友善・ChatGPT 可・須開 VoLTE + APN internet',
+          p5: '398元',
+          p5Sub: '約 80 元/日（非台哥大月租也可買）',
+          p6: '468元',
+          p6Sub: '約 78 元/日（非台哥大月租也可買）'
+        },
+        {
+          card: '翔翼 飆日卡',
+          rec: false,
+          plan: 'KDDI 原生吃到飽不降速',
+          speed: '5G/4G（最高 1000 Mbps）',
+          bandwidth: 'KDDI 原生真吃到飽（遵循一般合理使用）',
+          carrier: 'KDDI (au) 5G 原生',
+          rules: '多為自然日・可開熱點・ChatGPT 可・中文專營客服',
+          p5: '251–350元',
+          p5Sub: '促銷約 50–70 元/日',
+          p6: '420–550元',
+          p6Sub: '約 70–92 元/日'
+        },
+        {
+          card: 'Trip.com SoftBank 原生',
+          rec: false,
+          plan: '每日 2G / 3G 降速',
+          speed: '5G/4G 原生（超量降 128kbps）',
+          bandwidth: '每日獨立高速配額（隔天重置）',
+          carrier: 'SoftBank 5G 原生（須認明品項）',
+          rules: '24H 制（晚班機神友）・多數可熱點・原生款 ChatGPT 可',
+          p5: '150–250元',
+          p5Sub: '約 30–50 元/日',
+          p6: '180–300元',
+          p6Sub: '約 30–50 元/日'
+        },
+        {
+          card: 'Saily Unlimited',
+          rec: false,
+          plan: '每日 5GB 後降 1Mbps',
+          speed: '4G/5G（超量降 1 Mbps）',
+          bandwidth: '每日 5GB 高速額度（透明 FUP）',
+          carrier: 'KDDI / SoftBank（無 Docomo）',
+          rules: '24H 制・開放熱點・ChatGPT 可・英文介面',
+          p5: 'US$18.99',
+          p5Sub: '5 天約 610 元（約 122 元/日）',
+          p6: 'US$26.99–28.99（7天）',
+          p6Sub: '6 天需買 7 天約 865–930 元（可改買 10GB US$17.99）'
+        },
+        {
+          card: 'Ubigi 10GB / 吃到飽',
+          rec: false,
+          plan: '總量 10GB(30天) / 8天吃到飽',
+          speed: '5G/4G 原生直連（吃到飽超量降 1–2 Mbps）',
+          bandwidth: '10GB 固定配額 / Unlimited 有 FUP 門檻',
+          carrier: 'NTT Docomo + KDDI 5G',
+          rules: '24H 制（Smartstart）・可熱點・ChatGPT 可・全英文 App',
+          p5: '約 530 / 800元',
+          p5Sub: '10GB US$16.5 / 8天吃到飽 US$25',
+          p6: '約 530 / 800元',
+          p6Sub: '10GB US$16.5 / 8天吃到飽 US$25'
+        },
+        {
+          card: '三大電信 原號漫遊',
+          rec: false,
+          plan: '計日吃到飽（綁 4 天+）',
+          speed: '4G/5G 漫遊（台灣出口 Ping 略高）',
+          bandwidth: '電信原號極少限速',
+          carrier: '直連日本三大電信（台灣 IP）',
+          rules: '24H 制居多・熱點友善・ChatGPT 可・免換卡收簡訊通話',
+          p5: '588–850元',
+          p5Sub: '約 118–170 元/日',
+          p6: '720–990元',
+          p6Sub: '約 120–165 元/日'
+        }
+      ]
+    };
+
+    const BRAND_SECTIONS = [
+      {
+        id: 'djb',
+        title: 'DJB',
+        sub: '台灣網卡龍頭・24H 中文 LINE 客服・日本時間 23:59 換日（支援 1～30 天彈性天數）',
+        tableClass: 'wide-8',
+        note: 'DJB 官網與電商最新實查差異：Plus 最高 1000 Mbps、Ultra 最高 2000 Mbps，皆為四大電信資源共享且無 FUP 限速；一般「暢日卡」為三網共流受 2–5GB FUP 規範；「令和卡」走 KDDI 原生，較推薦直上「暢日卡 Plus」。',
+        columns: [
+          {
+            card: '遊日卡（每日 1G）',
+            plan: '每日 1G 降速',
+            speed: '4G/5G 一般高速（超量降速不斷網）',
+            bandwidth: '共享頻寬（每日 1GB 重置）',
+            carrier: '三大（Docomo / SoftBank / KDDI）',
+            rules: '日本時間自然日・可熱點・ChatGPT 可',
+            p5: '270–310元',
+            p5Sub: '約 54–62 元/日',
+            p6: '320–380元',
+            p6Sub: '約 53–63 元/日'
+          },
+          {
+            card: '遊日卡（每日 2G）',
+            plan: '每日 2G 降速',
+            speed: '4G/5G 一般高速（超量降速不斷網）',
+            bandwidth: '共享頻寬（每日 2GB 重置）',
+            carrier: '三大（Docomo / SoftBank / KDDI）',
+            rules: '日本時間自然日・可熱點・ChatGPT 可',
+            p5: '420–475元',
+            p5Sub: '約 84–95 元/日',
+            p6: '500–570元',
+            p6Sub: '約 83–95 元/日'
+          },
+          {
+            card: '遊日卡（總量型）',
+            plan: '總量 12G / 21G / 30G',
+            speed: '5G/4G 高速',
+            bandwidth: '固定總量配額（依官網 4/7/10 天等檔期搭配，用完降速或斷網）',
+            carrier: '三大',
+            rules: '日本時間自然日・可熱點・ChatGPT 可',
+            p5: '約 450–850元',
+            p5Sub: '依實際天數與容量於官網試算',
+            p6: '約 450–850元',
+            p6Sub: '依實際天數與容量於官網試算'
+          },
+          {
+            card: '令和卡',
+            plan: '吃到飽（KDDI 原生）',
+            speed: '5G/4G（一般基本速率）',
+            bandwidth: '單網原生（<span class="warn-inline">短時間爆量仍可能觸發 FUP 限速</span>）',
+            carrier: 'KDDI (au) 單網原生',
+            rules: '日本時間自然日・可熱點・ChatGPT 可',
+            p5: '約 390元起',
+            p5Sub: '約 78 元/日起',
+            p6: '約 460–490元',
+            p6Sub: '約 77–82 元/日'
+          },
+          {
+            card: '暢日卡（標準版）',
+            plan: '吃到飽（有 FUP）',
+            speed: '4G/5G（觸發 FUP 降 128kbps）',
+            bandwidth: '共流（<span class="warn-inline">單日過 2–5GB 易限速</span>）',
+            carrier: '三大',
+            rules: '日本時間自然日・可熱點・ChatGPT 可',
+            p5: '約 500–550元',
+            p5Sub: '約 100–110 元/日（4天版約 460 起）',
+            p6: '約 580–660元',
+            p6Sub: '約 97–110 元/日'
+          },
+          {
+            card: '暢日卡 Plus',
+            rec: true,
+            plan: '吃到飽不降速',
+            speed: '5G/4G（最高 1000 Mbps）',
+            bandwidth: '單獨流量（獨立大頻寬，無 FUP 不降速）',
+            carrier: '四大（Docomo / SoftBank / KDDI / Rakuten）',
+            rules: '日本時間自然日・熱點友善・ChatGPT 可',
+            p5: '598–630元',
+            p5Sub: '約 120–126 元/日',
+            p6: '693–730元',
+            p6Sub: '約 116–122 元/日（每多1天約+100）'
+          },
+          {
+            card: '暢日卡 Ultra',
+            plan: '5G 極速吃到飽不降速',
+            speed: '5G 極速（最高 2000 Mbps）',
+            bandwidth: '單獨流量（官方無 FUP；實測 5–8GB+ 留意動態管理）',
+            carrier: '四大',
+            rules: '日本時間自然日・熱點友善・ChatGPT 可',
+            p5: '約 690–750元',
+            p5Sub: '約 138–150 元/日',
+            p6: '約 790–850元',
+            p6Sub: '約 132–142 元/日'
+          }
+        ]
+      },
+      {
+        id: 'saily',
+        title: 'Saily',
+        sub: 'NordVPN 旗下國際 eSIM・24 小時制（連網才啟動）・App 簡潔可開熱點（以美金計價）',
+        tableClass: '',
+        note: '已篩除低於「1 天 1GB」門檻的 1GB（US$3.99）/ 3GB（US$7.99）超輕量包。Saily 走 KDDI / SoftBank（不含 Docomo）；5–6 天旅遊最推薦直接買「總量 10GB（US$17.99 ≈ 575元）」或「5 天 Unlimited（US$18.99 ≈ 610元）」。',
+        columns: [
+          {
+            card: 'Saily 總量 5GB',
+            subDim: '30天有效',
+            plan: '總量 5GB 斷網',
+            speed: '3G/4G/LTE/5G（無額外限速）',
+            bandwidth: '固定總量配額（漫遊正規通道）',
+            carrier: 'KDDI (au) / SoftBank（無 Docomo）',
+            rules: '24H 制・開放熱點・ChatGPT 可',
+            p5: 'US$10.99',
+            p5Sub: '約 NT$350（5天日均 1GB）',
+            p6: 'US$10.99',
+            p6Sub: '約 NT$350（6天日均 0.83GB）'
+          },
+          {
+            card: 'Saily 總量 10GB',
+            rec: true,
+            subDim: '30天有效',
+            plan: '總量 10GB 斷網',
+            speed: '3G/4G/LTE/5G（無額外限速）',
+            bandwidth: '固定總量配額（跨日彈性高）',
+            carrier: 'KDDI / SoftBank',
+            rules: '24H 制・開放熱點・ChatGPT 可',
+            p5: 'US$17.99',
+            p5Sub: '約 NT$575（5天日均 2GB）',
+            p6: 'US$17.99',
+            p6Sub: '約 NT$575（6天日均 1.67GB）'
+          },
+          {
+            card: 'Saily 總量 20GB',
+            subDim: '30天有效',
+            plan: '總量 20GB 斷網',
+            speed: '3G/4G/LTE/5G（無額外限速）',
+            bandwidth: '固定總量配額',
+            carrier: 'KDDI / SoftBank',
+            rules: '24H 制・開放熱點・ChatGPT 可',
+            p5: 'US$24.99',
+            p5Sub: '約 NT$800（5天日均 4GB）',
+            p6: 'US$24.99',
+            p6Sub: '約 NT$800（6天日均 3.3GB）'
+          },
+          {
+            card: 'Saily Unlimited',
+            subDim: '5天 / 7天',
+            plan: '每日 5GB 後降速',
+            speed: '4G/5G（超量降 1 Mbps）',
+            bandwidth: '每日獨立 5GB 高速額度（隔日重置）',
+            carrier: 'KDDI / SoftBank',
+            rules: '24H 制・開放熱點・ChatGPT 可',
+            p5: 'US$18.99',
+            p5Sub: '5 天約 NT$610（約 122 元/日）',
+            p6: 'US$26.99–28.99（7天）',
+            p6Sub: '6 天需買 7 天約 NT$865–930'
+          },
+          {
+            card: 'Saily Unlimited',
+            subDim: '10天（另有 15天 US$48.99）',
+            plan: '每日 5GB 後降速',
+            speed: '4G/5G（超量降 1 Mbps）',
+            bandwidth: '每日獨立 5GB 高速額度（隔日重置）',
+            carrier: 'KDDI / SoftBank',
+            rules: '24H 制・開放熱點・ChatGPT 可',
+            p5: 'US$34.99（10天）',
+            p5Sub: '10 天約 NT$1,120（適合長天數）',
+            p6: 'US$34.99（10天）',
+            p6Sub: '10 天約 NT$1,120（適合長天數）'
+          }
+        ]
+      },
+      {
+        id: 'waysim',
+        title: '威訊 WaySim',
+        sub: 'PTT / Dcard 高 CP 值主流・24H 台灣在地中文 LINE 客服・台灣時間 23:59 換日',
+        tableClass: '',
+        note: '小提醒：威訊社群常態有 9 折優惠碼（折後 SoftBank 原生吃到飽 5 天約 405 元、6 天約 435 元）；務必認明「SoftBank 原生線路」與雙網漫遊款的差異，建議一人一卡。',
+        columns: [
+          {
+            card: '威訊小資款',
+            plan: '每日 1G 降速',
+            speed: '4G/5G（超量降 256kbps）',
+            bandwidth: '每日 1GB 高速（台灣時間 00:00 重置）',
+            carrier: 'KDDI / SoftBank 雙網',
+            rules: '台灣時間自然日・可熱點・ChatGPT 視品項',
+            p5: '300–400元',
+            p5Sub: '約 60–80 元/日（9折後更低）',
+            p6: '350–450元',
+            p6Sub: '約 58–75 元/日'
+          },
+          {
+            card: '威訊 CP 款',
+            plan: '每日 2G 降速',
+            speed: '4G/5G（超量降 256kbps）',
+            bandwidth: '每日 2GB 高速（台灣時間 00:00 重置）',
+            carrier: 'KDDI / SoftBank 雙網',
+            rules: '台灣時間自然日・可熱點・ChatGPT 視品項',
+            p5: '350–450元',
+            p5Sub: '約 70–90 元/日',
+            p6: '400–520元',
+            p6Sub: '約 67–87 元/日'
+          },
+          {
+            card: '威訊暢遊款',
+            plan: '每日 3G 降速',
+            speed: '4G/5G（超量降 256kbps）',
+            bandwidth: '每日 3GB 高速（台灣時間 00:00 重置）',
+            carrier: 'KDDI / SoftBank 雙網',
+            rules: '台灣時間自然日・可熱點・ChatGPT 視品項',
+            p5: '400–500元',
+            p5Sub: '約 80–100 元/日',
+            p6: '460–600元',
+            p6Sub: '約 77–100 元/日'
+          },
+          {
+            card: '固定總量款',
+            plan: '總量 10G / 20G 降速',
+            speed: '5G/4G（超量降 128kbps）',
+            bandwidth: '總流量配額（另可選 5G / 30G / 50G）',
+            carrier: 'KDDI / SoftBank',
+            rules: '台灣時間自然日・可熱點・ChatGPT 視品項',
+            p5: '220–350元',
+            p5Sub: '約 44–70 元/日',
+            p6: '260–420元',
+            p6Sub: '約 43–70 元/日'
+          },
+          {
+            card: 'SoftBank 原生吃到飽',
+            rec: true,
+            plan: '吃到飽不降速',
+            speed: '5G/4G 原生高速（低延遲）',
+            bandwidth: '原生專線不限速（多人大量熱點受 FUP）',
+            carrier: 'SoftBank 5G 原生',
+            rules: '台灣時間自然日・建議一機一分享・ChatGPT 可',
+            p5: '449–500元',
+            p5Sub: '9 折碼後約 405 元（約 81 元/日）',
+            p6: '480–550元',
+            p6Sub: '9 折碼後約 435 元（約 73 元/日）'
+          }
+        ]
+      },
+      {
+        id: 'joytel',
+        title: 'JOYTEL 卓一',
+        sub: '老牌專營低延遲原生線・中文 LINE 客服・台灣時間自然日（多數方案建議出發當日再掃碼）',
+        tableClass: '',
+        note: '特別提醒：JOYTEL 部分方案掃描 QR Code 即開始起算，務必「出發當日」再掃碼安裝；另外 Google Pixel 與 OPPO 部分機型對 SoftBank 原生線相容性較差，下單前建議避開或問客服。',
+        columns: [
+          {
+            card: '輕遊卡 / 定量型',
+            plan: '每日 1G / 2G 降速',
+            speed: '4G/5G 一般高速（超量降速不斷網）',
+            bandwidth: '每日定量配額（隔日重置）',
+            carrier: 'SoftBank / 多網（依方案）',
+            rules: '台灣時間自然日・可熱點・ChatGPT 視方案',
+            p5: '250–380元',
+            p5Sub: '約 50–76 元/日',
+            p6: '300–450元',
+            p6Sub: '約 50–75 元/日'
+          },
+          {
+            card: '火箭卡（定量）',
+            plan: '每日 2G / 3G 降速',
+            speed: 'SoftBank 原生高速（低 Ping 值）',
+            bandwidth: '每日定量高速配額',
+            carrier: 'SoftBank 原生',
+            rules: '台灣時間自然日（當日掃碼）・可熱點・ChatGPT 可',
+            p5: '280–400元',
+            p5Sub: '約 56–80 元/日',
+            p6: '340–460元',
+            p6Sub: '約 57–77 元/日'
+          },
+          {
+            card: '火箭卡（吃到飽）',
+            rec: true,
+            plan: '原生線路吃到飽',
+            speed: '5G/4G 原生高速（低延遲，手遊/影片順）',
+            bandwidth: '原生專線（<span class="warn-inline">短時爆量／大量熱點仍受 FUP</span>）',
+            carrier: 'SoftBank / KDDI 原生',
+            rules: '台灣時間自然日（當日掃碼）・可熱點・ChatGPT 可',
+            p5: '250–450元',
+            p5Sub: '依 eSIM 促銷檔期約 50–90 元/日',
+            p6: '350–520元',
+            p6Sub: '約 58–87 元/日'
+          },
+          {
+            card: 'JOY 金卡',
+            plan: '三電信吃到飽',
+            speed: '4G/5G 自動切換',
+            bandwidth: '三網漫遊（<span class="warn-inline">一般 FUP 規範</span>）',
+            carrier: '三大（自動切換最強訊號）',
+            rules: '台灣時間自然日・可熱點・ChatGPT 視路由確認',
+            p5: '419–499元',
+            p5Sub: '約 84–100 元/日',
+            p6: '480–650元',
+            p6Sub: '約 80–108 元/日'
+          }
+        ]
+      },
+      {
+        id: 'aerobile',
+        title: '翔翼 Aerobile',
+        sub: '老牌專業網卡店・可精準指定日本 KDDI / SoftBank / Docomo 電信商',
+        tableClass: 'narrow-3',
+        note: '翔翼品項命名較多，下單時認明「飆日卡 = KDDI 5G 原生真吃到飽」即可；大阪京都等大都市首推飆日卡，北海道或偏遠山區才需要挑 IIJ (Docomo) 線路。',
+        columns: [
+          {
+            card: '迅日卡 / IIJ 線路',
+            plan: '每日定量 / 總量降速',
+            speed: '4G/LTE（IIJ 虛擬線路，尖峰較易塞）',
+            bandwidth: '每日定量或總量配額',
+            carrier: 'Docomo (IIJ) 基地台',
+            rules: '多為自然日・可熱點・ChatGPT 可（日本 IP）',
+            p5: '130–220元',
+            p5Sub: '約 26–44 元/日（適合郊區備用）',
+            p6: '160–260元',
+            p6Sub: '約 27–43 元/日'
+          },
+          {
+            card: '風馳卡',
+            plan: '每日定量 / 吃到飽（有 FUP）',
+            speed: '5G/4G',
+            bandwidth: '定量配額或 FUP 規範吃到飽',
+            carrier: 'SoftBank',
+            rules: '多為自然日・可熱點・ChatGPT 視方案',
+            p5: '180–400元',
+            p5Sub: '約 36–80 元/日',
+            p6: '220–460元',
+            p6Sub: '約 37–77 元/日'
+          },
+          {
+            card: '飆日卡',
+            rec: true,
+            plan: '真吃到飽不降速',
+            speed: '5G/4G 原生（最高 1000 Mbps）',
+            bandwidth: 'KDDI 原生真吃到飽不降速（合理使用原則）',
+            carrier: 'KDDI (au) 5G 原生',
+            rules: '多為自然日・可熱點・ChatGPT 可・中文專營客服',
+            p5: '251–350元',
+            p5Sub: '電商折價券常有 250–280 元好價',
+            p6: '420–550元',
+            p6Sub: '約 70–92 元/日'
+          }
+        ]
+      },
+      {
+        id: 'twm',
+        title: '台灣大哥大 預付卡漫遊通 eSIM',
+        sub: '台灣電信官方直營超穩黑馬・非台哥大月租用戶也可申辦・免換卡收費透明',
+        tableClass: 'narrow-2',
+        note: 'PTT 高推 CP 黑馬！特別注意因日本已全面關閉 3G 網路，出國前務必確認手機已開啟「VoLTE」並依官方指示設定 APN 為 internet；已申辦用戶加購 1 日吃到飽為 100 元。',
+        columns: [
+          {
+            card: '漫遊通（落地即用型）',
+            rec: true,
+            plan: '吃到飽不降速',
+            speed: '4G/5G 電信直營高速',
+            bandwidth: '官方吃到飽不降速（雙網切換）',
+            carrier: 'SoftBank / KDDI 雙網',
+            rules: '落地即用・熱點友善・ChatGPT 可・台哥大官方客服',
+            p5: '398元',
+            p5Sub: '約 80 元/日（極推薦）',
+            p6: '468元',
+            p6Sub: '約 78 元/日（極推薦）'
+          },
+          {
+            card: '漫遊通（自由啟用型）',
+            plan: '吃到飽不降速',
+            speed: '4G/5G 電信直營高速',
+            bandwidth: '官方吃到飽不降速（可加購 1 日 100 元）',
+            carrier: 'SoftBank 網路',
+            rules: '需透過預付卡門號手動開通・熱點友善・ChatGPT 可',
+            p5: '479元',
+            p5Sub: '約 96 元/日',
+            p6: '579元',
+            p6Sub: '約 97 元/日'
+          }
+        ]
+      },
+      {
+        id: 'trip',
+        title: 'Trip.com',
+        sub: '價格最殺・多數為 24 小時制（晚班機不吃天數）・聚合多供應商務必認明「原生」品項',
+        tableClass: '',
+        note: '避坑重點：Trip.com 同時有「SoftBank 5G 原生（支援 AI/TikTok）」與「超便宜第三方漫遊卡」；千萬不要只挑最便宜下單，務必進商品頁確認「SoftBank 原生」與「24 小時制」，避開中港漫遊以免環球影城轉圈且鎖 ChatGPT。',
+        columns: [
+          {
+            card: 'SoftBank 原生 1G',
+            plan: '每日 1G 降速',
+            speed: '5G/4G 原生（超量降 128kbps）',
+            bandwidth: '每日 1GB 高速（隔日重置）',
+            carrier: 'SoftBank 5G 原生（須認明）',
+            rules: '24H 制（落地連網起算）・多數可熱點・ChatGPT 可',
+            p5: '95–140元',
+            p5Sub: '約 19–28 元/日（常態 5 折特惠）',
+            p6: '120–170元',
+            p6Sub: '約 20–28 元/日'
+          },
+          {
+            card: 'SoftBank 原生 2G',
+            rec: true,
+            plan: '每日 2G 降速',
+            speed: '5G/4G 原生（超量降 128kbps）',
+            bandwidth: '每日 2GB 高速（自由行黃金甜蜜點）',
+            carrier: 'SoftBank 5G 原生（須認明）',
+            rules: '24H 制（落地連網起算）・多數可熱點・ChatGPT 可',
+            p5: '150–200元',
+            p5Sub: '約 30–40 元/日',
+            p6: '180–240元',
+            p6Sub: '約 30–40 元/日'
+          },
+          {
+            card: 'SoftBank 原生 3G',
+            plan: '每日 3G 降速',
+            speed: '5G/4G 原生（超量降 128kbps）',
+            bandwidth: '每日 3GB 高速（常發限動／短影音）',
+            carrier: 'SoftBank 5G 原生（須認明）',
+            rules: '24H 制（落地連網起算）・多數可熱點・ChatGPT 可',
+            p5: '170–250元',
+            p5Sub: '約 34–50 元/日',
+            p6: '210–300元',
+            p6Sub: '約 35–50 元/日'
+          },
+          {
+            card: '平台無限 / 每日 10G',
+            plan: '吃到飽 / 每日 10G 降速',
+            speed: '4G/5G（觸發 FUP 降 128kbps）',
+            bandwidth: '平價無限款<span class="warn-inline">多有 FUP 限速</span>',
+            carrier: 'SoftBank / KDDI / IIJ（視賣家）',
+            rules: '多數 24H 制・熱點依品項・<span class="warn-inline">須選標示 AI/原生款</span>',
+            p5: '280–350元',
+            p5Sub: '約 56–70 元/日',
+            p6: '330–480元',
+            p6Sub: '約 55–80 元/日'
+          }
+        ]
+      },
+      {
+        id: 'ota',
+        title: 'KKday / Klook',
+        sub: '全中文介面・可搭門票一起買・部分商品支援 App「一鍵安裝」免另存 QR Code 掃描',
+        tableClass: 'narrow-3',
+        note: '平台品項混雜：Klook 多為 24 小時制、KKday 則 24H 與自然日皆有；下單前務必打開詳情看清楚電信商，避開由 CMHK / 3HK / csl 提供的中港漫遊方案（會鎖 ChatGPT 且人多易卡）。',
+        columns: [
+          {
+            card: '平台每日 1G',
+            plan: '每日 1G 降速',
+            speed: '4G/5G（超量降 128kbps–1Mbps）',
+            bandwidth: '每日 1GB 高速配額',
+            carrier: 'SoftBank / Docomo / 多網（依賣家）',
+            rules: 'Klook 多 24H 制；KKday 兩者皆有・ChatGPT 視賣家',
+            p5: '150–250元',
+            p5Sub: '約 30–50 元/日',
+            p6: '180–300元',
+            p6Sub: '約 30–50 元/日'
+          },
+          {
+            card: '平台每日 2G / 3G',
+            rec: true,
+            plan: '每日 2G / 3G 降速',
+            speed: '4G/5G（選原生款延遲較低）',
+            bandwidth: '每日 2GB 或 3GB 高速配額',
+            carrier: 'SoftBank / KDDI / 多網（依賣家）',
+            rules: '支援 App 一鍵安裝（部分款）・<span class="warn-inline">避開香港 IP 賣家</span>',
+            p5: '250–450元',
+            p5Sub: '約 50–90 元/日',
+            p6: '300–540元',
+            p6Sub: '約 50–90 元/日'
+          },
+          {
+            card: '平台吃到飽',
+            plan: '無限流量（多有 FUP）',
+            speed: '4G/5G（低價款超量易限速）',
+            bandwidth: '平價吃到飽<span class="warn-inline">多受 FUP 約束</span>',
+            carrier: '日本原生或跨國漫遊（依賣家）',
+            rules: '熱點依品項規範・中文平台客服（轉達供應商）',
+            p5: '230–450元',
+            p5Sub: '約 46–90 元/日',
+            p6: '280–540元',
+            p6Sub: '約 47–90 元/日'
+          }
+        ]
+      },
+      {
+        id: 'shopee',
+        title: '蝦皮熱門（環亞 / 飛速移動 / 悠遊購）',
+        sub: '極致百元 CP 值・24H 自動發碼急單救星・大都市日常導航夠用',
+        tableClass: 'narrow-3',
+        note: 'PTT 實測提醒：蝦皮平價吃到飽普遍有隱藏 FUP，且多數「不建議或限制開熱點」，在地鐵尖峰或大阪環球影城／迪士尼人潮爆滿處容易有訊號但轉圈圈；強烈建議一人買一張，且優先選「日本原生款」。',
+        columns: [
+          {
+            card: '每日 1G / 2G',
+            rec: true,
+            plan: '每日 1G / 2G 降速',
+            speed: '4G/5G（超量降速不斷網）',
+            bandwidth: '每日固定高速（最不容易踩 FUP 陷阱）',
+            carrier: 'Docomo / SoftBank / KDDI 原生或全網通',
+            rules: '台灣時間自然日・熱點依賣場・選日本原生支援 AI',
+            p5: '100–220元',
+            p5Sub: '約 20–44 元/日',
+            p6: '130–260元',
+            p6Sub: '約 22–43 元/日'
+          },
+          {
+            card: '總量 10G / 20G',
+            plan: '固定總量降速/斷網',
+            speed: '4G/5G（用完降 128kbps）',
+            bandwidth: '天數內總量自由分配',
+            carrier: 'Docomo / SoftBank / KDDI',
+            rules: '台灣時間自然日・24H 自動發碼・注意勿提早掃描',
+            p5: '120–240元',
+            p5Sub: '約 24–48 元/日',
+            p6: '150–290元',
+            p6Sub: '約 25–48 元/日'
+          },
+          {
+            card: '原生／全網通吃到飽',
+            plan: '吃到飽（有 FUP）',
+            speed: '4G/5G（鈦金/原生款較穩）',
+            bandwidth: '<span class="warn-inline">便宜吃到飽普遍有 FUP 限速</span>',
+            carrier: 'SoftBank 原生／雙網／全網通',
+            rules: '自然日・<span class="warn-inline">常限制開熱點</span>・低價漫遊多香港 IP',
+            p5: '180–300元',
+            p5Sub: '約 36–60 元/日',
+            p6: '220–360元',
+            p6Sub: '約 37–60 元/日'
+          }
+        ]
+      },
+      {
+        id: 'ubigi',
+        title: 'Ubigi',
+        sub: 'PTT 背包客低調神卡・Docomo + KDDI 5G 郊區涵蓋最強・24H Smartstart 制（全英文 App）',
+        tableClass: 'narrow-3',
+        note: '特點解析：Ubigi 採用 Smartstart 機制，沒飛抵日本連網前絕不提前扣天數；去北海道、高山郊區或新幹線最推薦，但 App 與客服皆為全英文，且吃到飽目前為 8 天 / 15 天 / 30 天檔期。',
+        columns: [
+          {
+            card: 'Ubigi 10GB（30天）',
+            rec: true,
+            plan: '總量 10GB（30天有效）',
+            speed: '5G/4G 原生直連（全程不限速）',
+            bandwidth: '10GB 固定配額（可 App 隨時加值）',
+            carrier: 'NTT Docomo / KDDI 5G',
+            rules: '24H 制（Smartstart）・熱點友善・ChatGPT 可',
+            p5: 'US$16.50',
+            p5Sub: '約 NT$530（5天日均 2GB）',
+            p6: 'US$16.50',
+            p6Sub: '約 NT$530（6天日均 1.67GB）'
+          },
+          {
+            card: 'Ubigi Unlimited（8天）',
+            plan: '8天無限吃到飽',
+            speed: '5G/4G（超門檻降 1–2 Mbps）',
+            bandwidth: '有 FUP 門檻（降速後 1–2M 仍順看地圖）',
+            carrier: 'NTT Docomo / KDDI 5G',
+            rules: '24H 制・熱點友善・ChatGPT 可（乾淨 IP）',
+            p5: 'US$25（8天）',
+            p5Sub: '約 NT$800（含 8 天效期）',
+            p6: 'US$25（8天）',
+            p6Sub: '約 NT$800（覆蓋 6 天綽綽有餘）'
+          },
+          {
+            card: 'Ubigi Unlimited（15天）',
+            plan: '15天無限吃到飽',
+            speed: '5G/4G（超門檻降 1–2 Mbps）',
+            bandwidth: '有 FUP 門檻（高用量後降 1–2 Mbps）',
+            carrier: 'NTT Docomo / KDDI 5G',
+            rules: '24H 制・熱點友善・ChatGPT 可・英文客服',
+            p5: 'US$39（15天）',
+            p5Sub: '約 NT$1,250（長天數／50GB US$55）',
+            p6: 'US$39（15天）',
+            p6Sub: '約 NT$1,250（適合兩週行程）'
+          }
+        ]
+      },
+      {
+        id: 'global',
+        title: 'Holafly / Airalo',
+        sub: '歐美高知名度國際品牌・皆為 24 小時制與乾淨 IP（美金／歐元計價）',
+        tableClass: '',
+        note: '特別提醒：Holafly 雖然完全不限制總流量、天數可精準單買，但「熱點分享每日嚴格限制 500MB–1GB」；Airalo 吃到飽則是每 24 小時超過 3GB 後降為 1 Mbps。',
+        columns: [
+          {
+            card: 'Holafly 無限吃到飽',
+            plan: '客製天數無限總量（1–90天）',
+            speed: '5G/4G（僅極端異常受當地 FUP）',
+            bandwidth: '無總量上限（單人極重度追劇無壓力）',
+            carrier: 'KDDI / SoftBank 5G',
+            rules: '24H 制・<span class="warn-inline">熱點限 500MB–1GB/日</span>・ChatGPT 可',
+            p5: 'US$19–21',
+            p5Sub: '約 NT$620–680（約 125–136 元/日）',
+            p6: 'US$21–27',
+            p6Sub: '約 NT$680–850（7天約 US$27.5）'
+          },
+          {
+            card: 'Airalo 10GB（30天）',
+            plan: '總量 10GB（30天有效）',
+            speed: '4G/5G（Moshi Moshi 系列）',
+            bandwidth: '10GB 固定配額（另 20GB 約 US$25）',
+            carrier: 'SoftBank / KDDI',
+            rules: '24H 制・熱點友善・ChatGPT 可・中文 App',
+            p5: 'US$18.00',
+            p5Sub: '約 NT$580',
+            p6: 'US$18.00',
+            p6Sub: '約 NT$580（20GB 約 US$25≈800元）'
+          },
+          {
+            card: 'Airalo 7天吃到飽',
+            plan: '7天吃到飽（每日 3GB 降速）',
+            speed: '4G/5G（超量降 1 Mbps）',
+            bandwidth: '<span class="warn-inline">每 24H 超過 3GB 降為 1 Mbps</span>',
+            carrier: 'SoftBank / KDDI',
+            rules: '24H 制・熱點友善・ChatGPT 可・中文 App',
+            p5: 'US$26.50（7天）',
+            p5Sub: '約 NT$850（價格偏高）',
+            p6: 'US$26.50（7天）',
+            p6Sub: '約 NT$850（覆蓋 6 天行程）'
+          }
+        ]
+      },
+      {
+        id: 'telco',
+        title: '台灣三大電信 原號漫遊（中華 / 台哥大 / 遠傳）',
+        sub: 'PTT 公認最穩免思考方案・免掃 QR Code・台灣 IP 可接聽電話＆收銀行刷卡簡訊',
+        tableClass: 'narrow-3',
+        note: '商務／長輩／懶人首選！直接在中華／台哥大／遠傳 App 申請即可。因流量會先繞回台灣，Ping 值略高於日本原生卡，但極少斷網且免除任何 eSIM 設定風險。',
+        columns: [
+          {
+            card: '5GB 輕量流量包',
+            plan: '總量 5GB（8–15天）',
+            speed: '4G/5G 漫遊（台灣出口）',
+            bandwidth: '5GB 高速（用完降速或斷網）',
+            carrier: '直連日本三大電信（台灣 IP）',
+            rules: 'App 一鍵開通・熱點友善・ChatGPT 可・保留原門號',
+            p5: '約 488元',
+            p5Sub: '中華 5GB/8日 488；遠傳 5GB/15日 488',
+            p6: '約 488元',
+            p6Sub: '跨 6 天仍用同一包 488 元（日均 0.83G）'
+          },
+          {
+            card: '10–15GB 流量包',
+            plan: '總量 10–15GB（15–30天）',
+            speed: '4G/5G 漫遊（台灣出口）',
+            bandwidth: '10GB–15GB 高速流量包',
+            carrier: '直連日本三大電信（台灣 IP）',
+            rules: 'App 一鍵開通・熱點友善・ChatGPT 可・24H 客服',
+            p5: '888–1,099元',
+            p5Sub: '台哥大 10G 899；中華/遠傳 15G 約 888–999',
+            p6: '888–1,099元',
+            p6Sub: '台哥大 10G 899；中華/遠傳 15G 約 888–999'
+          },
+          {
+            card: '計日型吃到飽',
+            rec: true,
+            plan: '計日吃到飽（常須綁 4 天+）',
+            speed: '4G/5G 漫遊（台灣出口）',
+            bandwidth: '電信原號極少限速（穩定度最高）',
+            carrier: '直連日本三大電信（台灣 IP）',
+            rules: '24H 制居多・熱點友善・ChatGPT 可・收原號簡訊通話',
+            p5: '588–850元',
+            p5Sub: '限時優惠曾推 5 日 588；常態約 129–199/日',
+            p6: '720–990元',
+            p6Sub: '約 120–165 元/日（依各電信促銷檔期）'
+          }
+        ]
+      }
+    ];
+
+    let currentDays = 5;
+
+    function buildTableHtml(section, isSummary) {
+      const labels = isSummary ? ROW_LABELS.summary : ROW_LABELS.brand;
+      const cols = section.columns;
+      const cls = ['matrix', section.tableClass || ''].filter(Boolean).join(' ');
+
+      const rowDefs = [
+        {
+          rowClass: 'row-card',
+          label: labels[0],
+          render: (c) => {
+            const recBadge = c.rec ? '<div class="rec-tag">★ 推薦</div>' : '';
+            const subDim = c.subDim ? `<span class="dim-sub">${c.subDim}</span>` : '';
+            return `${recBadge}<div>${c.card}</div>${subDim}`;
+          },
+          tdClass: (c) => (c.rec ? 'col-rec' : '')
+        },
+        { rowClass: '', label: labels[1], render: (c) => `<strong>${c.plan}</strong>` },
+        { rowClass: '', label: labels[2], render: (c) => c.speed },
+        { rowClass: '', label: labels[3], render: (c) => c.bandwidth },
+        { rowClass: '', label: labels[4], render: (c) => c.carrier },
+        { rowClass: '', label: labels[5], render: (c) => c.rules },
+        {
+          rowClass: 'row-price',
+          label: `${currentDays}天價錢`,
+          render: (c) => {
+            const main = currentDays === 5 ? c.p5 : c.p6;
+            const sub = currentDays === 5 ? c.p5Sub : c.p6Sub;
+            return `<span class="price-main">${main}</span><span class="price-sub">${sub}</span>`;
+          },
+          tdClass: (c) => (c.rec ? 'col-rec' : '')
+        }
+      ];
+
+      const rowsHtml = rowDefs.map((r) => {
+        const tds = cols.map((c) => {
+          const cClass = r.tdClass ? r.tdClass(c) : '';
+          return `<td class="${cClass}">${r.render(c)}</td>`;
+        }).join('');
+        return `<tr class="${r.rowClass}"><th class="row-label" scope="row">${r.label}</th>${tds}</tr>`;
+      }).join('');
+
+      return `
+        <section id="${section.id}" class="brand-section">
+          <div class="brand-head">
+            <h2>${section.title}</h2>
+            <p class="brand-sub">${section.sub}</p>
+          </div>
+          <div class="table-wrap">
+            <table class="${cls}">
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+          <div class="brand-note">${section.note}</div>
+        </section>
+      `;
+    }
+
+    function renderAll() {
+      const root = document.getElementById('sections-root');
+      const allSections = [
+        buildTableHtml(CROSS_SUMMARY, true),
+        ...BRAND_SECTIONS.map((s) => buildTableHtml(s, false))
+      ];
+      root.innerHTML = allSections.join('');
+    }
+
+    document.querySelectorAll('.day-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        currentDays = parseInt(btn.dataset.days, 10);
+        document.querySelectorAll('.day-btn').forEach((b) => {
+          b.classList.toggle('active', b === btn);
+        });
+        renderAll();
+      });
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
