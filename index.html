@@ -2503,6 +2503,139 @@
       flex-direction: column;
       gap: 6px;
     }
+
+    /* Bound Pilgrimage Group Pins & Stop Chips (都七福神まいり) */
+    .ev-pin-bound {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #B91C1C;
+      border: 2.5px solid #FDE68A;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 3px 10px rgba(185, 28, 28, 0.36);
+    }
+    .ev-pin-bound.is-group-lit {
+      transform: translate(-50%, -50%) scale(1.14);
+      box-shadow: 0 0 0 3.5px rgba(245, 158, 11, 0.45), 0 4px 14px rgba(185, 28, 28, 0.42);
+    }
+    .ev-pin-bound.is-active {
+      transform: translate(-50%, -50%) scale(1.28);
+      box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.24), 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+    .ev-pin-sublabel {
+      position: absolute;
+      left: 50%;
+      top: -6px;
+      transform: translate(-50%, -100%);
+      background: rgba(185, 28, 28, 0.92);
+      color: #FEF3C7;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(253, 230, 138, 0.55);
+    }
+    .ev-stops-box {
+      background: #FFFBF2;
+      border: 1px solid rgba(217, 119, 6, 0.25);
+      border-radius: 12px;
+      padding: 9px 10px;
+      margin-bottom: 9px;
+    }
+    .ev-stops-head {
+      font-size: 11.4px;
+      font-weight: 800;
+      color: #9A3412;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .ev-stops-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .ev-stop-chip {
+      border: 1px solid rgba(185, 28, 28, 0.18);
+      background: #FFFFFF;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 4px 9px 4px 5px;
+      font-size: 11.4px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.14s ease;
+    }
+    .ev-stop-chip:hover {
+      border-color: #B91C1C;
+      background: #FEF2F2;
+    }
+    .ev-stop-chip.active {
+      background: #B91C1C;
+      color: #FFFFFF;
+      border-color: #B91C1C;
+      box-shadow: 0 2px 8px rgba(185, 28, 28, 0.28);
+    }
+    .ev-stop-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #B91C1C;
+      color: #FFFFFF;
+      font-size: 10.5px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .ev-stop-chip.active .ev-stop-num {
+      background: #FDE68A;
+      color: #111111;
+    }
+    .ev-stop-deity {
+      font-size: 10.2px;
+      font-weight: 600;
+      color: var(--ink-muted);
+    }
+    .ev-stop-chip.active .ev-stop-deity {
+      color: #FEF3C7;
+    }
+    .ev-pop-nav {
+      display: flex;
+      gap: 5px;
+      margin-top: 7px;
+      padding-top: 7px;
+      border-top: 1px dashed rgba(17, 17, 17, 0.12);
+    }
+    .ev-pop-nav-btn {
+      flex: 1 1 0;
+      border: 1px solid rgba(185, 28, 28, 0.22);
+      background: #FFFBF2;
+      color: #9A3412;
+      border-radius: 999px;
+      padding: 4px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .ev-pop-nav-btn:hover { background: #FEF3C7; }
   </style>
 </head>
 <body data-active-tab="attractions">
@@ -2550,7 +2683,7 @@
             關西飲食 <span class="tab-badge" id="badge-food-total">0</span>
           </button>
           <button class="tab-btn" data-tab="events">
-            特別活動 <span class="tab-badge" id="badge-events-total">51</span>
+            特別活動 <span class="tab-badge" id="badge-events-total">52</span>
           </button>
         </div>
         <div class="nav-right">
@@ -2793,6 +2926,7 @@
           <div class="map-box" id="events-map"></div>
           <div class="ev-map-legend" aria-label="活動地圖圖例">
             <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#E60023;"></span>傳統祭典</span>
+            <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#B91C1C; border-color:#FDE68A;"></span>①–⑦ 都七福神連動</span>
             <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#9A3412;"></span>京の冬の旅</span>
             <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#D97706;"></span>點燈・樂園</span>
             <span class="ev-legend-item"><span class="ev-legend-dot" style="background:#0F766E;"></span>美術館・快閃</span>
@@ -2817,7 +2951,6 @@
             <h3 class="ev-extra-notes-title">📌 全區／會場待定補充活動（無法單點標記於地圖）</h3>
             <ul class="ev-extra-notes-list">
               <li><strong>🛍️ 大阪・京都各大百貨 1 月冬季折扣季（Winter Sale）：</strong>梅田（阪急／阪神／大丸／LUCUA）、心齋橋（大丸／PARCO）、難波（高島屋／Parks）、京都河原町（高島屋／大丸）與京都伊勢丹於 1 月中旬同步展開冬季出清。</li>
-              <li><strong>⛩️ 京都「都七福神まいり」（1/1 ～ 1/31 全月）：</strong>京都新春巡禮定番，於 1 月內巡拜松崎大黒天、赤山禅院、萬福寺、革堂、六波羅蜜寺、ゑびす神社、東寺共七座寺社祈福集印。</li>
               <li><strong>🌟 hololive production official pop up shop in OSAKA（1/9 ～ 1/17）：</strong>已宣布於大阪舉辦期間限定快閃店，詳細商場樓層與入場整理券規定請以官方後續公告為準。</li>
             </ul>
           </div>
@@ -7337,6 +7470,130 @@
         q: "伏見稲荷大社"
       },
       {
+        id: "ky_shichifukujin",
+        city: "京都",
+        cat: "festival",
+        isGroup: true,
+        name: "都七福神まいり（日本最古七福神巡禮・7 社寺連動）",
+        short: "都七福神 7 社寺",
+        venue: "京都市內 ～ 宇治共 7 處札所（無固定順序）",
+        lat: 35.0000,
+        lng: 135.7750,
+        days: [7, 8, 9, 10, 11, 12],
+        datesText: "1/1 ～ 1/31 全月（1/7–1/12 皆可巡拜）",
+        hours: "各社寺多為 08:30 ～ 16:30（參拜集印建議白天進行）",
+        desc: "日本歷史最悠久的七福神巡禮！於 1 月新春走訪京都至宇治 7 座社寺（無固定順序），可購買專用色紙或大護符收集 7 神朱印，一次祈求商賣繁盛、開運長壽與福德。",
+        note: "7 處社寺已用地圖編號 ①～⑦ 與路線虛線連動標記，點下方任一札所可直接飛往該寺；其中 ④ 京都ゑびす神社與 ⑥ 東寺正好與十日戎、五重塔公開重疊，可一魚兩吃！",
+        q: "都七福神まいり 京都",
+        stops: [
+          {
+            num: 1,
+            name: "赤山禅院",
+            deity: "福祿壽神",
+            blessing: "延壽福樂・健康長壽",
+            lat: 35.0559,
+            lng: 135.8013,
+            pinLat: 35.0559,
+            pinLng: 135.8013,
+            area: "左京區修學院",
+            access: "叡山電車「修學院站」步行約 20 分（公車修學院離宮道步行 15 分）",
+            hours: "09:00 ～ 16:30",
+            tip: "比叡山延曆寺別院，京都東北表鬼門守護名剎，建議與松崎大黑天同段安排。",
+            q: "赤山禅院 京都"
+          },
+          {
+            num: 2,
+            name: "松ヶ崎大黒天（妙円寺）",
+            deity: "大黑天",
+            blessing: "開運招福・財運",
+            lat: 35.0539,
+            lng: 135.7855,
+            pinLat: 35.0539,
+            pinLng: 135.7855,
+            area: "左京區松崎",
+            access: "地鐵烏丸線「松崎站」步行約 15 分 ／ 叡山電車「修學院站」步行 12 分",
+            hours: "09:00 ～ 16:30",
+            tip: "奉祀最澄親刻大黑天像，距離赤山禅院車程僅約 5 分鐘。",
+            q: "松ヶ崎大黒天 妙円寺 京都"
+          },
+          {
+            num: 3,
+            name: "革堂（行願寺）",
+            deity: "壽老人",
+            blessing: "不老長壽・家庭圓滿",
+            lat: 35.0163,
+            lng: 135.7678,
+            pinLat: 35.0163,
+            pinLng: 135.7678,
+            area: "中京區寺町竹屋町",
+            access: "京阪「神宮丸太町站」步行 6 分 ／ 地鐵「京都市役所前站」步行 8 分",
+            hours: "08:00 ～ 16:30",
+            tip: "距京都住宿 KOKO HOTEL 僅約 1.3 km！西國三十三所第十九番札所，市區最順路。",
+            q: "行願寺 革堂 京都"
+          },
+          {
+            num: 4,
+            name: "京都ゑびす神社",
+            deity: "ゑびす神（惠比壽）",
+            blessing: "商賣繁盛・家運隆昌",
+            lat: 34.9999,
+            lng: 135.7717,
+            pinLat: 35.0004,
+            pinLng: 135.7723,
+            area: "東山區祇園南",
+            access: "京阪「祇園四條站」步行 6 分",
+            hours: "08:30 ～ 17:00（1/8–12 十日戎期間延長開放）",
+            tip: "1/8–12 正逢「十日ゑびす大祭」（1/11 舞妓授與福笹），可一次完成兩項祭典體驗！",
+            q: "京都ゑびす神社"
+          },
+          {
+            num: 5,
+            name: "六波羅蜜寺",
+            deity: "弁財天",
+            blessing: "福德自在・藝能財運",
+            lat: 34.9971,
+            lng: 135.7733,
+            pinLat: 34.9971,
+            pinLng: 135.7733,
+            area: "東山區五條",
+            access: "京阪「清水五條站」步行 7 分（距京都ゑびす神社步行僅約 4 分！）",
+            hours: "08:00 ～ 17:00（寶物館 08:30–16:30）",
+            tip: "離京都ゑびす神社走路 4 分即達！館藏國寶「空也上人立像」與人氣開運推命籤。",
+            q: "六波羅蜜寺 京都"
+          },
+          {
+            num: 6,
+            name: "東寺（教王護國寺）",
+            deity: "毘沙門天",
+            blessing: "七福即生・必勝開運",
+            lat: 34.9804,
+            lng: 135.7477,
+            pinLat: 34.9809,
+            pinLng: 135.7484,
+            area: "南區九條",
+            access: "近鐵「東寺站」步行 10 分 ／ JR「京都站」八條口步行 15 分",
+            hours: "08:00 ～ 17:00（受付至 16:00）",
+            tip: "世界遺產！1/8 起同步開放「京の冬の旅」國寶五重塔初層與後七日御修法。",
+            q: "東寺 教王護国寺 京都"
+          },
+          {
+            num: 7,
+            name: "萬福寺",
+            deity: "布袋尊",
+            blessing: "諸緣吉祥・笑口常開",
+            lat: 34.9143,
+            lng: 135.8061,
+            pinLat: 34.9143,
+            pinLng: 135.8061,
+            area: "宇治市五ヶ庄",
+            access: "JR 奈良線／京阪宇治線「黃檗站」步行 5 分",
+            hours: "09:00 ～ 17:00（受付至 16:30）",
+            tip: "唯一位於宇治的札所！保留中國明代伽藍建築風貌，適合與宇治平等院／抹茶順遊。",
+            q: "萬福寺 宇治"
+          }
+        ]
+      },
+      {
         id: "ky_chionin",
         city: "京都",
         cat: "winter_kyoto",
@@ -7679,12 +7936,16 @@
       search: "",
       onlyFav: false,
       showHotels: true,
-      activeId: null
+      activeId: null,
+      activeStopIdx: null
     };
 
+    const evRouteLinesLayer = L.layerGroup().addTo(eventsMapObj.map);
     const evEventMarkersLayer = L.layerGroup().addTo(eventsMapObj.map);
     const evHotelMarkersLayer = L.layerGroup().addTo(eventsMapObj.map);
     const evMarkerById = new Map();
+    const evGroupMarkersByEventId = new Map();
+    const evRouteLineByEventId = new Map();
     const evHotelMarkerById = new Map();
 
     function evHaversineKm(lat1, lng1, lat2, lng2) {
@@ -7699,6 +7960,9 @@
     }
 
     function evGetHotelDistanceInfo(ev) {
+      if (Array.isArray(ev.stops) && ev.stops.length > 0) {
+        return "涵蓋洛北～中京～東山～宇治 7 社寺";
+      }
       const hotel = ev.city === "大阪" ? CONFIRMED_HOTELS[0] : CONFIRMED_HOTELS[1];
       const km = evHaversineKm(ev.lat, ev.lng, hotel.lat, hotel.lng);
       const label = ev.city === "大阪" ? "距大阪住宿" : "距京都住宿";
@@ -7747,7 +8011,10 @@
         if (!ignoreCat && evState.cat !== "all" && ev.cat !== evState.cat) return false;
         if (evState.onlyFav && getVoters(ev.id).length === 0) return false;
         if (q) {
-          const hay = `${ev.name} ${ev.short} ${ev.venue} ${ev.desc} ${ev.note} ${ev.city} ${EV_CATEGORIES[ev.cat].label}`.toLowerCase();
+          const stopsTxt = Array.isArray(ev.stops)
+            ? ev.stops.map((s) => `${s.name} ${s.deity} ${s.blessing} ${s.area} ${s.tip}`).join(" ")
+            : "";
+          const hay = `${ev.name} ${ev.short} ${ev.venue} ${ev.desc} ${ev.note} ${ev.city} ${EV_CATEGORIES[ev.cat].label} ${stopsTxt}`.toLowerCase();
           if (!hay.includes(q)) return false;
         }
         return true;
@@ -7792,6 +8059,27 @@
       });
     }
 
+    function evBuildBoundStopIcon(ev, stop, idx) {
+      const isFav = getVoters(ev.id).length > 0;
+      const isGroupLit = evState.activeId === ev.id;
+      const isActive = isGroupLit && evState.activeStopIdx === idx;
+      const cls = `ev-pin ev-pin-bound${isFav ? " is-fav" : ""}${isActive ? " is-active" : (isGroupLit ? " is-group-lit" : "")}`;
+      const shortName = stop.name.split("（")[0];
+      let labelHtml = "";
+      if (isActive) {
+        labelHtml = `<span class="ev-pin-label">${stop.num}. ${escapeHtml(shortName)}・${escapeHtml(stop.deity)}</span>`;
+      } else if (isGroupLit) {
+        labelHtml = `<span class="ev-pin-sublabel">${stop.num}. ${escapeHtml(shortName)}</span>`;
+      }
+      return L.divIcon({
+        className: "leaflet-div-icon",
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
+        popupAnchor: [0, -18],
+        html: `<div class="${cls}">${labelHtml}<span>${stop.num}</span></div>`
+      });
+    }
+
     function evBuildEventPopup(ev) {
       const cat = EV_CATEGORIES[ev.cat];
       const voters = getVoters(ev.id);
@@ -7822,6 +8110,48 @@
               ${savedByMe ? `❤️ ${escapeHtml(currentUser)}已想去` : `🤍 ${escapeHtml(currentUser)}想去`}
             </button>
             <a class="ev-pop-btn is-map" href="${mapSearchUrl(ev.q || `${ev.lat},${ev.lng}`)}" target="_blank" rel="noopener">Google Maps ↗</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function evBuildBoundStopPopup(ev, stop, idx) {
+      const cat = EV_CATEGORIES[ev.cat];
+      const voters = getVoters(ev.id);
+      const savedByMe = isVotedByMe(ev.id);
+      const total = ev.stops.length;
+      const prevIdx = (idx - 1 + total) % total;
+      const nextIdx = (idx + 1) % total;
+      const kyotoHotel = CONFIRMED_HOTELS[1];
+      const km = evHaversineKm(stop.lat, stop.lng, kyotoHotel.lat, kyotoHotel.lng);
+      const votersStr = voters.length ? `<div><strong>群組收藏：</strong>❤️ ${escapeHtml(voters.join("、"))}</div>` : "";
+      return `
+        <div>
+          <div class="ev-pop-badges">
+            <span class="ev-pill" style="background:#B91C1C;color:#FEF3C7;">🔗 都七福神 (${stop.num}/${total})</span>
+            <span class="ev-pill ev-pill-kyoto">京都</span>
+            <span class="ev-pill" style="background:${cat.bg};color:${cat.color};">${cat.icon} ${escapeHtml(cat.label)}</span>
+          </div>
+          <h4 class="ev-pop-title">${stop.num}. ${escapeHtml(stop.name)}（${escapeHtml(stop.deity)}）</h4>
+          <div class="ev-pop-venue">📍 ${escapeHtml(stop.area)} ｜ 御利益：${escapeHtml(stop.blessing)}</div>
+          <p class="ev-pop-desc">${escapeHtml(stop.tip)}</p>
+          <div class="ev-pop-meta">
+            <div><strong>巡禮期間：</strong>${escapeHtml(ev.datesText)}</div>
+            <div><strong>時間：</strong>${escapeHtml(stop.hours)}</div>
+            <div><strong>交通：</strong>${escapeHtml(stop.access)}</div>
+            <div><strong>距離：</strong>距京都住宿約 ${km.toFixed(1)} km</div>
+            ${votersStr}
+          </div>
+          <div class="ev-pop-actions">
+            <button type="button" class="ev-pop-btn ${savedByMe ? "is-fav" : ""}" onclick="toggleWish('${ev.id}','event')">
+              ${savedByMe ? `❤️ ${escapeHtml(currentUser)}已想去` : `🤍 ${escapeHtml(currentUser)}想去`}
+            </button>
+            <a class="ev-pop-btn is-map" href="${mapSearchUrl(stop.q || `${stop.lat},${stop.lng}`)}" target="_blank" rel="noopener">Google Maps ↗</a>
+          </div>
+          <div class="ev-pop-nav">
+            <button type="button" class="ev-pop-nav-btn" onclick="evSelectGroupStop('${ev.id}', ${prevIdx}, { fly: true, scrollCard: true })">← 上一站</button>
+            <button type="button" class="ev-pop-nav-btn" onclick="evFocusEvent('${ev.id}', event)">🗺️ 全覽 ${total} 寺</button>
+            <button type="button" class="ev-pop-nav-btn" onclick="evSelectGroupStop('${ev.id}', ${nextIdx}, { fly: true, scrollCard: true })">下一站 →</button>
           </div>
         </div>
       `;
@@ -7864,11 +8194,74 @@
       });
     }
 
+    function evRefreshGroupVisuals(ev) {
+      const isGroupLit = evState.activeId === ev.id;
+      const markers = evGroupMarkersByEventId.get(ev.id) || [];
+      markers.forEach((m, idx) => {
+        const stop = ev.stops[idx];
+        const isActiveStop = isGroupLit && evState.activeStopIdx === idx;
+        m.setIcon(evBuildBoundStopIcon(ev, stop, idx));
+        m.setZIndexOffset(isActiveStop ? 1000 : (isGroupLit ? 850 : 220));
+      });
+      const line = evRouteLineByEventId.get(ev.id);
+      if (line) {
+        line.setStyle(
+          isGroupLit
+            ? { color: "#B91C1C", weight: 4.2, opacity: 0.95, dashArray: "8, 6" }
+            : { color: "#D97706", weight: 2.8, opacity: 0.72, dashArray: "6, 6" }
+        );
+      }
+    }
+
     function evRenderEventsOnMap(visibleEvents) {
+      evRouteLinesLayer.clearLayers();
       evEventMarkersLayer.clearLayers();
       evMarkerById.clear();
+      evGroupMarkersByEventId.clear();
+      evRouteLineByEventId.clear();
 
       visibleEvents.forEach((ev) => {
+        if (Array.isArray(ev.stops) && ev.stops.length > 0) {
+          const isGroupLit = evState.activeId === ev.id;
+          const lineCoords = ev.stops.map((s) => [s.pinLat ?? s.lat, s.pinLng ?? s.lng]);
+          const polyline = L.polyline(
+            lineCoords,
+            isGroupLit
+              ? { color: "#B91C1C", weight: 4.2, opacity: 0.95, dashArray: "8, 6" }
+              : { color: "#D97706", weight: 2.8, opacity: 0.72, dashArray: "6, 6" }
+          );
+          polyline.bindTooltip("🔗 都七福神まいり（7 社寺連動路線）", { sticky: true });
+          polyline.on("click", () => {
+            evSelectEvent(ev.id, { fly: true, scrollCard: true });
+          });
+          polyline.addTo(evRouteLinesLayer);
+          evRouteLineByEventId.set(ev.id, polyline);
+
+          const groupMarkers = ev.stops.map((stop, idx) => {
+            const isActiveStop = isGroupLit && evState.activeStopIdx === idx;
+            const marker = L.marker([stop.pinLat ?? stop.lat, stop.pinLng ?? stop.lng], {
+              icon: evBuildBoundStopIcon(ev, stop, idx),
+              zIndexOffset: isActiveStop ? 1000 : (isGroupLit ? 850 : 220)
+            });
+            marker.bindPopup(() => evBuildBoundStopPopup(ev, stop, idx), { maxWidth: 320 });
+            marker.on("mouseover", () => {
+              if (!(evState.activeId === ev.id && evState.activeStopIdx === idx)) marker.setZIndexOffset(950);
+            });
+            marker.on("mouseout", () => {
+              const lit = evState.activeId === ev.id;
+              const act = lit && evState.activeStopIdx === idx;
+              marker.setZIndexOffset(act ? 1000 : (lit ? 850 : 220));
+            });
+            marker.on("click", () => {
+              evSelectGroupStop(ev.id, idx, { fly: false, scrollCard: true });
+            });
+            marker.addTo(evEventMarkersLayer);
+            return marker;
+          });
+          evGroupMarkersByEventId.set(ev.id, groupMarkers);
+          return;
+        }
+
         const isActive = evState.activeId === ev.id;
         const marker = L.marker([ev.lat, ev.lng], {
           icon: evBuildEventIcon(ev),
@@ -7891,7 +8284,14 @@
 
     window.evFitCurrentResults = function() {
       const visible = evGetSortedVisible();
-      const pts = visible.map((ev) => [ev.lat, ev.lng]);
+      const pts = [];
+      visible.forEach((ev) => {
+        if (Array.isArray(ev.stops) && ev.stops.length > 0) {
+          ev.stops.forEach((s) => pts.push([s.pinLat ?? s.lat, s.pinLng ?? s.lng]));
+        } else {
+          pts.push([ev.lat, ev.lng]);
+        }
+      });
       if (evState.showHotels && pts.length === 0) {
         CONFIRMED_HOTELS.forEach((h) => pts.push([h.lat, h.lng]));
       }
@@ -7920,20 +8320,63 @@
       }
     };
 
-    function evSelectEvent(id, { fly = true, scrollCard = false } = {}) {
-      const prevId = evState.activeId;
-      evState.activeId = id;
-      const ev = EVENTS_2027.find((x) => x.id === id);
-      if (!ev) return;
-
-      if (prevId && evMarkerById.has(prevId)) {
-        const prevEv = EVENTS_2027.find((x) => x.id === prevId);
+    function evClearPrevSelection(prevId) {
+      if (!prevId) return;
+      const prevEv = EVENTS_2027.find((x) => x.id === prevId);
+      if (!prevEv) return;
+      if (Array.isArray(prevEv.stops) && prevEv.stops.length > 0) {
+        evRefreshGroupVisuals(prevEv);
+      } else if (evMarkerById.has(prevId)) {
         const prevM = evMarkerById.get(prevId);
-        if (prevEv && prevM) {
+        if (prevM) {
           prevM.setIcon(evBuildEventIcon(prevEv));
           prevM.setZIndexOffset(100);
         }
       }
+    }
+
+    function evHighlightCardDom(id, stopIdx, scrollCard) {
+      document.querySelectorAll("#ev-cards-list .ev-card.active").forEach((el) => el.classList.remove("active"));
+      document.querySelectorAll("#ev-cards-list .ev-stop-chip.active").forEach((el) => el.classList.remove("active"));
+      const cardEl = document.getElementById(`ev-card-${id}`);
+      if (cardEl) {
+        cardEl.classList.add("active");
+        if (stopIdx !== null && stopIdx !== undefined) {
+          document.getElementById(`ev-stop-chip-${id}-${stopIdx}`)?.classList.add("active");
+        }
+        if (scrollCard) {
+          const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 80;
+          const top = (window.scrollY || window.pageYOffset || 0) + cardEl.getBoundingClientRect().top - navH - 14;
+          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        }
+      }
+    }
+
+    function evSelectEvent(id, { fly = true, scrollCard = false } = {}) {
+      const prevId = evState.activeId;
+      evState.activeId = id;
+      evState.activeStopIdx = null;
+      const ev = EVENTS_2027.find((x) => x.id === id);
+      if (!ev) return;
+
+      if (prevId && prevId !== id) {
+        evClearPrevSelection(prevId);
+      }
+
+      if (Array.isArray(ev.stops) && ev.stops.length > 0) {
+        evRefreshGroupVisuals(ev);
+        eventsMapObj.map.closePopup();
+        if (fly) {
+          if (window.innerWidth <= 1024 && document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
+            setMobileViewMode("split");
+          }
+          const bounds = L.latLngBounds(ev.stops.map((s) => [s.pinLat ?? s.lat, s.pinLng ?? s.lng]));
+          eventsMapObj.map.flyToBounds(bounds, { padding: [54, 54], maxZoom: 13, duration: 0.55 });
+        }
+        evHighlightCardDom(id, null, scrollCard);
+        return;
+      }
+
       const marker = evMarkerById.get(id);
       if (marker) {
         marker.setIcon(evBuildEventIcon(ev));
@@ -7947,17 +8390,40 @@
         marker.openPopup();
       }
 
-      document.querySelectorAll("#ev-cards-list .ev-card.active").forEach((el) => el.classList.remove("active"));
-      const cardEl = document.getElementById(`ev-card-${id}`);
-      if (cardEl) {
-        cardEl.classList.add("active");
-        if (scrollCard) {
-          const navH = document.querySelector(".nav-wrap")?.getBoundingClientRect().height || 80;
-          const top = (window.scrollY || window.pageYOffset || 0) + cardEl.getBoundingClientRect().top - navH - 14;
-          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
-        }
-      }
+      evHighlightCardDom(id, null, scrollCard);
     }
+
+    window.evSelectGroupStop = function(id, stopIdx, { fly = true, scrollCard = false } = {}, eventObj) {
+      if (eventObj) eventObj.stopPropagation();
+      const prevId = evState.activeId;
+      const ev = EVENTS_2027.find((x) => x.id === id);
+      if (!ev || !Array.isArray(ev.stops) || !ev.stops[stopIdx]) return;
+
+      evState.activeId = id;
+      evState.activeStopIdx = stopIdx;
+
+      if (prevId && prevId !== id) {
+        evClearPrevSelection(prevId);
+      }
+      evRefreshGroupVisuals(ev);
+
+      const stop = ev.stops[stopIdx];
+      const markers = evGroupMarkersByEventId.get(id) || [];
+      const marker = markers[stopIdx];
+      if (marker) {
+        if (fly) {
+          if (window.innerWidth <= 1024 && document.body.dataset.mview === "list" && typeof setMobileViewMode === "function") {
+            setMobileViewMode("split");
+          }
+          eventsMapObj.map.flyTo([stop.pinLat ?? stop.lat, stop.pinLng ?? stop.lng], Math.max(eventsMapObj.map.getZoom(), 14), { duration: 0.5 });
+          if (window.innerWidth <= 1024) {
+            scrollToActiveMap();
+          }
+        }
+        marker.openPopup();
+      }
+      evHighlightCardDom(id, stopIdx, scrollCard);
+    };
 
     window.evFocusEvent = function(id, eventObj) {
       if (eventObj) eventObj.stopPropagation();
@@ -7981,11 +8447,21 @@
         return;
       }
       const ev = EVENTS_2027.find((x) => x.id === id);
-      const marker = evMarkerById.get(id);
-      if (ev && marker) {
-        marker.setIcon(evBuildEventIcon(ev));
-        if (marker.isPopupOpen()) {
-          marker.setPopupContent(evBuildEventPopup(ev));
+      if (ev && Array.isArray(ev.stops) && evGroupMarkersByEventId.has(id)) {
+        evRefreshGroupVisuals(ev);
+        const markers = evGroupMarkersByEventId.get(id) || [];
+        markers.forEach((m, idx) => {
+          if (m.isPopupOpen()) {
+            m.setPopupContent(evBuildBoundStopPopup(ev, ev.stops[idx], idx));
+          }
+        });
+      } else {
+        const marker = evMarkerById.get(id);
+        if (ev && marker) {
+          marker.setIcon(evBuildEventIcon(ev));
+          if (marker.isPopupOpen()) {
+            marker.setPopupContent(evBuildEventPopup(ev));
+          }
         }
       }
       const btn = document.getElementById(`ev-fav-btn-${id}`);
@@ -8101,6 +8577,34 @@
             ? (voters.length > 1 ? `♥ 已想去 (${voters.length})` : "♥ 已想去")
             : (voters.length ? `♡ 想去 (${voters.length})` : "♡ 想去");
 
+          const isGroup = Array.isArray(ev.stops) && ev.stops.length > 0;
+          const stopsBoxHtml = isGroup
+            ? `
+              <div class="ev-stops-box">
+                <div class="ev-stops-head">
+                  <span>🔗 已連動 ${ev.stops.length} 處札所（點擊任一寺飛往該點）</span>
+                </div>
+                <div class="ev-stops-grid">
+                  ${ev.stops
+                    .map((s, idx) => {
+                      const stopAct = isActive && evState.activeStopIdx === idx ? " active" : "";
+                      const shortName = s.name.split("（")[0];
+                      return `
+                        <button type="button" class="ev-stop-chip${stopAct}" id="ev-stop-chip-${ev.id}-${idx}" onclick="evSelectGroupStop('${ev.id}', ${idx}, { fly: true, scrollCard: false }, event)">
+                          <span class="ev-stop-num">${s.num}</span>
+                          <span>${escapeHtml(shortName)}</span>
+                          <span class="ev-stop-deity">${escapeHtml(s.deity.split("（")[0])}</span>
+                        </button>
+                      `;
+                    })
+                    .join("")}
+                </div>
+              </div>
+            `
+            : "";
+
+          const locBtnText = isGroup ? `🗺️ 全覽 ${ev.stops.length} 社寺連線` : "📍 地圖定位";
+
           return `
             <article class="ev-card${isActive ? " active" : ""}" id="ev-card-${ev.id}" onclick="evSelectEventFromCard('${ev.id}')">
               <div class="ev-card-top">
@@ -8117,6 +8621,7 @@
               <h3 class="ev-title">${escapeHtml(ev.name)}</h3>
               <div class="ev-venue">📍 ${escapeHtml(ev.venue)}</div>
               <p class="ev-desc">${escapeHtml(ev.desc)}</p>
+              ${stopsBoxHtml}
               <div class="ev-meta-grid">
                 <div><strong>⏰ 時間：</strong>${escapeHtml(ev.hours)}</div>
                 <div><strong>💡 備註：</strong>${escapeHtml(ev.note)}</div>
@@ -8124,7 +8629,7 @@
               <div class="ev-actions">
                 <span class="ev-dist">📏 ${escapeHtml(evGetHotelDistanceInfo(ev))}</span>
                 <div class="ev-btn-group">
-                  <button type="button" class="ev-action-btn primary" onclick="evFocusEvent('${ev.id}', event)">📍 地圖定位</button>
+                  <button type="button" class="ev-action-btn primary" onclick="evFocusEvent('${ev.id}', event)">${locBtnText}</button>
                   <a class="ev-action-btn" href="${mapSearchUrl(ev.q || `${ev.lat},${ev.lng}`)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Google Maps ↗</a>
                 </div>
               </div>
@@ -8140,6 +8645,7 @@
       evState.cat = "all";
       evState.search = "";
       evState.onlyFav = false;
+      evState.activeStopIdx = null;
       const si = document.getElementById("ev-search-input");
       if (si) si.value = "";
       document.getElementById("ev-search-clear-btn")?.classList.remove("visible");
@@ -8156,6 +8662,7 @@
       const visible = evGetSortedVisible();
       if (evState.activeId && !visible.some((ev) => ev.id === evState.activeId)) {
         evState.activeId = null;
+        evState.activeStopIdx = null;
       }
       evRenderCards(visible);
       evRenderEventsOnMap(visible);
